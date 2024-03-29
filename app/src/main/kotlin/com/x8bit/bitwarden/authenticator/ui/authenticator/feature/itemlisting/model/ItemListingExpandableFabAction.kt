@@ -7,7 +7,7 @@ import com.x8bit.bitwarden.authenticator.ui.platform.components.model.IconResour
 sealed class ItemListingExpandableFabAction(
     label: Text?,
     icon: IconResource,
-    onFabOptionClick: () -> Unit
+    onFabOptionClick: () -> Unit,
 ) : ExpandableFabOption(label, icon, onFabOptionClick) {
 
     class ScanQrCode(
