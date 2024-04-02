@@ -22,6 +22,7 @@
     },
     {
       "groupName": "kotlin",
+      "description": "Kotlin and Compose dependencies that must be updated together to maintain compatibility.",
       "matchPackagePatterns": [
         "androidx.compose:compose-bom",
         "org.jetbrains.kotlin.*",
