@@ -21,6 +21,16 @@
       ]
     },
     {
+      "groupName": "gradle minor",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchManagers": [
+        "gradle"
+      ]
+    },
+    {
       "groupName": "kotlin",
       "description": "Kotlin and Compose dependencies that must be updated together to maintain compatibility.",
       "matchPackagePatterns": [
