@@ -14,8 +14,7 @@
   ],
   "enabledManagers": [
     "github-actions",
-    "gradle",
-    "npm"
+    "gradle"
   ],
   "commitMessagePrefix": "[deps]:",
   "commitMessageTopic": "{{depName}}",
