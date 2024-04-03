@@ -44,8 +44,7 @@
       ]
     },
     {
-      "groupName": "ruby minor",
-      "description": "Group minor and patch updates to Ruby gems.",
+      "groupName": "bundler minor",
       "matchUpdateTypes": [
         "minor",
         "patch"
