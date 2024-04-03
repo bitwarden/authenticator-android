@@ -6,7 +6,7 @@
   "enabledManagers": [
     "github-actions",
     "gradle",
-    "ruby"
+    "bundler"
   ],
   "commitMessagePrefix": "[deps]:",
   "commitMessageTopic": "{{depName}}",
@@ -51,7 +51,7 @@
         "patch"
       ],
       "matchManagers": [
-        "ruby"
+        "bundler"
       ]
     }
   ]
