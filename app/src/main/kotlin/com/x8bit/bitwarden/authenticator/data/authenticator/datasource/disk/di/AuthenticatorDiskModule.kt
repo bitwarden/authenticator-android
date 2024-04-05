@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.AuthenticatorDiskSource
 import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.AuthenticatorDiskSourceImpl
+import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.convertor.AuthenticatorItemAlgorithmConverter
 import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.convertor.AuthenticatorItemTypeConverter
 import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.dao.ItemDao
 import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.database.AuthenticatorDatabase
@@ -31,6 +32,7 @@ object AuthenticatorDiskModule {
             )
             .fallbackToDestructiveMigration()
             .addTypeConverter(AuthenticatorItemTypeConverter())
+            .addTypeConverter(AuthenticatorItemAlgorithmConverter())
             .build()
 
     @Provides

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "aa30fba94617d1ba82f69d7d335261d2",
+    "identityHash": "3cc9605b629947b2b4148a40ff0d955d",
     "entities": [
       {
         "tableName": "items",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `period` INTEGER NOT NULL, `digits` INTEGER NOT NULL, `key` TEXT NOT NULL, `issuer` TEXT, `label` TEXT NOT NULL, `userId` TEXT, `username` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT NOT NULL, `algorithm` TEXT NOT NULL, `period` INTEGER NOT NULL, `digits` INTEGER NOT NULL, `key` TEXT NOT NULL, `issuer` TEXT, `userId` TEXT, `username` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,6 +17,12 @@
           {
             "fieldPath": "type",
             "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "algorithm",
+            "columnName": "algorithm",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -45,12 +51,6 @@
             "notNull": false
           },
           {
-            "fieldPath": "label",
-            "columnName": "label",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
             "fieldPath": "userId",
             "columnName": "userId",
             "affinity": "TEXT",
@@ -76,7 +76,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aa30fba94617d1ba82f69d7d335261d2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3cc9605b629947b2b4148a40ff0d955d')"
     ]
   }
 }

@@ -96,7 +96,6 @@ class TotpCodeManagerImpl @Inject constructor(
                                         time % response.period.toInt(),
                                     issueTime = clock.millis(),
                                     id = cipherId,
-                                    name = itemEntity.label,
                                     username = itemEntity.username,
                                     issuer = itemEntity.issuer,
                                 )

@@ -1,7 +1,5 @@
 package com.x8bit.bitwarden.authenticator.data.authenticator.manager.model
 
-import com.bitwarden.core.LoginUriView
-
 /**
  * Models the items returned by the TotpCodeManager.
  *
@@ -11,7 +9,6 @@ import com.bitwarden.core.LoginUriView
  * @property timeLeftSeconds The seconds remaining until a new code is required.
  * @property issueTime The time the verification code was issued.
  * @property id The cipher id of the item.
- * @property name The name of the cipher item.
  * @property username The username associated with the item.
  */
 data class VerificationCodeItem(
@@ -21,7 +18,18 @@ data class VerificationCodeItem(
     val timeLeftSeconds: Int,
     val issueTime: Long,
     val id: String,
-    val name: String,
     val username: String?,
     val issuer: String?,
-)
+) {
+    /**
+     * The composite label of the authenticator item.
+     *  ```
+     *  label = issuer (“:” / “%3A”) *”%20” username
+     *  ```
+     */
+    val label = if (issuer != null) {
+        issuer + username?.let { ":$it" }.orEmpty()
+    } else {
+        username.orEmpty()
+    }
+}

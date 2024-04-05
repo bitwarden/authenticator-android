@@ -16,6 +16,9 @@ data class AuthenticatorItemEntity(
     @ColumnInfo(name = "type")
     val type: AuthenticatorItemType = AuthenticatorItemType.TOTP,
 
+    @ColumnInfo(name = "algorithm")
+    val algorithm: AuthenticatorItemAlgorithm = AuthenticatorItemAlgorithm.SHA1,
+
     @ColumnInfo(name = "period")
     val period: Int = 30,
 
@@ -27,9 +30,6 @@ data class AuthenticatorItemEntity(
 
     @ColumnInfo(name = "issuer")
     val issuer: String?,
-
-    @ColumnInfo(name = "label")
-    val label: String,
 
     @ColumnInfo(name = "userId")
     val userId: String?,

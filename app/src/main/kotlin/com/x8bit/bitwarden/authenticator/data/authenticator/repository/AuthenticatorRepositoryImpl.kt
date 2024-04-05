@@ -189,7 +189,6 @@ class AuthenticatorRepositoryImpl @Inject constructor(
                     digits = 6,
                     key = code,
                     issuer = issuer,
-                    label = "",
                     userId = null,
                     username = null,
                 )
@@ -222,7 +221,6 @@ class AuthenticatorRepositoryImpl @Inject constructor(
                     digits = updateItemRequest.digits,
                     key = updateItemRequest.key,
                     issuer = updateItemRequest.issuer,
-                    label = updateItemRequest.label,
                     userId = null,
                     username = null,
                 )
