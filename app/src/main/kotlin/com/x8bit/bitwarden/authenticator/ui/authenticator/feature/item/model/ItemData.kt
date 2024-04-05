@@ -1,6 +1,8 @@
 package com.x8bit.bitwarden.authenticator.ui.authenticator.feature.item.model
 
 import android.os.Parcelable
+import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.entity.AuthenticatorItemType
+import com.x8bit.bitwarden.authenticator.ui.platform.base.util.Text
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -11,9 +13,10 @@ import kotlinx.parcelize.Parcelize
  * expiration.
  * @property totpCodeItemData TOTP data for the account.
  */
-@Parcelize
 data class ItemData(
-    val issuer: String,
+    val type: AuthenticatorItemType,
+    val username: Text?,
+    val issuer: Text,
     val alertThresholdSeconds: Int,
     val totpCodeItemData: TotpCodeItemData?,
-) : Parcelable
+)
