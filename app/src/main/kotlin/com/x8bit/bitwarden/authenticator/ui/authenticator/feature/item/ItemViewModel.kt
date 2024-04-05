@@ -62,7 +62,7 @@ class ItemViewModel @Inject constructor(
                     }
 
                     ItemData(
-                        name = item?.username.orEmpty(),
+                        issuer = item?.issuer.orEmpty(),
                         alertThresholdSeconds = alertThresholdSeconds,
                         totpCodeItemData = totpData
                     )
@@ -133,7 +133,7 @@ class ItemViewModel @Inject constructor(
                 itemId = action.item?.id.orEmpty(),
                 viewState = ItemState.ViewState.Content(
                     itemData = ItemData(
-                        name = action.item?.username.orEmpty(),
+                        issuer = action.item?.issuer.orEmpty(),
                         alertThresholdSeconds = alertThreshold,
                         totpCodeItemData = totpItemData,
                     )

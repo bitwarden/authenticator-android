@@ -38,4 +38,5 @@
     <string name="add_code">Add code</string>
     <string name="sync_items_with_bitwarden">Sync items from Bitwarden</string>
     <string name="import_items">Import items</string>
+    <string name="issuer">Issuer</string>
 </resources>

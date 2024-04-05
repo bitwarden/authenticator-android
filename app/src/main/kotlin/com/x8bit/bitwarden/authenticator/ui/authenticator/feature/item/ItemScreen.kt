@@ -128,7 +128,7 @@ fun ItemContent(
             BitwardenTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 label = stringResource(id = R.string.name),
-                value = viewState.itemData.name,
+                value = viewState.itemData.issuer,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
