@@ -5,7 +5,6 @@
     <string name="add_item">Add item</string>
     <string name="an_error_has_occurred">An error has occurred.</string>
     <string name="generic_error_message">We were unable to process your request. Please try again or contact us.</string>
-    <string name="syncing_complete">Syncing Complete</string>
     <string name="internet_connection_required_title">Internet connection required</string>
     <string name="internet_connection_required_message">Please connect to the internet before continuing.</string>
     <string name="ok">OK</string>
@@ -51,7 +50,6 @@
     <string name="show">Show</string>
     <string name="advanced">Advanced</string>
     <string name="collapse_advanced_options">Collapse advanced options</string>
-    <string name="expand_advanced_options">Expand advanced options</string>
     <string name="number_of_digits">Number of digits</string>
     <string name="save">Save</string>
     <string name="validation_field_required">The %1$s field is required.</string>
@@ -60,4 +58,5 @@
     <string name="saving">Saving</string>
     <string name="item_saved">Item saved</string>
     <string name="information">Information</string>
+    <string name="otp_authentication">OTP Authentication</string>
 </resources>

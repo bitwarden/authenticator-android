@@ -249,7 +249,7 @@ fun EditItemContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
-                    label = stringResource(id = R.string.totp_code),
+                    label = stringResource(id = R.string.secret_key),
                     value = viewState.itemData.totpCode,
                     onValueChange = onTotpCodeTextChange,
                     singleLine = true,
@@ -352,7 +352,7 @@ private fun AdvancedOptions(
                         modifier = Modifier
                             .fillMaxSize()
                             .semantics { testTag = "ItemTypePicker" },
-                        label = stringResource(id = R.string.type),
+                        label = stringResource(id = R.string.otp_authentication),
                         options = typeOptionsWithStrings.values.toImmutableList(),
                         selectedOption = viewState.itemData.type.name,
                         onOptionSelected = { selectedOption ->
