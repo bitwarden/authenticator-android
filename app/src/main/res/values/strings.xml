@@ -42,4 +42,5 @@
     <string name="totp_code">TOTP Code</string>
     <string name="username">Username</string>
     <string name="type">Type</string>
+    <string name="verification_codes">Verification codes</string>
 </resources>
