@@ -66,7 +66,7 @@ import com.x8bit.bitwarden.authenticator.ui.platform.theme.DEFAULT_STAY_TRANSITI
 import kotlinx.collections.immutable.toImmutableList
 
 /**
- * Displays the authenticator item screen.
+ * Displays the edit authenticator item screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
