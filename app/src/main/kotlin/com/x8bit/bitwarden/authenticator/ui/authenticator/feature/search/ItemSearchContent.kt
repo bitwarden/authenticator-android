@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.search.handlers.SearchHandlers
 
+/**
+ * The content state for the item search screen.
+ */
 @Composable
 fun ItemSearchContent(
     viewState: ItemSearchState.ViewState.Content,

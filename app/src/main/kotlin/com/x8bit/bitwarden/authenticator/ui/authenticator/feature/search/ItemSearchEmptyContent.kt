@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.x8bit.bitwarden.authenticator.R
 
 /**
- * The empty state for the search screen.
+ * The empty state for the item search screen.
  */
 @Composable
 fun ItemSearchEmptyContent(

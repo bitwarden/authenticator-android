@@ -6,6 +6,9 @@ import com.x8bit.bitwarden.authenticator.ui.platform.base.util.composableWithSli
 
 const val ITEM_SEARCH_ROUTE = "item_search"
 
+/**
+ * Add item search destination to the nav graph.
+ */
 fun NavGraphBuilder.itemSearchDestination(
     onNavigateBack: () -> Unit,
 ) {
@@ -18,6 +21,9 @@ fun NavGraphBuilder.itemSearchDestination(
     }
 }
 
+/**
+ * Navigate to the item search screen.
+ */
 fun NavController.navigateToSearch() {
     navigate(route = ITEM_SEARCH_ROUTE)
 }

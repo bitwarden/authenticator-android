@@ -20,6 +20,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
+/**
+ * View model for the item search screen.
+ */
 @HiltViewModel
 class ItemSearchViewModel @Inject constructor(
     private val authenticatorRepository: AuthenticatorRepository,
@@ -240,40 +243,72 @@ class ItemSearchViewModel @Inject constructor(
     //endregion Utility Functions
 }
 
+/**
+ * Represents the overall state for the [ItemSearchScreen].
+ */
 data class ItemSearchState(
     val searchTerm: String,
     val viewState: ViewState,
     val dialogState: DialogState?,
 ) {
+    /**
+     * Represents the specific view state for the search screen.
+     */
     sealed class ViewState : Parcelable {
+
+        /**
+         * Show the populated state.
+         */
         @Parcelize
         data class Content(
             val displayItems: List<DisplayItem>,
         ) : ViewState()
 
+        /**
+         * Show the empty state.
+         */
         @Parcelize
         data class Empty(val message: Text?) : ViewState()
 
+        /**
+         * Show the error state.
+         */
         @Parcelize
         data class Error(val message: Text) : ViewState()
 
+        /**
+         * Show the loading state.
+         */
         @Parcelize
         data object Loading : ViewState()
     }
 
+    /**
+     * Represents the current state of any dialogs on the screen.
+     */
     sealed class DialogState : Parcelable {
+
+        /**
+         * Represents a dismissible dialog with the given error [message].
+         */
         @Parcelize
         data class Error(
             val title: Text?,
             val message: Text,
         ) : DialogState()
 
+        /**
+         * Represents a loading dialog with the given [message].
+         */
         @Parcelize
         data class Loading(
             val message: Text,
         ) : DialogState()
     }
 
+    /**
+     * An item to be displayed.
+     */
     @Parcelize
     data class DisplayItem(
         val id: String,
@@ -288,29 +323,61 @@ data class ItemSearchState(
     ) : Parcelable
 }
 
+/**
+ * Models actions for the [ItemSearchScreen].
+ */
 sealed class ItemSearchAction {
+    /**
+     * User clicked the back button.
+     */
     data object BackClick : ItemSearchAction()
 
+    /**
+     * User clicked to dismiss the dialog.
+     */
     data object DismissDialogClick : ItemSearchAction()
 
+    /**
+     * User updated the search term.
+     */
     data class SearchTermChange(val searchTerm: String) : ItemSearchAction()
 
+    /**
+     * User clicked a row item.
+     */
     data class ItemClick(val itemId: String) : ItemSearchAction()
 
+    /**
+     * Models actions that the [ItemSearchViewModel] itself might send.
+     */
     sealed class Internal : ItemSearchAction() {
+
+        /**
+         * Indicates authenticate data was received.
+         */
         data class AuthenticatorDataReceive(
             val dataState: DataState<List<VerificationCodeItem>>,
         ) : Internal()
     }
 }
 
+/**
+ * Models events for the [ItemSearchScreen].
+ */
 sealed class ItemSearchEvent {
+
+    /**
+     * Navigate back to the previous screen.
+     */
     data object NavigateBack : ItemSearchEvent()
 
+    /**
+     * Show a toast with the given [message].
+     */
     data class ShowToast(val message: Text) : ItemSearchEvent()
 }
 
-enum class SortPriority {
+private enum class SortPriority {
     HIGH,
     LOW
 }

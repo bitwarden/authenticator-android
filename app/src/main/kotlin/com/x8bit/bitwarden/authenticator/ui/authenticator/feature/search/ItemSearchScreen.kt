@@ -34,6 +34,9 @@ import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.Bitwarden
 import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.LoadingDialogState
 import com.x8bit.bitwarden.authenticator.ui.platform.components.scaffold.BitwardenScaffold
 
+/**
+ * The search screen for authenticator items.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemSearchScreen(
@@ -125,6 +128,9 @@ fun ItemSearchScreen(
     }
 }
 
+/**
+ * Dialogs displayed within the context of the item search screen.
+ */
 @Composable
 private fun ItemSearchDialogs(
     dialogState: ItemSearchState.DialogState?,
