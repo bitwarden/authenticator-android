@@ -10,9 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.search.handlers.SearchHandlers
-import com.x8bit.bitwarden.authenticator.ui.platform.components.listitem.BitwardenListItem
-import com.x8bit.bitwarden.authenticator.ui.platform.components.listitem.SelectionItemData
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ItemSearchContent(
@@ -22,7 +19,7 @@ fun ItemSearchContent(
 ) {
     LazyColumn(modifier = modifier) {
         items(viewState.displayItems) {
-            BitwardenListItem(
+            VaultVerificationCodeItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -31,10 +28,15 @@ fun ItemSearchContent(
                         // the visual difference here.
                         end = 12.dp,
                     ),
-                label = it.accountName,
+                authCode = it.authCode,
+                issuer = it.issuer,
+                periodSeconds = it.periodSeconds,
+                timeLeftSeconds = it.timeLeftSeconds,
+                alertThresholdSeconds = it.alertThresholdSeconds,
+                supportingLabel = it.supportingLabel,
                 startIcon = it.startIcon,
-                onClick = { searchHandlers.onItemClick(it.id) },
-                selectionDataList = emptyList<SelectionItemData>().toPersistentList()
+                onCopyClick = { searchHandlers.onItemClick(it.id) },
+                onItemClick = { searchHandlers.onItemClick(it.id) },
             )
         }
 

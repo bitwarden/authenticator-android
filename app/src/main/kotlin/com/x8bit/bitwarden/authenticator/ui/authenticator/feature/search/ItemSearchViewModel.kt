@@ -3,9 +3,8 @@ package com.x8bit.bitwarden.authenticator.ui.authenticator.feature.search
 import android.os.Parcelable
 import androidx.lifecycle.viewModelScope
 import com.x8bit.bitwarden.authenticator.R
-import com.x8bit.bitwarden.authenticator.data.authenticator.datasource.disk.entity.AuthenticatorItemEntity
+import com.x8bit.bitwarden.authenticator.data.authenticator.manager.model.VerificationCodeItem
 import com.x8bit.bitwarden.authenticator.data.authenticator.repository.AuthenticatorRepository
-import com.x8bit.bitwarden.authenticator.data.authenticator.repository.model.AuthenticatorData
 import com.x8bit.bitwarden.authenticator.data.platform.repository.model.DataState
 import com.x8bit.bitwarden.authenticator.ui.platform.base.BaseViewModel
 import com.x8bit.bitwarden.authenticator.ui.platform.base.util.Text
@@ -35,7 +34,7 @@ class ItemSearchViewModel @Inject constructor(
 
     init {
         authenticatorRepository
-            .authenticatorDataFlow
+            .getAuthCodesFlow()
             .map { ItemSearchAction.Internal.AuthenticatorDataReceive(it) }
             .onEach(::sendAction)
             .launchIn(viewModelScope)
@@ -80,7 +79,7 @@ class ItemSearchViewModel @Inject constructor(
         }
     }
 
-    private fun authenticatorErrorReceive(authenticatorData: DataState.Error<AuthenticatorData>) {
+    private fun authenticatorErrorReceive(authenticatorData: DataState<List<VerificationCodeItem>>) {
         authenticatorData
             .data
             ?.let {
@@ -100,7 +99,9 @@ class ItemSearchViewModel @Inject constructor(
             }
     }
 
-    private fun authenticatorLoadedReceive(authenticatorData: DataState.Loaded<AuthenticatorData>) {
+    private fun authenticatorLoadedReceive(
+        authenticatorData: DataState.Loaded<List<VerificationCodeItem>>,
+    ) {
         updateStateWithAuthenticatorData(
             authenticatorData = authenticatorData.data,
             clearDialogState = true,
@@ -111,7 +112,9 @@ class ItemSearchViewModel @Inject constructor(
         mutableStateFlow.update { it.copy(viewState = ItemSearchState.ViewState.Loading) }
     }
 
-    private fun authenticatorNoNetworkReceive(authenticatorData: DataState.NoNetwork<AuthenticatorData>) {
+    private fun authenticatorNoNetworkReceive(
+        authenticatorData: DataState<List<VerificationCodeItem>>,
+    ) {
         authenticatorData
             .data
             ?.let {
@@ -134,7 +137,9 @@ class ItemSearchViewModel @Inject constructor(
             }
     }
 
-    private fun authenticatorDataPendingReceive(authenticatorData: DataState.Pending<AuthenticatorData>) {
+    private fun authenticatorDataPendingReceive(
+        authenticatorData: DataState.Pending<List<VerificationCodeItem>>,
+    ) {
         updateStateWithAuthenticatorData(
             authenticatorData = authenticatorData.data,
             clearDialogState = false,
@@ -143,7 +148,7 @@ class ItemSearchViewModel @Inject constructor(
 
     //region Utility Functions
     private fun recalculateViewState() {
-        authenticatorRepository.authenticatorDataFlow.value.data?.let { authenticatorData ->
+        authenticatorRepository.getAuthCodesFlow().value.data?.let { authenticatorData ->
             updateStateWithAuthenticatorData(
                 authenticatorData = authenticatorData,
                 clearDialogState = false
@@ -152,14 +157,13 @@ class ItemSearchViewModel @Inject constructor(
     }
 
     private fun updateStateWithAuthenticatorData(
-        authenticatorData: AuthenticatorData,
+        authenticatorData: List<VerificationCodeItem>,
         clearDialogState: Boolean,
     ) {
         mutableStateFlow.update { currentState ->
             currentState.copy(
                 searchTerm = currentState.searchTerm,
                 viewState = authenticatorData
-                    .items
                     .filterAndOrganize(state.searchTerm)
                     .toViewState(searchTerm = state.searchTerm),
                 dialogState = currentState.dialogState.takeUnless { clearDialogState }
@@ -167,7 +171,7 @@ class ItemSearchViewModel @Inject constructor(
         }
     }
 
-    private fun List<AuthenticatorItemEntity>.filterAndOrganize(searchTerm: String) =
+    private fun List<VerificationCodeItem>.filterAndOrganize(searchTerm: String) =
         if (searchTerm.isBlank()) {
             emptyList()
         } else {
@@ -175,16 +179,16 @@ class ItemSearchViewModel @Inject constructor(
                 .groupBy { it.matchedSearch(searchTerm) }
                 .flatMap { (priority, items) ->
                     when (priority) {
-                        SortPriority.HIGH -> items.sortedBy { it.accountName }
-                        SortPriority.LOW -> items.sortedBy { it.accountName }
+                        SortPriority.HIGH -> items.sortedBy { it.label }
+                        SortPriority.LOW -> items.sortedBy { it.label }
                         null -> emptyList()
                     }
                 }
         }
 
-    private fun AuthenticatorItemEntity.matchedSearch(searchTerm: String): SortPriority? {
+    private fun VerificationCodeItem.matchedSearch(searchTerm: String): SortPriority? {
         val term = searchTerm.removeDiacritics()
-        val itemName = accountName.removeDiacritics()
+        val itemName = label.removeDiacritics()
         val itemId = id.takeIf { term.length > 8 }.orEmpty().removeDiacritics()
         val itemIssuer = issuer.orEmpty().removeDiacritics()
         return when {
@@ -195,7 +199,7 @@ class ItemSearchViewModel @Inject constructor(
         }
     }
 
-    private fun List<AuthenticatorItemEntity>.toViewState(
+    private fun List<VerificationCodeItem>.toViewState(
         searchTerm: String,
     ): ItemSearchState.ViewState =
         when {
@@ -216,22 +220,22 @@ class ItemSearchViewModel @Inject constructor(
             }
         }
 
-    private fun List<AuthenticatorItemEntity>.toDisplayItemList(): List<ItemSearchState.DisplayItem> =
+    private fun List<VerificationCodeItem>.toDisplayItemList(): List<ItemSearchState.DisplayItem> =
         this.map {
             it.toDisplayItem()
         }
 
-    private fun AuthenticatorItemEntity.toDisplayItem(): ItemSearchState.DisplayItem =
+    private fun VerificationCodeItem.toDisplayItem(): ItemSearchState.DisplayItem =
         ItemSearchState.DisplayItem(
             id = id,
             authCode = "",
-            accountName = accountName,
+            accountName = username ?: "",
             issuer = issuer,
-            periodSeconds = period,
-            timeLeftSeconds = 30,
+            periodSeconds = periodSeconds,
+            timeLeftSeconds = timeLeftSeconds,
             alertThresholdSeconds = 7,
             startIcon = IconData.Local(iconRes = R.drawable.ic_login_item),
-            supportingLabel = "",
+            supportingLabel = label,
         )
     //endregion Utility Functions
 }
@@ -294,8 +298,9 @@ sealed class ItemSearchAction {
     data class ItemClick(val itemId: String) : ItemSearchAction()
 
     sealed class Internal : ItemSearchAction() {
-        data class AuthenticatorDataReceive(val dataState: DataState<AuthenticatorData>) :
-            Internal()
+        data class AuthenticatorDataReceive(
+            val dataState: DataState<List<VerificationCodeItem>>,
+        ) : Internal()
     }
 }
 
