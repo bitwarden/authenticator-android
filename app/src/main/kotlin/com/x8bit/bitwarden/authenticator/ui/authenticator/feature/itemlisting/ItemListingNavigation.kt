@@ -13,7 +13,6 @@ fun NavGraphBuilder.itemListingDestination(
     onNavigateToSearch: () -> Unit,
     onNavigateToQrCodeScanner: () -> Unit = { },
     onNavigateToManualKeyEntry: () -> Unit = { },
-    onNavigateToItemScreen: (id: String) -> Unit = { },
     onNavigateToEditItemScreen: (id: String) -> Unit = { },
     onNavigateToSyncWithBitwardenScreen: () -> Unit = { },
     onNavigateToImportScreen: () -> Unit = { },
@@ -26,7 +25,6 @@ fun NavGraphBuilder.itemListingDestination(
             onNavigateToSearch = onNavigateToSearch,
             onNavigateToQrCodeScanner = onNavigateToQrCodeScanner,
             onNavigateToManualKeyEntry = onNavigateToManualKeyEntry,
-            onNavigateToItemScreen = onNavigateToItemScreen,
             onNavigateToEditItemScreen = onNavigateToEditItemScreen,
             onNavigateToSyncWithBitwardenScreen = onNavigateToSyncWithBitwardenScreen,
             onNavigateToImportScreen = onNavigateToImportScreen
