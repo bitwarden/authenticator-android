@@ -28,7 +28,7 @@ import javax.inject.Inject
 private const val KEY_STATE = "state"
 
 /**
- * View model responsible for handling user interaction with the authenticator item screen.
+ * View model responsible for handling user interaction with the edit authenticator item screen.
  */
 @HiltViewModel
 class EditItemViewModel @Inject constructor(
@@ -329,7 +329,7 @@ class EditItemViewModel @Inject constructor(
 }
 
 /**
- * Represents the state for displaying an item in the authenticator.
+ * Represents the state for displaying an editable item in the authenticator.
  *
  * @property itemId ID of the item displayed.
  * @property viewState Current state of the [EditItemScreen].
@@ -397,7 +397,7 @@ data class EditItemState(
 }
 
 /**
- * Represents a set of events related to viewing an authenticator item.
+ * Represents a set of events related to editing an authenticator item.
  */
 sealed class EditItemEvent {
 
@@ -413,7 +413,7 @@ sealed class EditItemEvent {
 }
 
 /**
- * Represents a set of actions related to viewing an authenticator item.
+ * Represents a set of actions related to editing an authenticator item.
  * Each subclass of this sealed class denotes a distinct action that can be taken.
  */
 sealed class EditItemAction {

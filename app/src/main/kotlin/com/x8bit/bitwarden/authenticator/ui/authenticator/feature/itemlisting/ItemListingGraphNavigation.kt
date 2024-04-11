@@ -6,6 +6,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.navigation
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.editItemDestination
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.navigateToEditItem
+import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.editItemDestination
+import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.navigateToEditItem
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.manualCodeEntryDestination
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.navigateToManualCodeEntryScreen
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.navigateToQrCodeScanScreen
