@@ -38,7 +38,7 @@ import com.x8bit.bitwarden.authenticator.ui.platform.components.scaffold.Bitward
 @Composable
 fun ItemSearchScreen(
     viewModel: ItemSearchViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit = {},
+    onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
     val searchHandlers = remember(viewModel) { SearchHandlers.create(viewModel) }
