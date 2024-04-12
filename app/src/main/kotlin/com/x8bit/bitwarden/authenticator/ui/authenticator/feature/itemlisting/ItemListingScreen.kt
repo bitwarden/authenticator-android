@@ -3,7 +3,6 @@ package com.x8bit.bitwarden.authenticator.ui.authenticator.feature.itemlisting
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,9 +19,6 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,7 +38,6 @@ import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.itemlisting.mo
 import com.x8bit.bitwarden.authenticator.ui.platform.base.util.EventsEffect
 import com.x8bit.bitwarden.authenticator.ui.platform.base.util.asText
 import com.x8bit.bitwarden.authenticator.ui.platform.components.appbar.BitwardenTopAppBar
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.navbar.AuthenticatorBottomAppBar
 import com.x8bit.bitwarden.authenticator.ui.platform.components.button.BitwardenFilledTonalButton
 import com.x8bit.bitwarden.authenticator.ui.platform.components.button.BitwardenTextButton
 import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.BasicDialogState

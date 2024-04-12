@@ -16,10 +16,6 @@ import androidx.navigation.navOptions
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.authenticator.AUTHENTICATOR_GRAPH_ROUTE
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.authenticator.authenticatorGraph
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.authenticator.navigateToAuthenticatorGraph
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.itemlisting.ITEM_LISTING_GRAPH_ROUTE
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.itemlisting.itemListingGraph
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.itemlisting.navigateToItemListGraph
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.navbar.navigateToAuthenticatorNavBar
 import com.x8bit.bitwarden.authenticator.ui.platform.feature.splash.SPLASH_ROUTE
 import com.x8bit.bitwarden.authenticator.ui.platform.feature.splash.navigateToSplash
 import com.x8bit.bitwarden.authenticator.ui.platform.feature.splash.splashDestination
@@ -64,7 +60,6 @@ fun RootNavScreen(
     ) {
         splashDestination()
         authenticatorGraph(navController)
-//        itemListingGraph(navController = navController)
     }
 
     val targetRoute = when (state) {

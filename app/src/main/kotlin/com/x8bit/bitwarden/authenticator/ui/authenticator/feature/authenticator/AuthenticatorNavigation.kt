@@ -26,6 +26,9 @@ fun NavController.navigateToAuthenticatorGraph(navOptions: NavOptions? = null) {
     navigate(AUTHENTICATOR_NAV_BAR_ROUTE, navOptions)
 }
 
+/**
+ * Add the top authenticator graph to the nav graph.
+ */
 fun NavGraphBuilder.authenticatorGraph(
     navController: NavController,
 ) {
