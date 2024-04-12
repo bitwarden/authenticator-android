@@ -57,4 +57,5 @@
     <string name="information">Information</string>
     <string name="otp_authentication">OTP Authentication</string>
     <string name="verification_codes">Verification codes</string>
+    <string name="not_yet_implemented">Not yet implemented</string>
 </resources>
