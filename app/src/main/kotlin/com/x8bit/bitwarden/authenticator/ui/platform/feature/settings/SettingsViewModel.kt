@@ -6,6 +6,9 @@ import com.x8bit.bitwarden.authenticator.ui.platform.base.util.Text
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/**
+ * View model for the settings screen.
+ */
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
 ) : BaseViewModel<Unit, SettingsEvent, SettingsAction>(
