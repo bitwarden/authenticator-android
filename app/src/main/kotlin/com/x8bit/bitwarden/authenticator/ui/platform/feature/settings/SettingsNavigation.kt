@@ -2,6 +2,7 @@ package com.x8bit.bitwarden.authenticator.ui.platform.feature.settings
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.navigation
 import com.x8bit.bitwarden.authenticator.ui.platform.base.util.composableWithRootPushTransitions
 
@@ -21,4 +22,11 @@ fun NavGraphBuilder.settingsGraph(
            SettingsScreen()
        }
    }
+}
+
+/**
+ * Navigate to the settings screen.
+ */
+fun NavController.navigateToSettingsGraph(navOptions: NavOptions? = null) {
+    navigate(SETTINGS_GRAPH_ROUTE, navOptions)
 }
