@@ -16,6 +16,7 @@ import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.navbar.AUTHENT
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.navbar.authenticatorNavBarDestination
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.navigateToQrCodeScanScreen
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.qrCodeScanDestination
+import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.search.navigateToSearch
 
 const val AUTHENTICATOR_GRAPH_ROUTE = "authenticator_graph"
 
@@ -37,12 +38,16 @@ fun NavGraphBuilder.authenticatorGraph(
         route = AUTHENTICATOR_GRAPH_ROUTE
     ) {
         authenticatorNavBarDestination(
+            onNavigateToSearch = { navController.navigateToSearch() },
             onNavigateToQrCodeScanner = { navController.navigateToQrCodeScanScreen() },
             onNavigateToManualKeyEntry = { navController.navigateToManualCodeEntryScreen() },
             onNavigateToEditItem = { navController.navigateToEditItem(itemId = it) },
         )
         itemListingGraph(
             navController = navController,
+            navigateToSearch = {
+                navController.navigateToSearch()
+            },
             navigateToQrCodeScanner = {
                 navController.navigateToQrCodeScanScreen()
             },
@@ -68,7 +73,8 @@ fun NavGraphBuilder.authenticatorGraph(
                     .show()
                 /*navController.navigateToSyncWithBitwardenScreen()*/
             },
-            onNavigateToImportScreen = { /*navController.navigateToImportScreen()*/ }
+            onNavigateToImportScreen = { /*navController.navigateToImportScreen()*/ },
+            onNavigateToSearch = { navController.navigateToSearch() },
         )
         editItemDestination(
             onNavigateBack = { navController.popBackStack() },
