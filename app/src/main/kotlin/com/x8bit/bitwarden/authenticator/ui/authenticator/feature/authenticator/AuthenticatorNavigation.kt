@@ -68,12 +68,21 @@ fun NavGraphBuilder.authenticatorGraph(
                     .makeText(
                         navController.context,
                         R.string.not_yet_implemented,
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     )
                     .show()
                 /*navController.navigateToSyncWithBitwardenScreen()*/
             },
-            onNavigateToImportScreen = { /*navController.navigateToImportScreen()*/ },
+            onNavigateToImportScreen = {
+                Toast
+                    .makeText(
+                        navController.context,
+                        R.string.not_yet_implemented,
+                        Toast.LENGTH_SHORT,
+                    )
+                    .show()
+                /*navController.navigateToImportScreen()*/
+            },
             onNavigateToSearch = { navController.navigateToSearch() },
         )
         editItemDestination(

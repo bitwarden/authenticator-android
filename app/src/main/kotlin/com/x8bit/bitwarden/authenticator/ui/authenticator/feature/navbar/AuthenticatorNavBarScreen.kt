@@ -57,6 +57,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Top level composable for the authenticator screens.
+ */
 @Composable
 fun AuthenticatorNavBarScreen(
     viewModel: AuthenticatorNavBarViewModel = hiltViewModel(),

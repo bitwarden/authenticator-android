@@ -5,6 +5,9 @@ import com.x8bit.bitwarden.authenticator.ui.platform.base.util.composableWithSta
 
 const val AUTHENTICATOR_NAV_BAR_ROUTE: String = "AuthenticatorNavBarRoute"
 
+/**
+ * Add the authenticator nav bar to the nav graph.
+ */
 fun NavGraphBuilder.authenticatorNavBarDestination(
     onNavigateToSearch: () -> Unit,
     onNavigateToQrCodeScanner: () -> Unit,

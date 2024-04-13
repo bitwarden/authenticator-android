@@ -26,6 +26,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.atomic.AtomicReference
 
+/**
+ * Controls the root level [NavHost] for the app.
+ */
 @Composable
 fun RootNavScreen(
     viewModel: RootNavViewModel = hiltViewModel(),
