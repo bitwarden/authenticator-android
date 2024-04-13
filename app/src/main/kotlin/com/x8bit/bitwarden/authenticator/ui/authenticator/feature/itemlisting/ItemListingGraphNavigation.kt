@@ -5,13 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.editItemDestination
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.navigateToEditItem
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.editItemDestination
-import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.edititem.navigateToEditItem
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.manualCodeEntryDestination
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.navigateToManualCodeEntryScreen
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.navigateToQrCodeScanScreen
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.qrCodeScanDestination
+import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.search.itemSearchDestination
+import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.search.navigateToSearch
 
 const val ITEM_LISTING_GRAPH_ROUTE = "item_listing_graph"
 
@@ -20,16 +19,21 @@ const val ITEM_LISTING_GRAPH_ROUTE = "item_listing_graph"
  */
 fun NavGraphBuilder.itemListingGraph(
     navController: NavController,
+    navigateToSearch: () -> Unit,
+    navigateToQrCodeScanner: () -> Unit,
+    navigateToManualKeyEntry: () -> Unit,
+    navigateToEditItem: (String) -> Unit,
 ) {
     navigation(
         route = ITEM_LISTING_GRAPH_ROUTE,
-        startDestination = ITEM_LIST_ROUTE
+        startDestination = ITEM_LIST_ROUTE,
     ) {
         itemListingDestination(
             onNavigateBack = { navController.popBackStack() },
-            onNavigateToQrCodeScanner = { navController.navigateToQrCodeScanScreen() },
-            onNavigateToManualKeyEntry = { navController.navigateToManualCodeEntryScreen() },
-            onNavigateToEditItemScreen = { navController.navigateToEditItem(itemId = it) },
+            onNavigateToSearch = navigateToSearch,
+            onNavigateToQrCodeScanner = navigateToQrCodeScanner,
+            onNavigateToManualKeyEntry = navigateToManualKeyEntry,
+            onNavigateToEditItemScreen = navigateToEditItem,
             onNavigateToSyncWithBitwardenScreen = {
                 /*navController.navigateToSyncWithBitwardenScreen()*/
             },
@@ -37,6 +41,9 @@ fun NavGraphBuilder.itemListingGraph(
         )
         editItemDestination(
             onNavigateBack = { navController.popBackStack() },
+        )
+        itemSearchDestination(
+            onNavigateBack = { navController.popBackStack() }
         )
         qrCodeScanDestination(
             onNavigateBack = { navController.popBackStack() },

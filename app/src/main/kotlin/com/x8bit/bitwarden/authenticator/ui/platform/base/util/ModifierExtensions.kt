@@ -14,20 +14,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
 /**
- * This is a [Modifier] extension for mirroring the contents of a composable when the layout
- * direction is set to [LayoutDirection.Rtl]. Primarily used for directional icons, such as the
- * up button and chevrons.
- */
-@Stable
-@Composable
-fun Modifier.mirrorIfRtl(): Modifier =
-    if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
-        scale(scaleX = -1f, scaleY = 1f)
-    } else {
-        this
-    }
-
-/**
  * This is a [Modifier] extension for drawing a divider at the bottom of the composable.
  */
 @Stable
@@ -57,3 +43,17 @@ fun Modifier.bottomDivider(
         }
     }
 }
+
+/**
+ * This is a [Modifier] extension for mirroring the contents of a composable when the layout
+ * direction is set to [LayoutDirection.Rtl]. Primarily used for directional icons, such as the
+ * up button and chevrons.
+ */
+@Stable
+@Composable
+fun Modifier.mirrorIfRtl(): Modifier =
+    if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
+        scale(scaleX = -1f, scaleY = 1f)
+    } else {
+        this
+    }
