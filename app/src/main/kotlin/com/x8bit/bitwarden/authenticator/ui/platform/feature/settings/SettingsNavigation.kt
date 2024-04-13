@@ -9,6 +9,9 @@ import com.x8bit.bitwarden.authenticator.ui.platform.base.util.composableWithRoo
 const val SETTINGS_GRAPH_ROUTE = "settings_graph"
 private const val SETTINGS_ROUTE = "settings"
 
+/**
+ * Add settings graph to the nav graph.
+ */
 fun NavGraphBuilder.settingsGraph(
     navController: NavController,
 ) {

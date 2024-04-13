@@ -39,6 +39,9 @@ import com.x8bit.bitwarden.authenticator.ui.platform.components.appbar.Bitwarden
 import com.x8bit.bitwarden.authenticator.ui.platform.components.scaffold.BitwardenScaffold
 import com.x8bit.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
 
+/**
+ * Display the settings screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
