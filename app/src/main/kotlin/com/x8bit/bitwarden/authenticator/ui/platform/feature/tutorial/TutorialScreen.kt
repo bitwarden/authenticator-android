@@ -47,7 +47,7 @@ private const val PAGE_COUNT = 3
 @Composable
 fun TutorialScreen(
     viewModel: TutorialViewModel = hiltViewModel(),
-    onNavigateToAuthenticator: () -> Unit,
+    onTutorialFinished: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { PAGE_COUNT })
@@ -55,7 +55,7 @@ fun TutorialScreen(
     EventsEffect(viewModel = viewModel) { event ->
         when (event) {
             TutorialEvent.NavigateToAuthenticator -> {
-                onNavigateToAuthenticator()
+                onTutorialFinished()
             }
 
             TutorialEvent.NavigateToQrScannerSlide -> {
@@ -235,7 +235,7 @@ private fun UniqueCodesContent() {
 fun TutorialScreenPreview() {
     Box {
         TutorialScreen(
-            onNavigateToAuthenticator = {}
+            onTutorialFinished = {}
         )
     }
 }

@@ -65,7 +65,9 @@ fun RootNavScreen(
         popExitTransition = { toExitTransition()(this) },
     ) {
         splashDestination()
-        tutorialDestination(navController)
+        tutorialDestination(
+            onTutorialFinished = { navController.navigateToAuthenticatorGraph() }
+        )
         authenticatorGraph(navController)
     }
 
