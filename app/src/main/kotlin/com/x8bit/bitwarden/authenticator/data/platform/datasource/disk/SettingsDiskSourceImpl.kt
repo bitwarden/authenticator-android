@@ -12,6 +12,7 @@ private const val APP_THEME_KEY = "$BASE_KEY:theme"
 private const val SCREEN_CAPTURE_ALLOW_KEY = "$BASE_KEY:screenCaptureAllowed"
 private const val ACCOUNT_BIOMETRIC_INTEGRITY_VALID_KEY = "$BASE_KEY:accountBiometricIntegrityValid"
 private const val ALERT_THRESHOLD_SECONDS_KEY = "$BASE_KEY:alertThresholdSeconds"
+private const val FIRST_LAUNCH_KEY = "$BASE_KEY:hasSeenWelcomeTutorial"
 
 /**
  * Primary implementation of [SettingsDiskSource].
@@ -28,6 +29,9 @@ class SettingsDiskSourceImpl(
 
     private val mutableAlertThresholdSecondsFlow =
         bufferedMutableSharedFlow<Int>()
+
+    private val mutableFirstLaunchFlow =
+        bufferedMutableSharedFlow<Boolean>()
 
     override var appTheme: AppTheme
         get() = getString(key = APP_THEME_KEY)
@@ -46,6 +50,16 @@ class SettingsDiskSourceImpl(
     override val appThemeFlow: Flow<AppTheme>
         get() = mutableAppThemeFlow
             .onSubscription { emit(appTheme) }
+
+    override var hasSeenWelcomeTutorial: Boolean
+        get() = getBoolean(key = FIRST_LAUNCH_KEY) ?: false
+        set(value) {
+            putBoolean(key = FIRST_LAUNCH_KEY, value)
+            mutableFirstLaunchFlow.tryEmit(hasSeenWelcomeTutorial)
+        }
+
+    override val hasSeenWelcomeTutorialFlow: Flow<Boolean>
+        get() = mutableFirstLaunchFlow.onSubscription { emit(hasSeenWelcomeTutorial) }
 
     override fun storeAlertThresholdSeconds(thresholdSeconds: Int) {
         putInt(

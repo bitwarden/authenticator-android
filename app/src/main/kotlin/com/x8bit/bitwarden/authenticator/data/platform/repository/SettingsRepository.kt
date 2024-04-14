@@ -21,10 +21,20 @@ interface SettingsRepository {
     /**
      * The currently stored expiration alert threshold.
      */
-    var authenticatorAlertThresholdSeconds : Int
+    var authenticatorAlertThresholdSeconds: Int
 
     /**
      * Tracks changes to the expiration alert threshold.
      */
     val authenticatorAlertThresholdSecondsFlow: StateFlow<Int>
+
+    /**
+     * Whether the user has seen the Welcome tutorial.
+     */
+    var hasSeenWelcomeTutorial: Boolean
+
+    /**
+     * Tracks whether the user has seen the Welcome tutorial.
+     */
+    val hasSeenWelcomeTutorialFlow: StateFlow<Boolean>
 }
