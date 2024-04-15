@@ -21,6 +21,7 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,6 +46,7 @@ import com.x8bit.bitwarden.authenticator.ui.platform.components.button.Bitwarden
 import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.BasicDialogState
 import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.BitwardenBasicDialog
 import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.BitwardenLoadingDialog
+import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.BitwardenTwoButtonDialog
 import com.x8bit.bitwarden.authenticator.ui.platform.components.dialog.LoadingDialogState
 import com.x8bit.bitwarden.authenticator.ui.platform.components.fab.ExpandableFabIcon
 import com.x8bit.bitwarden.authenticator.ui.platform.components.fab.ExpandableFloatingActionButton
@@ -94,6 +96,24 @@ fun ItemListingScreen(
             is ItemListingEvent.NavigateToEditItem -> onNavigateToEditItemScreen(event.id)
         }
     }
+
+    ItemListingDialogs(
+        dialog = state.dialog,
+        onDismissRequest = remember(viewModel) {
+            {
+                viewModel.trySendAction(
+                    ItemListingAction.DialogDismiss,
+                )
+            }
+        },
+        onConfirmDeleteClick = remember(viewModel) {
+            { itemId ->
+                viewModel.trySendAction(
+                    ItemListingAction.ConfirmDeleteClick(itemId = itemId),
+                )
+            }
+        }
+    )
 
     BitwardenScaffold(
         modifier = Modifier
@@ -169,20 +189,38 @@ fun ItemListingScreen(
                     LazyColumn {
                         items(currentState.itemList) {
                             VaultVerificationCodeItem(
+                                authCode = it.authCode,
+                                issuer = it.issuer,
+                                periodSeconds = it.periodSeconds,
+                                timeLeftSeconds = it.timeLeftSeconds,
+                                alertThresholdSeconds = it.alertThresholdSeconds,
+                                startIcon = it.startIcon,
+                                onCopyClick = remember(viewModel) { { /*TODO*/ } },
+                                onItemClick = remember(viewModel) {
+                                    {
+                                        viewModel.trySendAction(
+                                            ItemListingAction.ItemClick(it.id)
+                                        )
+                                    }
+                                },
+                                onEditItemClick = remember(viewModel) {
+                                    {
+                                        viewModel.trySendAction(
+                                            ItemListingAction.ItemClick(it.id)
+                                        )
+                                    }
+                                },
+                                onDeleteItemClick = remember(viewModel) {
+                                    {
+                                        viewModel.trySendAction(
+                                            ItemListingAction.DeleteItemClick(it.id)
+                                        )
+                                    }
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 16.dp),
-                                startIcon = it.startIcon,
-                                issuer = it.issuer,
                                 supportingLabel = it.supportingLabel,
-                                timeLeftSeconds = it.timeLeftSeconds,
-                                periodSeconds = it.periodSeconds,
-                                alertThresholdSeconds = it.alertThresholdSeconds,
-                                authCode = it.authCode,
-                                onCopyClick = { /*TODO*/ },
-                                onItemClick = {
-                                    onNavigateToEditItemScreen(it.id)
-                                },
                             )
                         }
                     }
@@ -205,31 +243,50 @@ fun ItemListingScreen(
                     )
                 }
             }
-
-            when (val dialog = state.dialog) {
-                ItemListingState.DialogState.Syncing -> {
-                    BitwardenLoadingDialog(
-                        visibilityState = LoadingDialogState.Shown(
-                            text = R.string.syncing.asText(),
-                        ),
-                    )
-                }
-
-                is ItemListingState.DialogState.Error -> {
-                    BitwardenBasicDialog(
-                        visibilityState = BasicDialogState.Shown(
-                            title = dialog.title,
-                            message = dialog.message,
-                        ),
-                        onDismissRequest = {
-                            viewModel.trySendAction(ItemListingAction.DialogDismiss)
-                        },
-                    )
-                }
-
-                null -> Unit
-            }
         }
+    }
+}
+
+@Composable
+private fun ItemListingDialogs(
+    dialog: ItemListingState.DialogState?,
+    onDismissRequest: () -> Unit,
+    onConfirmDeleteClick: (itemId: String) -> Unit,
+) {
+    when (dialog) {
+        ItemListingState.DialogState.Loading -> {
+            BitwardenLoadingDialog(
+                visibilityState = LoadingDialogState.Shown(
+                    text = R.string.syncing.asText(),
+                ),
+            )
+        }
+
+        is ItemListingState.DialogState.Error -> {
+            BitwardenBasicDialog(
+                visibilityState = BasicDialogState.Shown(
+                    title = dialog.title,
+                    message = dialog.message,
+                ),
+                onDismissRequest = onDismissRequest,
+            )
+        }
+
+        is ItemListingState.DialogState.DeleteConfirmationPrompt -> {
+            BitwardenTwoButtonDialog(
+                title = stringResource(id = R.string.delete),
+                message = dialog.message(),
+                confirmButtonText = stringResource(id = R.string.ok),
+                dismissButtonText = stringResource(id = R.string.cancel),
+                onConfirmClick = {
+                    onConfirmDeleteClick(dialog.itemId)
+                },
+                onDismissClick = onDismissRequest,
+                onDismissRequest = onDismissRequest
+            )
+        }
+
+        null -> Unit
     }
 }
 

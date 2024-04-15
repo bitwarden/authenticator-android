@@ -74,4 +74,8 @@
     <string name="language_change_x_description">The language has been changed to %1$s. Please restart the app to see the change</string>
     <string name="show_website_icons">Show website icons</string>
     <string name="show_website_icons_description">Show a recognizable image next to each login.</string>
+    <string name="delete_item">Delete item</string>
+    <string name="item_deleted">Item deleted</string>
+    <string name="delete">Delete</string>
+    <string name="do_you_really_want_to_permanently_delete_cipher">Do you really want to permanently delete? This cannot be undone.</string>
 </resources>
