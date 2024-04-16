@@ -12,6 +12,7 @@ import com.x8bit.bitwarden.authenticator.data.authenticator.repository.Authentic
 import com.x8bit.bitwarden.authenticator.data.authenticator.repository.model.CreateItemResult
 import com.x8bit.bitwarden.authenticator.data.authenticator.repository.model.DeleteItemResult
 import com.x8bit.bitwarden.authenticator.data.authenticator.repository.model.TotpCodeResult
+import com.x8bit.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClipboardManager
 import com.x8bit.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.x8bit.bitwarden.authenticator.data.platform.repository.model.DataState
 import com.x8bit.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VerificationCodeDisplayItem
@@ -36,6 +37,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemListingViewModel @Inject constructor(
     private val authenticatorRepository: AuthenticatorRepository,
+    private val clipboardManager: BitwardenClipboardManager,
     settingsRepository: SettingsRepository,
 ) : BaseViewModel<ItemListingState, ItemListingEvent, ItemListingAction>(
     initialState = ItemListingState(
@@ -93,7 +95,7 @@ class ItemListingViewModel @Inject constructor(
             }
 
             is ItemListingAction.ItemClick -> {
-                sendEvent(ItemListingEvent.NavigateToEditItem(action.id))
+                handleItemClick(action)
             }
 
             is ItemListingAction.DialogDismiss -> {
@@ -104,6 +106,15 @@ class ItemListingViewModel @Inject constructor(
                 handleInternalAction(action)
             }
         }
+    }
+
+    private fun handleItemClick(action: ItemListingAction.ItemClick) {
+        clipboardManager.setText(action.authCode)
+        sendEvent(
+            ItemListingEvent.ShowToast(
+                message = R.string.value_has_been_copied.asText(action.authCode)
+            )
+        )
     }
 
     private fun handleDeleteItemClick(action: ItemListingAction.DeleteItemClick) {
@@ -551,7 +562,7 @@ sealed class ItemListingAction {
     /**
      * The user clicked a list item.
      */
-    data class ItemClick(val id: String) : ItemListingAction()
+    data class ItemClick(val authCode: String) : ItemListingAction()
 
     /**
      * The user dismissed the dialog.

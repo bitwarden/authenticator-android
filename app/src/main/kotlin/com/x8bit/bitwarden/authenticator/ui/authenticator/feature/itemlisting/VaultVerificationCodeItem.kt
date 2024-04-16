@@ -14,7 +14,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +42,6 @@ import com.x8bit.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
  * @param periodSeconds The times span where the code is valid.
  * @param timeLeftSeconds The seconds remaining until a new code is needed.
  * @param startIcon The leading icon for the item.
- * @param onCopyClick The lambda function to be invoked when the copy button is clicked.
  * @param onItemClick The lambda function to be invoked when the item is clicked.
  * @param modifier The modifier for the item.
  * @param supportingLabel The supporting label for the item.
@@ -58,7 +56,6 @@ fun VaultVerificationCodeItem(
     timeLeftSeconds: Int,
     alertThresholdSeconds: Int,
     startIcon: IconData,
-    onCopyClick: () -> Unit,
     onItemClick: () -> Unit,
     onEditItemClick: () -> Unit,
     onDeleteItemClick: () -> Unit,
@@ -126,17 +123,6 @@ fun VaultVerificationCodeItem(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-
-        IconButton(
-            onClick = onCopyClick,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_copy),
-                contentDescription = stringResource(id = R.string.copy),
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp),
-            )
-        }
     }
 
     DropdownMenu(
@@ -189,12 +175,11 @@ private fun VerificationCodeItem_preview() {
             timeLeftSeconds = 15,
             alertThresholdSeconds = 7,
             startIcon = IconData.Local(R.drawable.ic_login_item),
-            onCopyClick = {},
             onItemClick = {},
             onEditItemClick = {},
             onDeleteItemClick = {},
             modifier = Modifier.padding(horizontal = 16.dp),
-            supportingLabel = "Supporting Label"
+            supportingLabel = "Supporting Label",
         )
     }
 }
