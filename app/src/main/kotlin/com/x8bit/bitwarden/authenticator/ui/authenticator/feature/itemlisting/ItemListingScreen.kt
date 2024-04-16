@@ -195,7 +195,6 @@ fun ItemListingScreen(
                                 timeLeftSeconds = it.timeLeftSeconds,
                                 alertThresholdSeconds = it.alertThresholdSeconds,
                                 startIcon = it.startIcon,
-                                onCopyClick = remember(viewModel) { { /*TODO*/ } },
                                 onItemClick = remember(viewModel) {
                                     {
                                         viewModel.trySendAction(
