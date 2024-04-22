@@ -128,14 +128,14 @@ jobs:
           --name authenticator_apk-keystore.jks \
           --file ${{ github.workspace }}/keystores/authenticator_apk-keystore.jks \
           --output none
-          
+
           az storage blob download \
           --account-name $ACCOUNT_NAME \
           --container-name $CONTAINER_NAME \
           --name authenticator_aab-keystore.jks \
           --file ${{ github.workspace }}/keystores/authenticator_aab-keystore.jks \
           --output none
-          
+
           az storage blob download \
           --account-name $ACCOUNT_NAME \
           --container-name $CONTAINER_NAME \
