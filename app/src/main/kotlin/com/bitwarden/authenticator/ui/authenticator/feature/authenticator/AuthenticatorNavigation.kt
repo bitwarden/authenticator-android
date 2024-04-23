@@ -28,12 +28,14 @@ fun NavController.navigateToAuthenticatorGraph(navOptions: NavOptions? = null) {
  */
 fun NavGraphBuilder.authenticatorGraph(
     navController: NavController,
+    onNavigateBack: () -> Unit,
 ) {
     navigation(
         startDestination = AUTHENTICATOR_NAV_BAR_ROUTE,
         route = AUTHENTICATOR_GRAPH_ROUTE
     ) {
         authenticatorNavBarDestination(
+            onNavigateBack = onNavigateBack,
             onNavigateToSearch = { navController.navigateToSearch() },
             onNavigateToQrCodeScanner = { navController.navigateToQrCodeScanScreen() },
             onNavigateToManualKeyEntry = { navController.navigateToManualCodeEntryScreen() },
@@ -43,6 +45,7 @@ fun NavGraphBuilder.authenticatorGraph(
         )
         itemListingGraph(
             navController = navController,
+            navigateBack = onNavigateBack,
             navigateToSearch = {
                 navController.navigateToSearch()
             },
