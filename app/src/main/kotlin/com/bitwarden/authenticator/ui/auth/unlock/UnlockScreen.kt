@@ -55,7 +55,7 @@ fun UnlockScreen(
                 Toast.makeText(context, event.message(resources), Toast.LENGTH_SHORT).show()
             }
 
-            UnlockEvent.BiometricUnlock -> onUnlocked()
+            UnlockEvent.NavigateToItemListing -> onUnlocked()
         }
     }
 

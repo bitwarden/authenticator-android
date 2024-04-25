@@ -3,6 +3,7 @@ package com.bitwarden.authenticator.ui.platform.feature.rootnav
 import android.os.Parcelable
 import androidx.lifecycle.viewModelScope
 import com.bitwarden.authenticator.data.auth.repository.AuthRepository
+import com.bitwarden.authenticator.data.platform.manager.BiometricsEncryptionManager
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class RootNavViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val settingsRepository: SettingsRepository,
+    private val biometricsEncryptionManager: BiometricsEncryptionManager,
 ) : BaseViewModel<RootNavState, Unit, RootNavAction>(
     initialState = RootNavState(
         hasSeenWelcomeGuide = settingsRepository.hasSeenWelcomeTutorial,
@@ -65,7 +67,8 @@ class RootNavViewModel @Inject constructor(
     private fun handleHasSeenWelcomeTutorialChange(hasSeenWelcomeGuide: Boolean) {
         settingsRepository.hasSeenWelcomeTutorial = hasSeenWelcomeGuide
         if (hasSeenWelcomeGuide) {
-            if (settingsRepository.isUnlockWithBiometricsEnabled) {
+            if (settingsRepository.isUnlockWithBiometricsEnabled
+                && biometricsEncryptionManager.isBiometricIntegrityValid()) {
                 mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Locked) }
             } else {
                 mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
@@ -112,6 +115,9 @@ data class RootNavState(
         @Parcelize
         data object Splash : NavState()
 
+        /**
+         * App should display the Unlock screen.
+         */
         @Parcelize
         data object Locked : NavState()
 
@@ -143,10 +149,19 @@ sealed class RootNavAction {
      */
     sealed class Internal : RootNavAction() {
 
+        /**
+         * Splash screen has been dismissed.
+         */
         data object SplashScreenDismissed : Internal()
 
+        /**
+         * Indicates the user finished or skipped opening tutorial slides.
+         */
         data object TutorialFinished : Internal()
 
+        /**
+         * Indicates the application has been unlocked.
+         */
         data object AppUnlocked : Internal()
 
         /**

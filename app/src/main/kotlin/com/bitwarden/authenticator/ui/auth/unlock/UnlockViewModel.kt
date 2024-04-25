@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bitwarden.authenticator.R
-import com.bitwarden.authenticator.data.authenticator.repository.model.UnlockResult
 import com.bitwarden.authenticator.data.platform.manager.BiometricsEncryptionManager
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModel
@@ -19,6 +18,9 @@ import javax.inject.Inject
 
 private const val KEY_STATE = "state"
 
+/**
+ * View model for the Unlock screen.
+ */
 @HiltViewModel
 class UnlockViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -60,7 +62,7 @@ class UnlockViewModel @Inject constructor(
         if (state.isBiometricsEnabled && !state.isBiometricsValid) {
             biometricsEncryptionManager.setupBiometrics()
         }
-        sendEvent(UnlockEvent.BiometricUnlock)
+        sendEvent(UnlockEvent.NavigateToItemListing)
     }
 
     private fun handleDismissDialog() {
@@ -78,6 +80,9 @@ class UnlockViewModel @Inject constructor(
     }
 }
 
+/**
+ * Represents state for the Unlock screen
+ */
 @Parcelize
 data class UnlockState(
     val isBiometricsEnabled: Boolean,
@@ -85,36 +90,61 @@ data class UnlockState(
     val dialog: Dialog?,
 ) : Parcelable {
 
+    /**
+     * Represents the various dialogs the Unlock screen can display.
+     */
     @Parcelize
     sealed class Dialog : Parcelable {
+        /**
+         * Displays a generic error dialog to the user.
+         */
         data class Error(
             val message: Text,
         ) : Dialog()
 
+        /**
+         * Displays the loading dialog to the user.
+         */
         data object Loading : Dialog()
     }
 }
 
+/**
+ * Models events for the Unlock screen.
+ */
 sealed class UnlockEvent {
 
-    data object BiometricUnlock : UnlockEvent()
+    /**
+     * Navigates to the item listing screen.
+     */
+    data object NavigateToItemListing : UnlockEvent()
 
+    /**
+     * Displays a toast to the user.
+     */
     data class ShowToast(
         val message: Text,
     ) : UnlockEvent()
 
 }
 
+/**
+ * Models actions for the Unlock screen.
+ */
 sealed class UnlockAction {
+
+    /**
+     * The user dismissed the dialog.
+     */
     data object DismissDialog : UnlockAction()
 
+    /**
+     * The user has failed biometric unlock too many times.
+     */
     data object BiometricsLockout : UnlockAction()
 
+    /**
+     * The user has successfully unlocked the app with biometrics.
+     */
     data object BiometricsUnlock : UnlockAction()
-
-    sealed class Internal {
-        data class ReceiveUnlockResult(
-            val unlockResult: UnlockResult,
-        ) : Internal()
-    }
 }
