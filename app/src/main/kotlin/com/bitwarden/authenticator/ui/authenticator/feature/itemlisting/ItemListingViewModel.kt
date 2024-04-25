@@ -57,6 +57,12 @@ class ItemListingViewModel @Inject constructor(
             .onEach(::sendAction)
             .launchIn(viewModelScope)
 
+        settingsRepository
+            .appThemeStateFlow
+            .map { ItemListingAction.Internal.AppThemeChangeReceive(it) }
+            .onEach(::sendAction)
+            .launchIn(viewModelScope)
+
         authenticatorRepository
             .getAuthCodesFlow()
             .map { ItemListingAction.Internal.AuthCodesUpdated(it) }
@@ -183,6 +189,16 @@ class ItemListingViewModel @Inject constructor(
             is ItemListingAction.Internal.DeleteItemReceive -> {
                 handleDeleteItemReceive(internalAction.result)
             }
+
+            is ItemListingAction.Internal.AppThemeChangeReceive -> {
+                handleAppThemeChangeReceive(internalAction.appTheme)
+            }
+        }
+    }
+
+    private fun handleAppThemeChangeReceive(appTheme: AppTheme) {
+        mutableStateFlow.update {
+            it.copy(appTheme = appTheme)
         }
     }
 
@@ -636,6 +652,11 @@ sealed class ItemListingAction {
          * Indicates a result for deleting an item has been received.
          */
         data class DeleteItemReceive(val result: DeleteItemResult) : Internal()
+
+        /**
+         * Indicates app theme change has been received.
+         */
+        data class AppThemeChangeReceive(val appTheme: AppTheme) : Internal()
     }
 
     /**

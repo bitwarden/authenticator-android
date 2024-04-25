@@ -350,10 +350,10 @@ fun EmptyItemListingContent(
         Image(
             modifier = Modifier.fillMaxWidth(),
             painter = painterResource(
-                id = if (appTheme == AppTheme.DARK) {
-                    R.drawable.ic_empty_vault_dark
-                } else {
-                    R.drawable.ic_empty_vault
+                id = when (appTheme) {
+                    AppTheme.DARK -> R.drawable.ic_empty_vault_dark
+                    AppTheme.LIGHT -> R.drawable.ic_empty_vault_light
+                    AppTheme.DEFAULT -> R.drawable.ic_empty_vault
                 }
             ),
             contentDescription = stringResource(
