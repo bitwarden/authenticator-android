@@ -1,11 +1,16 @@
 package com.bitwarden.authenticator.ui.platform.feature.rootnav
 
 import android.os.Parcelable
+import androidx.lifecycle.viewModelScope
 import com.bitwarden.authenticator.data.auth.repository.AuthRepository
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
@@ -19,6 +24,15 @@ class RootNavViewModel @Inject constructor(
         navState = RootNavState.NavState.Splash,
     )
 ) {
+
+    init {
+        viewModelScope.launch {
+            settingsRepository.hasSeenWelcomeTutorialFlow
+                .map { RootNavAction.Internal.HasSeenWelcomeTutorialChange(it) }
+                .onEach(::sendAction)
+                .launchIn(viewModelScope)
+        }
+    }
 
     override fun handleAction(action: RootNavAction) {
         when (action) {
@@ -37,6 +51,10 @@ class RootNavViewModel @Inject constructor(
             RootNavAction.Internal.SplashScreenDismissed -> {
                 handleSplashScreenDismissed()
             }
+
+            RootNavAction.Internal.AppUnlocked -> {
+                handleAppUnlocked()
+            }
         }
     }
 
@@ -45,8 +63,13 @@ class RootNavViewModel @Inject constructor(
     }
 
     private fun handleHasSeenWelcomeTutorialChange(hasSeenWelcomeGuide: Boolean) {
+        settingsRepository.hasSeenWelcomeTutorial = hasSeenWelcomeGuide
         if (hasSeenWelcomeGuide) {
-            mutableStateFlow.update { it.copy(navState = RootNavState.NavState.ItemListing) }
+            if (settingsRepository.isUnlockWithBiometricsEnabled) {
+                mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Locked) }
+            } else {
+                mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
+            }
         } else {
             mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Tutorial) }
         }
@@ -54,14 +77,20 @@ class RootNavViewModel @Inject constructor(
 
     private fun handleTutorialFinished() {
         settingsRepository.hasSeenWelcomeTutorial = true
-        mutableStateFlow.update { it.copy(navState = RootNavState.NavState.ItemListing) }
+        mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
     }
 
     private fun handleSplashScreenDismissed() {
         if (settingsRepository.hasSeenWelcomeTutorial) {
-            mutableStateFlow.update { it.copy(navState = RootNavState.NavState.ItemListing) }
+            mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
         } else {
             mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Tutorial) }
+        }
+    }
+
+    private fun handleAppUnlocked() {
+        mutableStateFlow.update {
+            it.copy(navState = RootNavState.NavState.Unlocked)
         }
     }
 }
@@ -83,6 +112,9 @@ data class RootNavState(
         @Parcelize
         data object Splash : NavState()
 
+        @Parcelize
+        data object Locked : NavState()
+
         /**
          * App should display the Tutorial nav graph.
          */
@@ -93,7 +125,7 @@ data class RootNavState(
          * App should display the Account List nav graph.
          */
         @Parcelize
-        data object ItemListing : NavState()
+        data object Unlocked : NavState()
     }
 }
 
@@ -114,6 +146,8 @@ sealed class RootNavAction {
         data object SplashScreenDismissed : Internal()
 
         data object TutorialFinished : Internal()
+
+        data object AppUnlocked : Internal()
 
         /**
          * Indicates an update in the welcome guide being seen has been received.
