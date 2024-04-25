@@ -133,7 +133,6 @@ platform :android do
     upload_to_play_store(
       json_key: options[:serviceCredentialsFile],
       track: "internal",
-      validate_only: true,
       aab: "app/build/outputs/bundle/release/com.bitwarden.authenticator-release.aab",
       mapping: "app/build/outputs/mapping/release/mapping.txt",
     )
