@@ -28,7 +28,6 @@ fun NavGraphBuilder.settingsGraph(
         ) {
             SettingsScreen(
                 onNavigateToTutorial = onNavigateToTutorial,
-                //{ navController.navigateToSettingsTutorial() },
                 onNavigateToExport = onNavigateToExport,
             )
         }
