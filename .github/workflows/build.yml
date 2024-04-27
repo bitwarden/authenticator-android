@@ -212,7 +212,7 @@ jobs:
       - name: Bundle release AAB
         run: |
           bundle exec fastlane bundleRelease \
-          storeFile:secrets/keystores/authenticator-aab-keystore.jks \
+          storeFile:secrets/keystores/authenticator_aab-keystore.jks \
           storePassword:'${{ secrets.AAB_KEYSTORE_STORE_PASSWORD }}' \
           keyAlias:authenticatorupload \
           keyPassword:'${{ secrets.AAB_KEYSTORE_KEY_PASSWORD }}'
