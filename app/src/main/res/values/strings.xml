@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name"> Bitwarden Authenticator</string>
+    <string name="app_name">Authenticator</string>
     <string name="biometrics_direction">Biometric verification</string>
     <string name="cancel">Cancel</string>
     <string name="add_item">Add item</string>
