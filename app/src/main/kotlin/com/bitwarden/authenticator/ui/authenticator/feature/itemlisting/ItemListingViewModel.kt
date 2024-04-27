@@ -21,6 +21,7 @@ import com.bitwarden.authenticator.ui.platform.base.BaseViewModel
 import com.bitwarden.authenticator.ui.platform.base.util.Text
 import com.bitwarden.authenticator.ui.platform.base.util.asText
 import com.bitwarden.authenticator.ui.platform.base.util.concat
+import com.bitwarden.authenticator.ui.platform.feature.settings.appearance.model.AppTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -41,6 +42,7 @@ class ItemListingViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
 ) : BaseViewModel<ItemListingState, ItemListingEvent, ItemListingAction>(
     initialState = ItemListingState(
+        settingsRepository.appTheme,
         settingsRepository.authenticatorAlertThresholdSeconds,
         viewState = ItemListingState.ViewState.Loading,
         dialog = null
@@ -52,6 +54,12 @@ class ItemListingViewModel @Inject constructor(
         settingsRepository
             .authenticatorAlertThresholdSecondsFlow
             .map { ItemListingAction.Internal.AlertThresholdSecondsReceive(it) }
+            .onEach(::sendAction)
+            .launchIn(viewModelScope)
+
+        settingsRepository
+            .appThemeStateFlow
+            .map { ItemListingAction.Internal.AppThemeChangeReceive(it) }
             .onEach(::sendAction)
             .launchIn(viewModelScope)
 
@@ -181,6 +189,16 @@ class ItemListingViewModel @Inject constructor(
             is ItemListingAction.Internal.DeleteItemReceive -> {
                 handleDeleteItemReceive(internalAction.result)
             }
+
+            is ItemListingAction.Internal.AppThemeChangeReceive -> {
+                handleAppThemeChangeReceive(internalAction.appTheme)
+            }
+        }
+    }
+
+    private fun handleAppThemeChangeReceive(appTheme: AppTheme) {
+        mutableStateFlow.update {
+            it.copy(appTheme = appTheme)
         }
     }
 
@@ -230,7 +248,7 @@ class ItemListingViewModel @Inject constructor(
             CreateItemResult.Success -> {
                 sendEvent(
                     event = ItemListingEvent.ShowToast(
-                        message = R.string.authenticator_key_added.asText(),
+                        message = R.string.verification_code_added.asText(),
                     ),
                 )
             }
@@ -391,6 +409,13 @@ class ItemListingViewModel @Inject constructor(
                 ?: return null
 
             val label = uri.pathSegments.firstOrNull() ?: return null
+            val accountName = if (label.contains(":")) {
+                label
+                    .split(":")
+                    .last()
+            } else {
+                label
+            }
 
             val key = uri.getQueryParameter(SECRET) ?: return null
 
@@ -401,14 +426,14 @@ class ItemListingViewModel @Inject constructor(
 
             val digits = uri.getQueryParameter(DIGITS)?.toInt() ?: 6
 
-            val issuer = uri.getQueryParameter(ISSUER)
+            val issuer = uri.getQueryParameter(ISSUER) ?: label
 
             val period = uri.getQueryParameter(PERIOD)?.toInt() ?: 30
 
             return AuthenticatorItemEntity(
                 id = UUID.randomUUID().toString(),
                 key = key,
-                accountName = label,
+                accountName = accountName,
                 type = type,
                 algorithm = algorithm,
                 period = period,
@@ -437,6 +462,7 @@ private const val ISSUER = "issuer"
  */
 @Parcelize
 data class ItemListingState(
+    val appTheme: AppTheme,
     val alertThresholdSeconds: Int,
     val viewState: ViewState,
     val dialog: DialogState?,
@@ -633,6 +659,11 @@ sealed class ItemListingAction {
          * Indicates a result for deleting an item has been received.
          */
         data class DeleteItemReceive(val result: DeleteItemResult) : Internal()
+
+        /**
+         * Indicates app theme change has been received.
+         */
+        data class AppThemeChangeReceive(val appTheme: AppTheme) : Internal()
     }
 
     /**
