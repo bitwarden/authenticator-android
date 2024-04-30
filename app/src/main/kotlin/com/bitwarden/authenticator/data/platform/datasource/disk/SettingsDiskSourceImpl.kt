@@ -11,10 +11,11 @@ import kotlinx.coroutines.flow.onSubscription
 
 private const val APP_THEME_KEY = "$BASE_KEY:theme"
 private const val APP_LANGUAGE_KEY = "$BASE_KEY:appLocale"
-private const val SCREEN_CAPTURE_ALLOW_KEY = "$BASE_KEY:screenCaptureAllowed"
+private const val SYSTEM_BIOMETRIC_INTEGRITY_SOURCE_KEY = "$BASE_KEY:biometricIntegritySource"
 private const val ACCOUNT_BIOMETRIC_INTEGRITY_VALID_KEY = "$BASE_KEY:accountBiometricIntegrityValid"
 private const val ALERT_THRESHOLD_SECONDS_KEY = "$BASE_KEY:alertThresholdSeconds"
 private const val FIRST_LAUNCH_KEY = "$BASE_KEY:hasSeenWelcomeTutorial"
+private const val CRASH_LOGGING_ENABLED_KEY = "$BASE_KEY:crashLoggingEnabled"
 
 /**
  * Primary implementation of [SettingsDiskSource].
@@ -29,11 +30,11 @@ class SettingsDiskSourceImpl(
     private val mutableScreenCaptureAllowedFlowMap =
         mutableMapOf<String, MutableSharedFlow<Boolean?>>()
 
-    private val mutableIsIconLoadingDisabledFlow =
-        bufferedMutableSharedFlow<Boolean?>()
-
     private val mutableAlertThresholdSecondsFlow =
         bufferedMutableSharedFlow<Int>()
+
+    private val mutableIsCrashLoggingEnabledFlow =
+        bufferedMutableSharedFlow<Boolean?>()
 
     override var appLanguage: AppLanguage?
         get() = getString(key = APP_LANGUAGE_KEY)
@@ -68,6 +69,12 @@ class SettingsDiskSourceImpl(
         get() = mutableAppThemeFlow
             .onSubscription { emit(appTheme) }
 
+    override var systemBiometricIntegritySource: String?
+        get() = getString(key = SYSTEM_BIOMETRIC_INTEGRITY_SOURCE_KEY)
+        set(value) {
+            putString(key = SYSTEM_BIOMETRIC_INTEGRITY_SOURCE_KEY, value = value)
+        }
+
     override var hasSeenWelcomeTutorial: Boolean
         get() = getBoolean(key = FIRST_LAUNCH_KEY) ?: false
         set(value) {
@@ -77,6 +84,17 @@ class SettingsDiskSourceImpl(
 
     override val hasSeenWelcomeTutorialFlow: Flow<Boolean>
         get() = mutableFirstLaunchFlow.onSubscription { emit(hasSeenWelcomeTutorial) }
+
+    override var isCrashLoggingEnabled: Boolean?
+        get() = getBoolean(key = CRASH_LOGGING_ENABLED_KEY)
+        set(value) {
+            putBoolean(key = CRASH_LOGGING_ENABLED_KEY, value = value)
+            mutableIsCrashLoggingEnabledFlow.tryEmit(value)
+        }
+
+    override val isCrashLoggingEnabledFlow: Flow<Boolean?>
+        get() = mutableIsCrashLoggingEnabledFlow
+            .onSubscription { emit(getBoolean(CRASH_LOGGING_ENABLED_KEY)) }
 
     override fun storeAlertThresholdSeconds(thresholdSeconds: Int) {
         putInt(
@@ -93,32 +111,20 @@ class SettingsDiskSourceImpl(
     override fun getAlertThresholdSecondsFlow(): Flow<Int> = mutableAlertThresholdSecondsFlow
         .onSubscription { emit(getAlertThresholdSeconds()) }
 
-    override fun clearData(userId: String) {
-        storeScreenCaptureAllowed(userId = userId, isScreenCaptureAllowed = null)
-        removeWithPrefix(prefix = "${ACCOUNT_BIOMETRIC_INTEGRITY_VALID_KEY}_$userId")
-    }
+    override fun getAccountBiometricIntegrityValidity(
+        systemBioIntegrityState: String,
+    ): Boolean? =
+        getBoolean(
+            key = "${ACCOUNT_BIOMETRIC_INTEGRITY_VALID_KEY}_$systemBioIntegrityState",
+        )
 
-    private fun getMutableScreenCaptureAllowedFlow(userId: String): MutableSharedFlow<Boolean?> =
-        mutableScreenCaptureAllowedFlowMap.getOrPut(userId) {
-            bufferedMutableSharedFlow(replay = 1)
-        }
-
-    override fun getScreenCaptureAllowed(userId: String): Boolean? {
-        return getBoolean(key = "${SCREEN_CAPTURE_ALLOW_KEY}_$userId")
-    }
-
-    override fun getScreenCaptureAllowedFlow(userId: String): Flow<Boolean?> =
-        getMutableScreenCaptureAllowedFlow(userId)
-            .onSubscription { emit(getScreenCaptureAllowed(userId)) }
-
-    override fun storeScreenCaptureAllowed(
-        userId: String,
-        isScreenCaptureAllowed: Boolean?,
+    override fun storeAccountBiometricIntegrityValidity(
+        systemBioIntegrityState: String,
+        value: Boolean?,
     ) {
         putBoolean(
-            key = "${SCREEN_CAPTURE_ALLOW_KEY}_$userId",
-            value = isScreenCaptureAllowed,
+            key = "${ACCOUNT_BIOMETRIC_INTEGRITY_VALID_KEY}_$systemBioIntegrityState",
+            value = value,
         )
-        getMutableScreenCaptureAllowedFlow(userId).tryEmit(isScreenCaptureAllowed)
     }
 }

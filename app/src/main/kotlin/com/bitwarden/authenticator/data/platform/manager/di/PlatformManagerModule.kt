@@ -1,12 +1,18 @@
 package com.bitwarden.authenticator.data.platform.manager.di
 
 import android.content.Context
+import com.bitwarden.authenticator.data.platform.datasource.disk.SettingsDiskSource
+import com.bitwarden.authenticator.data.platform.manager.BiometricsEncryptionManager
+import com.bitwarden.authenticator.data.platform.manager.BiometricsEncryptionManagerImpl
+import com.bitwarden.authenticator.data.platform.manager.CrashLogsManager
+import com.bitwarden.authenticator.data.platform.manager.CrashLogsManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.DispatcherManager
 import com.bitwarden.authenticator.data.platform.manager.DispatcherManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.SdkClientManager
 import com.bitwarden.authenticator.data.platform.manager.SdkClientManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClipboardManager
 import com.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClipboardManagerImpl
+import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,4 +45,16 @@ object PlatformManagerModule {
     @Provides
     @Singleton
     fun provideClock(): Clock = Clock.systemDefaultZone()
+
+    @Provides
+    @Singleton
+    fun provideBiometricsEncryptionManager(
+        settingsDiskSource: SettingsDiskSource,
+    ): BiometricsEncryptionManager = BiometricsEncryptionManagerImpl(settingsDiskSource)
+
+    @Provides
+    fun provideCrashLogsManager(settingsRepository: SettingsRepository): CrashLogsManager =
+        CrashLogsManagerImpl(
+            settingsRepository = settingsRepository,
+        )
 }

@@ -19,19 +19,20 @@ const val ITEM_LISTING_GRAPH_ROUTE = "item_listing_graph"
  */
 fun NavGraphBuilder.itemListingGraph(
     navController: NavController,
+    navigateBack: () -> Unit,
     navigateToSearch: () -> Unit,
     navigateToQrCodeScanner: () -> Unit,
     navigateToManualKeyEntry: () -> Unit,
     navigateToEditItem: (String) -> Unit,
-    navigateToTutorial: () -> Unit,
     navigateToExport: () -> Unit,
+    navigateToTutorial: () -> Unit,
 ) {
     navigation(
         route = ITEM_LISTING_GRAPH_ROUTE,
         startDestination = ITEM_LIST_ROUTE,
     ) {
         itemListingDestination(
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = navigateBack,
             onNavigateToSearch = navigateToSearch,
             onNavigateToQrCodeScanner = navigateToQrCodeScanner,
             onNavigateToManualKeyEntry = navigateToManualKeyEntry,
@@ -59,8 +60,8 @@ fun NavGraphBuilder.itemListingGraph(
         )
         settingsGraph(
             navController = navController,
-            onNavigateToTutorial = navigateToTutorial,
             onNavigateToExport = navigateToExport,
+            onNavigateToTutorial = navigateToTutorial
         )
     }
 }
