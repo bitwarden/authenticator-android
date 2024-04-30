@@ -12,7 +12,7 @@ import com.bitwarden.authenticator.ui.authenticator.feature.navbar.authenticator
 import com.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.navigateToQrCodeScanScreen
 import com.bitwarden.authenticator.ui.authenticator.feature.search.navigateToSearch
 import com.bitwarden.authenticator.ui.platform.feature.settings.export.navigateToExport
-import com.bitwarden.authenticator.ui.platform.feature.tutorial.navigateToTutorial
+import com.bitwarden.authenticator.ui.platform.feature.tutorial.navigateToSettingsTutorial
 
 const val AUTHENTICATOR_GRAPH_ROUTE = "authenticator_graph"
 
@@ -28,21 +28,24 @@ fun NavController.navigateToAuthenticatorGraph(navOptions: NavOptions? = null) {
  */
 fun NavGraphBuilder.authenticatorGraph(
     navController: NavController,
+    onNavigateBack: () -> Unit,
 ) {
     navigation(
         startDestination = AUTHENTICATOR_NAV_BAR_ROUTE,
         route = AUTHENTICATOR_GRAPH_ROUTE
     ) {
         authenticatorNavBarDestination(
+            onNavigateBack = onNavigateBack,
             onNavigateToSearch = { navController.navigateToSearch() },
             onNavigateToQrCodeScanner = { navController.navigateToQrCodeScanScreen() },
             onNavigateToManualKeyEntry = { navController.navigateToManualCodeEntryScreen() },
             onNavigateToEditItem = { navController.navigateToEditItem(itemId = it) },
-            onNavigateToTutorial = { navController.navigateToTutorial() },
             onNavigateToExport = { navController.navigateToExport() },
+            onNavigateToTutorial = { navController.navigateToSettingsTutorial() }
         )
         itemListingGraph(
             navController = navController,
+            navigateBack = onNavigateBack,
             navigateToSearch = {
                 navController.navigateToSearch()
             },
@@ -55,8 +58,8 @@ fun NavGraphBuilder.authenticatorGraph(
             navigateToEditItem = {
                 navController.navigateToEditItem(itemId = it)
             },
-            navigateToTutorial = { navController.navigateToTutorial() },
             navigateToExport = { navController.navigateToExport() },
+            navigateToTutorial = { navController.navigateToSettingsTutorial() }
         )
     }
 }

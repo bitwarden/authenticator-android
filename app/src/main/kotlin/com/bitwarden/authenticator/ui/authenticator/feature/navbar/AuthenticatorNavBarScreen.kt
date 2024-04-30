@@ -1,7 +1,6 @@
 package com.bitwarden.authenticator.ui.authenticator.feature.navbar
 
 import android.os.Parcelable
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -67,12 +66,13 @@ import kotlinx.parcelize.Parcelize
 fun AuthenticatorNavBarScreen(
     viewModel: AuthenticatorNavBarViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
+    onNavigateBack: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToQrCodeScanner: () -> Unit,
     onNavigateToManualKeyEntry: () -> Unit,
     onNavigateToEditItem: (itemId: String) -> Unit,
-    onNavigateToTutorial: () -> Unit,
     onNavigateToExport: () -> Unit,
+    onNavigateToTutorial: () -> Unit,
 ) {
     EventsEffect(viewModel = viewModel) { event ->
         navController.apply {
@@ -106,12 +106,13 @@ fun AuthenticatorNavBarScreen(
         settingsTabClickedAction = {
             viewModel.trySendAction(AuthenticatorNavBarAction.SettingsTabClick)
         },
+        navigateBack = onNavigateBack,
         navigateToSearch = onNavigateToSearch,
         navigateToQrCodeScanner = onNavigateToQrCodeScanner,
         navigateToManualKeyEntry = onNavigateToManualKeyEntry,
         navigateToEditItem = onNavigateToEditItem,
-        navigateToTutorial = onNavigateToTutorial,
         navigateToExport = onNavigateToExport,
+        navigateToTutorial = onNavigateToTutorial,
     )
 }
 
@@ -121,12 +122,13 @@ private fun AuthenticatorNavBarScaffold(
     navController: NavHostController,
     verificationTabClickedAction: () -> Unit,
     settingsTabClickedAction: () -> Unit,
+    navigateBack: () -> Unit,
     navigateToSearch: () -> Unit,
     navigateToQrCodeScanner: () -> Unit,
     navigateToManualKeyEntry: () -> Unit,
     navigateToEditItem: (itemId: String) -> Unit,
-    navigateToTutorial: () -> Unit,
     navigateToExport: () -> Unit,
+    navigateToTutorial: () -> Unit,
 ) {
     BitwardenScaffold(
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.statusBars),
@@ -168,12 +170,13 @@ private fun AuthenticatorNavBarScaffold(
         ) {
             itemListingGraph(
                 navController = navController,
+                navigateBack = navigateBack,
                 navigateToSearch = navigateToSearch,
                 navigateToQrCodeScanner = navigateToQrCodeScanner,
                 navigateToManualKeyEntry = navigateToManualKeyEntry,
                 navigateToEditItem = navigateToEditItem,
-                navigateToTutorial = navigateToTutorial,
                 navigateToExport = navigateToExport,
+                navigateToTutorial = navigateToTutorial,
             )
         }
     }
@@ -314,6 +317,7 @@ private sealed class AuthenticatorNavBarTab : Parcelable {
         override val iconRes get() = R.drawable.ic_settings
         override val labelRes get() = R.string.settings
         override val contentDescriptionRes get() = R.string.settings
+
         // TODO: Replace with constant when settings screen is complete.
         override val route get() = SETTINGS_GRAPH_ROUTE
         override val testTag get() = "SettingsTab"

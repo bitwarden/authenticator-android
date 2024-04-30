@@ -13,6 +13,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.bitwarden.authenticator.ui.auth.unlock.UNLOCK_ROUTE
+import com.bitwarden.authenticator.ui.auth.unlock.navigateToUnlock
+import com.bitwarden.authenticator.ui.auth.unlock.unlockDestination
 import com.bitwarden.authenticator.ui.authenticator.feature.authenticator.AUTHENTICATOR_GRAPH_ROUTE
 import com.bitwarden.authenticator.ui.authenticator.feature.authenticator.authenticatorGraph
 import com.bitwarden.authenticator.ui.authenticator.feature.authenticator.navigateToAuthenticatorGraph
@@ -37,11 +40,12 @@ fun RootNavScreen(
     viewModel: RootNavViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
     onSplashScreenRemoved: () -> Unit = {},
+    onExitApplication: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsState()
     val previousStateReference = remember { AtomicReference(state) }
 
-    val isNotSplashScreen = state !is RootNavState.Splash
+    val isNotSplashScreen = state.navState !is RootNavState.NavState.Splash
     LaunchedEffect(isNotSplashScreen) {
         if (isNotSplashScreen) {
             onSplashScreenRemoved()
@@ -66,15 +70,26 @@ fun RootNavScreen(
     ) {
         splashDestination()
         tutorialDestination(
-            onTutorialFinished = { navController.navigateToAuthenticatorGraph() }
+            onTutorialFinished = {
+                viewModel.trySendAction(RootNavAction.Internal.TutorialFinished)
+            },
         )
-        authenticatorGraph(navController)
+        unlockDestination(
+            onUnlocked = {
+                viewModel.trySendAction(RootNavAction.Internal.AppUnlocked)
+            }
+        )
+        authenticatorGraph(
+            navController = navController,
+            onNavigateBack = onExitApplication,
+        )
     }
 
-    val targetRoute = when (state) {
-        RootNavState.ItemListing -> AUTHENTICATOR_GRAPH_ROUTE
-        RootNavState.Splash -> SPLASH_ROUTE
-        RootNavState.Tutorial -> TUTORIAL_ROUTE
+    val targetRoute = when (state.navState) {
+        RootNavState.NavState.Splash -> SPLASH_ROUTE
+        RootNavState.NavState.Locked -> UNLOCK_ROUTE
+        RootNavState.NavState.Tutorial -> TUTORIAL_ROUTE
+        RootNavState.NavState.Unlocked -> AUTHENTICATOR_GRAPH_ROUTE
     }
 
     val currentRoute = navController.currentDestination?.rootLevelRoute()
@@ -100,10 +115,22 @@ fun RootNavScreen(
     }
 
     LaunchedEffect(state) {
-        when (state) {
-            RootNavState.Splash -> navController.navigateToSplash(rootNavOptions)
-            RootNavState.Tutorial -> navController.navigateToTutorial(rootNavOptions)
-            RootNavState.ItemListing -> navController.navigateToAuthenticatorGraph(rootNavOptions)
+        when (state.navState) {
+            RootNavState.NavState.Splash -> {
+                navController.navigateToSplash(rootNavOptions)
+            }
+
+            RootNavState.NavState.Tutorial -> {
+                navController.navigateToTutorial(rootNavOptions)
+            }
+
+            RootNavState.NavState.Locked -> {
+                navController.navigateToUnlock(rootNavOptions)
+            }
+
+            RootNavState.NavState.Unlocked -> {
+                navController.navigateToAuthenticatorGraph(rootNavOptions)
+            }
         }
     }
 }

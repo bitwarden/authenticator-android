@@ -3,6 +3,7 @@ package com.bitwarden.authenticator.ui.platform.feature.rootnav
 import android.os.Parcelable
 import androidx.lifecycle.viewModelScope
 import com.bitwarden.authenticator.data.auth.repository.AuthRepository
+import com.bitwarden.authenticator.data.platform.manager.BiometricsEncryptionManager
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +19,12 @@ import javax.inject.Inject
 class RootNavViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val settingsRepository: SettingsRepository,
+    private val biometricsEncryptionManager: BiometricsEncryptionManager,
 ) : BaseViewModel<RootNavState, Unit, RootNavAction>(
-    initialState = RootNavState.Splash
+    initialState = RootNavState(
+        hasSeenWelcomeGuide = settingsRepository.hasSeenWelcomeTutorial,
+        navState = RootNavState.NavState.Splash,
+    )
 ) {
 
     init {
@@ -40,6 +45,18 @@ class RootNavViewModel @Inject constructor(
             is RootNavAction.Internal.HasSeenWelcomeTutorialChange -> {
                 handleHasSeenWelcomeTutorialChange(action.hasSeenWelcomeGuide)
             }
+
+            RootNavAction.Internal.TutorialFinished -> {
+                handleTutorialFinished()
+            }
+
+            RootNavAction.Internal.SplashScreenDismissed -> {
+                handleSplashScreenDismissed()
+            }
+
+            RootNavAction.Internal.AppUnlocked -> {
+                handleAppUnlocked()
+            }
         }
     }
 
@@ -48,10 +65,35 @@ class RootNavViewModel @Inject constructor(
     }
 
     private fun handleHasSeenWelcomeTutorialChange(hasSeenWelcomeGuide: Boolean) {
+        settingsRepository.hasSeenWelcomeTutorial = hasSeenWelcomeGuide
         if (hasSeenWelcomeGuide) {
-            mutableStateFlow.update { RootNavState.ItemListing }
+            if (settingsRepository.isUnlockWithBiometricsEnabled
+                && biometricsEncryptionManager.isBiometricIntegrityValid()) {
+                mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Locked) }
+            } else {
+                mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
+            }
         } else {
-            mutableStateFlow.update { RootNavState.Tutorial }
+            mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Tutorial) }
+        }
+    }
+
+    private fun handleTutorialFinished() {
+        settingsRepository.hasSeenWelcomeTutorial = true
+        mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
+    }
+
+    private fun handleSplashScreenDismissed() {
+        if (settingsRepository.hasSeenWelcomeTutorial) {
+            mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Unlocked) }
+        } else {
+            mutableStateFlow.update { it.copy(navState = RootNavState.NavState.Tutorial) }
+        }
+    }
+
+    private fun handleAppUnlocked() {
+        mutableStateFlow.update {
+            it.copy(navState = RootNavState.NavState.Unlocked)
         }
     }
 }
@@ -59,25 +101,38 @@ class RootNavViewModel @Inject constructor(
 /**
  * Models root level destinations for the app.
  */
-sealed class RootNavState : Parcelable {
+@Parcelize
+data class RootNavState(
+    val hasSeenWelcomeGuide: Boolean,
+    val navState: NavState,
+) : Parcelable {
 
-    /**
-     * App should display the Splash nav graph.
-     */
     @Parcelize
-    data object Splash : RootNavState()
+    sealed class NavState : Parcelable {
+        /**
+         * App should display the Splash nav graph.
+         */
+        @Parcelize
+        data object Splash : NavState()
 
-    /**
-     * App should display the Tutorial nav graph.
-     */
-    @Parcelize
-    data object Tutorial : RootNavState()
+        /**
+         * App should display the Unlock screen.
+         */
+        @Parcelize
+        data object Locked : NavState()
 
-    /**
-     * App should display the Account List nav graph.
-     */
-    @Parcelize
-    data object ItemListing : RootNavState()
+        /**
+         * App should display the Tutorial nav graph.
+         */
+        @Parcelize
+        data object Tutorial : NavState()
+
+        /**
+         * App should display the Account List nav graph.
+         */
+        @Parcelize
+        data object Unlocked : NavState()
+    }
 }
 
 /**
@@ -93,6 +148,21 @@ sealed class RootNavAction {
      * Models actions the [RootNavViewModel] itself may send.
      */
     sealed class Internal : RootNavAction() {
+
+        /**
+         * Splash screen has been dismissed.
+         */
+        data object SplashScreenDismissed : Internal()
+
+        /**
+         * Indicates the user finished or skipped opening tutorial slides.
+         */
+        data object TutorialFinished : Internal()
+
+        /**
+         * Indicates the application has been unlocked.
+         */
+        data object AppUnlocked : Internal()
 
         /**
          * Indicates an update in the welcome guide being seen has been received.
