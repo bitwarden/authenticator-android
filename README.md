@@ -49,8 +49,6 @@
 
     This can then be mapped to a set of keys by navigating to `Android Studio > Preferences` and editing the macro under `Keymap` (ex : shift + command + s).
 
-    Please avoid mixing formatting and logical changes in the same commit/PR. When possible, fix any large formatting issues in a separate PR before opening one to make logical changes to the same code. This helps others focus on the meaningful code changes when reviewing the code.
-
 ## Dependencies
 
 ### Application Dependencies
