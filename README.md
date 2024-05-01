@@ -1,10 +1,13 @@
-# Bitwarden Authenticator
+[![Github Workflow build on main](https://github.com/bitwarden/authenticator-android/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/bitwarden/authenticator-android/actions/workflows/build.yml?query=branch:main)
+[![Join the chat at https://gitter.im/bitwarden/Lobby](https://badges.gitter.im/bitwarden/Lobby.svg)](https://gitter.im/bitwarden/Lobby)
 
-## Contents
+# Bitwarden Authenticator Android App
 
-- [Compatibility](#compatibility)
-- [Setup](#setup)
-- [Dependencies](#dependencies)
+<a href="https://play.google.com/store/apps/details?id=com.bitwarden.authenticator" target="_blank"><img alt="Get it on Google Play" src="https://imgur.com/YQzmZi9.png" width="153" height="46"></a>
+
+Bitwarden Authenticator allows you easily store and generate two-factor authentication codes on your device. The Bitwarden Authenticator Android application is written in Kotlin.
+
+<img src="https://raw.githubusercontent.com/bitwarden/brand/master/screenshots/authenticator-android-codes.png" alt="" width="300" height="650" />
 
 ## Compatibility
 
@@ -49,141 +52,8 @@
 
     This can then be mapped to a set of keys by navigating to `Android Studio > Preferences` and editing the macro under `Keymap` (ex : shift + command + s).
 
-## Dependencies
+## Contribute
 
-### Application Dependencies
+Code contributions are welcome! Please commit any pull requests against the `main` branch. Learn more about how to contribute by reading the [Contributing Guidelines](https://contributing.bitwarden.com/contributing/). Check out the [Contributing Documentation](https://contributing.bitwarden.com/) for how to get started with your first contribution.
 
-The following is a list of all third-party dependencies included as part of the application beyond the standard Android SDK.
-
-- **Appcompat**
-    - https://developer.android.com/jetpack/androidx/releases/appcompat
-    - Purpose: Allows access to new APIs on older API versions.
-    - License: Apache 2.0
-
-- **AndroidX Biometrics**
-    - https://developer.android.com/jetpack/androidx/releases/biometric
-    - Purpose: Authenticate with biometrics or device credentials.
-    - License: Apache 2.0
-
-- **AndroidX Browser**
-    - https://developer.android.com/jetpack/androidx/releases/browser
-    - Purpose: Displays webpages with the user's default browser.
-    - License: Apache 2.0
-
-- **AndroidX Camera**
-    - https://developer.android.com/jetpack/androidx/releases/camera
-    - Purpose: Display and capture images for barcode scanning.
-    - License: Apache 2.0
-
-- **AndroidX Lifecycle**
-    - https://developer.android.com/jetpack/androidx/releases/lifecycle
-    - Purpose: Lifecycle aware components and tooling.
-    - License: Apache 2.0
-
-- **AndroidX Security**
-    - https://developer.android.com/jetpack/androidx/releases/security
-    - Purpose: Safely manage keys and encrypt files and sharedpreferences.
-    - License: Apache 2.0
-
-- **AndroidX WorkManager**
-    - https://developer.android.com/jetpack/androidx/releases/work
-    - Purpose: The WorkManager is used to schedule deferrable, asynchronous tasks that must be run reliably.
-    - License: Apache 2.0
-
-- **Core SplashScreen**
-    - https://developer.android.com/jetpack/androidx/releases/core
-    - Purpose: Backwards compatible SplashScreen API implementation.
-    - License: Apache 2.0
-
-- **Dagger Hilt**
-    - https://github.com/google/dagger
-    - Purpose: Dependency injection framework.
-    - License: Apache 2.0
-
-- **Firebase Crashlytics**
-    - https://github.com/firebase/firebase-android-sdk
-    - Purpose: SDK for crash and non-fatal error reporting. (**NOTE:** This dependency is not included in builds distributed via F-Droid.)
-    - License: Apache 2.0
-
-- **Glide**
-    - https://github.com/bumptech/glide
-    - Purpose: Image loading and caching.
-    - License: BSD, part MIT and Apache 2.0
-
-- **Jetpack Compose**
-    - https://developer.android.com/jetpack/androidx/releases/compose
-    - Purpose: A Kotlin-based declarative UI framework.
-    - License: Apache 2.0
-
-- **kotlinx.collections.immutable**
-    - https://github.com/Kotlin/kotlinx.collections.immutable
-    - Purpose: Immutable collection interfaces and implementation prototypes for Kotlin.
-    - License: Apache 2.0
-
-- **kotlinx.coroutines**
-    - https://github.com/Kotlin/kotlinx.coroutines
-    - Purpose: Kotlin coroutines library for asynchronous and reactive code.
-    - License: Apache 2.0
-
-- **kotlinx.serialization**
-    - https://github.com/Kotlin/kotlinx.serialization/
-    - Purpose: JSON serialization library for Kotlin.
-    - License: Apache 2.0
-
-- **kotlinx.serialization converter**
-    - https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization
-    - Purpose: Converter for Retrofit 2 and kotlinx.serialization.
-    - License: Apache 2.0
-
-- **Room**
-    - https://developer.android.com/jetpack/androidx/releases/room
-    - Purpose: A convenient SQLite-based persistence layer for Android.
-    - License: Apache 2.0
-
-- **ZXing**
-    - https://github.com/zxing/zxing
-    - Purpose: Barcode scanning and generation.
-    - License: Apache 2.0
-
-### Development Environment Dependencies
-
-The following is a list of additional third-party dependencies used as part of the local development environment. This includes test-related artifacts as well as tools related to code quality and linting. These are not present in the final packaged application.
-
-- **JUnit 5**
-    - https://github.com/junit-team/junit5
-    - Purpose: Unit Testing framework for testing application code.
-    - License: Eclipse Public License 2.0
-
-- **MockK**
-    - https://github.com/mockk/mockk
-    - Purpose: Kotlin-friendly mocking library.
-    - License: Apache 2.0
-
-- **Robolectric**
-    - https://github.com/robolectric/robolectric
-    - Purpose: A unit testing framework for code directly depending on the Android framework.
-    - License: MIT
-
-- **Turbine**
-    - https://github.com/cashapp/turbine
-    - Purpose: A small testing library for kotlinx.coroutine's Flow.
-    - License: Apache 2.0
-
-### CI/CD Dependencies
-
-The following is a list of additional third-party dependencies used as part of the CI/CD workflows. These are not present in the final packaged application.
-
-- **Danger**
-    - https://github.com/danger/danger
-    - Purpose: Provides a system for enforcing common Pull Request rules.
-    - License: MIT
-
-- **Danger Shroud**
-    - https://github.com/livefront/danger-shroud
-    - Purpose: A Danger plugin for enforcing code coverage via Kover / Jacoco.
-    - License: Apache 2.0
-
-- **Kover**
-    - https://github.com/Kotlin/kotlinx-kover
-    - Purpose: Kotlin code coverage toolset.
-    - License: Apache 2.0
+Security audits and feedback are welcome. Please open an issue or email us privately if the report is sensitive in nature. You can read our security policy in the [`SECURITY.md`](SECURITY.md) file.
