@@ -1,13 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
-//    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.crashlytics)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.ksp)
-//    alias(libs.plugins.google.services)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -106,7 +106,6 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization)
-    implementation(libs.nulab.zxcvbn4j)
     implementation(libs.square.okhttp)
     implementation(libs.square.okhttp.logging)
     implementation(libs.square.retrofit)
