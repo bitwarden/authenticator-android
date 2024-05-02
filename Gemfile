@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '3.3.1'
+ruby File.read(".ruby-version").strip
 gem "fastlane"
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
