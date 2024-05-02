@@ -258,11 +258,11 @@ jobs:
           serviceCredentialsFile:${{ env.FIREBASE_CREDS_PATH }}
         shell: bash
 
-      - name: Publish release AAB to Google Play Store
-        if: ${{ github.ref_name == 'main' && matrix.variant == 'aab' }}
-        env:
-          PLAY_STORE_CREDS_FILE: ${{ github.workspace }}/secrets/authenticator_play_firebase-creds.json
-        run: |
-          bundle exec fastlane publishReleaseToGooglePlayStore \
-          serviceCredentialsFile:${{ env.PLAY_STORE_CREDS_FILE }} \
-        shell: bash
+#      - name: Publish release AAB to Google Play Store
+#        if: ${{ github.ref_name == 'main' && matrix.variant == 'aab'}}
+#        env:
+#          PLAY_STORE_CREDS_FILE: ${{ github.workspace }}/secrets/authenticator_play_firebase-creds.json
+#        run: |
+#          bundle exec fastlane publishReleaseToGooglePlayStore \
+#          serviceCredentialsFile:${{ env.PLAY_STORE_CREDS_FILE }} \
+#        shell: bash
