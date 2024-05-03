@@ -36,7 +36,6 @@ import com.bitwarden.authenticator.ui.platform.components.dialog.BitwardenLoadin
 import com.bitwarden.authenticator.ui.platform.components.dialog.LoadingDialogState
 import com.bitwarden.authenticator.ui.platform.components.dropdown.BitwardenMultiSelectButton
 import com.bitwarden.authenticator.ui.platform.components.scaffold.BitwardenScaffold
-import com.bitwarden.authenticator.ui.platform.feature.settings.export.model.ExportFormat
 import com.bitwarden.authenticator.ui.platform.feature.settings.importing.model.ImportFormat
 import com.bitwarden.authenticator.ui.platform.manager.intent.IntentManager
 import com.bitwarden.authenticator.ui.platform.theme.LocalIntentManager
@@ -111,7 +110,7 @@ fun ImportingScreen(
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             BitwardenTopAppBar(
-                title = stringResource(id = R.string.export),
+                title = stringResource(id = R.string.import_vault),
                 scrollBehavior = scrollBehavior,
                 navigationIcon = painterResource(id = R.drawable.ic_close),
                 navigationIconContentDescription = stringResource(id = R.string.close),
@@ -157,7 +156,7 @@ private fun ImportScreenContent(
         val resources = LocalContext.current.resources
         BitwardenMultiSelectButton(
             label = stringResource(id = R.string.file_format),
-            options = ExportFormat.entries.map { it.displayLabel() }.toImmutableList(),
+            options = ImportFormat.entries.map { it.displayLabel() }.toImmutableList(),
             selectedOption = state.importFormat.displayLabel(),
             onOptionSelected = { selectedOptionLabel ->
                 val selectedOption = ImportFormat
@@ -177,7 +176,7 @@ private fun ImportScreenContent(
             label = stringResource(id = R.string.import_vault),
             onClick = onImportClick,
             modifier = Modifier
-                .semantics { testTag = "ExportVaultButton" }
+                .semantics { testTag = "ImportVaultButton" }
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
         )

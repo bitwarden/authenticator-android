@@ -53,7 +53,7 @@ class QrCodeScanViewModel @Inject constructor(
         }
 
         val scannedCodeUri = Uri.parse(scannedCode)
-        val secretValue = scannedCodeUri.getQueryParameter(TotpCodeManager.SECRET)
+        val secretValue = scannedCodeUri.getQueryParameter(TotpCodeManager.SECRET_PARAM)
         if (secretValue == null || !secretValue.isBase32()) {
             authenticatorRepository.emitTotpCodeResult(TotpCodeResult.CodeScanningError)
             sendEvent(QrCodeScanEvent.NavigateBack)
@@ -80,21 +80,21 @@ class QrCodeScanViewModel @Inject constructor(
         parameters.forEach { parameter ->
             Uri.parse(scannedCode).getQueryParameter(parameter)?.let { value ->
                 when (parameter) {
-                    TotpCodeManager.DIGITS -> {
+                    TotpCodeManager.DIGITS_PARAM -> {
                         val digit = value.toInt()
                         if (digit > 10 || digit < 1) {
                             return false
                         }
                     }
 
-                    TotpCodeManager.PERIOD -> {
+                    TotpCodeManager.PERIOD_PARAM -> {
                         val period = value.toInt()
                         if (period < 1) {
                             return false
                         }
                     }
 
-                    TotpCodeManager.ALGORITHM -> {
+                    TotpCodeManager.ALGORITHM_PARAM -> {
                         val lowercaseAlgo = value.lowercase()
                         if (lowercaseAlgo != "sha1" &&
                             lowercaseAlgo != "sha256" &&

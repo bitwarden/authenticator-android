@@ -1,5 +1,6 @@
 package com.bitwarden.authenticator.data.authenticator.manager
 
+import com.bitwarden.authenticator.data.authenticator.datasource.disk.entity.AuthenticatorItemAlgorithm
 import com.bitwarden.authenticator.data.authenticator.datasource.disk.entity.AuthenticatorItemEntity
 import com.bitwarden.authenticator.data.authenticator.manager.model.VerificationCodeItem
 import com.bitwarden.authenticator.data.platform.repository.model.DataState
@@ -25,12 +26,16 @@ interface TotpCodeManager {
     ): StateFlow<DataState<VerificationCodeItem?>>
 
     companion object {
-        const val ALGORITHM = "algorithm"
-        const val DIGITS = "digits"
-        const val PERIOD = "period"
-        const val SECRET = "secret"
-        const val ISSUER = "issuer"
+        const val ALGORITHM_PARAM = "algorithm"
+        const val DIGITS_PARAM = "digits"
+        const val PERIOD_PARAM = "period"
+        const val SECRET_PARAM = "secret"
+        const val ISSUER_PARAM = "issuer"
         const val TOTP_CODE_PREFIX = "otpauth://totp"
         const val STEAM_CODE_PREFIX = "steam://"
+        const val TOTP_DIGITS_DEFAULT = 6
+        const val STEAM_DIGITS_DEFAULT = 5
+        const val PERIOD_SECONDS_DEFAULT = 30
+        val ALGORITHM_DEFAULT = AuthenticatorItemAlgorithm.SHA1
     }
 }
