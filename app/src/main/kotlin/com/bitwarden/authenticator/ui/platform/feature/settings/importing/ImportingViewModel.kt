@@ -166,19 +166,44 @@ sealed class ImportEvent {
     data class NavigateToSelectImportFile(val importFormat: ImportFormat) : ImportEvent()
 }
 
+/**
+ * Models actions for the [ImportingScreen].
+ */
 sealed class ImportAction {
+
+    /**
+     * Indicates the user clicked close.
+     */
     data object CloseButtonClick : ImportAction()
 
+    /**
+     * Indicates the user clicked import.
+     */
     data object ImportClick : ImportAction()
 
+    /**
+     * Indicates the user dismissed the dialog.
+     */
     data object DialogDismiss : ImportAction()
 
+    /**
+     * Indicates the user selected and import file format.
+     */
     data class ImportFormatOptionSelect(val option: ImportFormat) : ImportAction()
 
+    /**
+     * Indicates the user selected a file to import.
+     */
     data class ImportLocationReceive(val fileUri: IntentManager.FileData) : ImportAction()
 
+    /**
+     * Models actions the [ImportingScreen] itself may send.
+     */
     sealed class Internal : ImportAction() {
 
+        /**
+         * Indicates the save data result has been received.
+         */
         data class SaveImportDataToUriResultReceive(
             val result: ImportDataResult,
         ) : Internal()
