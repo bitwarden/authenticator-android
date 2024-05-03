@@ -108,4 +108,8 @@
     <string name="key_is_required">Key is required.</string>
     <string name="name_is_required">Name is required.</string>
     <string name="submit_crash_logs">Submit crash logs</string>
+    <string name="import_vault_failure">There was a problem importing your vault.</string>
+    <string name="file_source">File Source</string>
+    <string name="import_vault">Import</string>
+    <string name="import_success">Vault import successful</string>
 </resources>

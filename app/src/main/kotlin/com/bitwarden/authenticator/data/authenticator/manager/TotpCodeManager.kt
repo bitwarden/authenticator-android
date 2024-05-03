@@ -23,4 +23,14 @@ interface TotpCodeManager {
     fun getTotpCodeStateFlow(
         item: AuthenticatorItemEntity,
     ): StateFlow<DataState<VerificationCodeItem?>>
+
+    companion object {
+        const val ALGORITHM = "algorithm"
+        const val DIGITS = "digits"
+        const val PERIOD = "period"
+        const val SECRET = "secret"
+        const val ISSUER = "issuer"
+        const val TOTP_CODE_PREFIX = "otpauth://totp"
+        const val STEAM_CODE_PREFIX = "steam://"
+    }
 }
