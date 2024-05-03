@@ -16,6 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.IgnoredOnParcel
 import javax.inject.Inject
 
+/**
+ * View model for the Importing screen.
+ */
 @HiltViewModel
 class ImportingViewModel @Inject constructor(
     private val authenticatorRepository: AuthenticatorRepository,
@@ -110,17 +113,31 @@ class ImportingViewModel @Inject constructor(
     }
 }
 
+/**
+ * Represents state for the [ImportingScreen].
+ */
 data class ImportState(
     @IgnoredOnParcel
     val fileUri: Uri? = null,
     val dialogState: DialogState? = null,
     val importFormat: ImportFormat,
 ) {
+
+    /**
+     * Represents the current state of any dialogs on the screen.
+     */
     sealed class DialogState {
+
+        /**
+         * Represents a loading dialog with the given [message].
+         */
         data class Loading(
             val message: Text = R.string.loading.asText(),
         ) : DialogState()
 
+        /**
+         * Represents a dismissible dialog with the given error [title] and [message].
+         */
         data class Error(
             val title: Text? = null,
             val message: Text,
@@ -128,11 +145,24 @@ data class ImportState(
     }
 }
 
+/**
+ * Models events for the [ImportingScreen].
+ */
 sealed class ImportEvent {
+
+    /**
+     * Navigate back to the previous screen.
+     */
     data object NavigateBack : ImportEvent()
 
+    /**
+     * Show a Toast with the given [message].
+     */
     data class ShowToast(val message: Text) : ImportEvent()
 
+    /**
+     * Navigate to the select import file screen.
+     */
     data class NavigateToSelectImportFile(val importFormat: ImportFormat) : ImportEvent()
 }
 

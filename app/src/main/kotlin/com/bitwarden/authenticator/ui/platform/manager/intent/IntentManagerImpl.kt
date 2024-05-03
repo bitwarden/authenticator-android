@@ -48,11 +48,11 @@ class IntentManagerImpl(
         return getLocalFileData(uri)
     }
 
-    override fun createFileChooserIntent(): Intent {
+    override fun createFileChooserIntent(mimeType: String): Intent {
         val chooserIntent = Intent.createChooser(
             Intent(Intent.ACTION_OPEN_DOCUMENT)
                 .addCategory(Intent.CATEGORY_OPENABLE)
-                .setType("*/*"),
+                .setType(mimeType),
             ContextCompat.getString(context, R.string.file_source),
         )
 

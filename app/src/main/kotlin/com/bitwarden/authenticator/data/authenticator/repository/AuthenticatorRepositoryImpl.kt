@@ -387,7 +387,6 @@ class AuthenticatorRepositoryImpl @Inject constructor(
         val issuer = otpUri.getQueryParameter(TotpCodeManager.ISSUER_PARAM)
             ?: name
 
-        // bitwarden:bitwarden:username@bitwarden.com
         val label = when (type) {
             AuthenticatorItemType.TOTP -> {
                 otpUri.pathSegments

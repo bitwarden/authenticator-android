@@ -66,7 +66,7 @@ fun ImportingScreen(
         when (event) {
             ImportEvent.NavigateBack -> onNavigateBack()
             is ImportEvent.NavigateToSelectImportFile -> {
-                launcher.launch(intentManager.createFileChooserIntent())
+                launcher.launch(intentManager.createFileChooserIntent(event.importFormat.mimeType))
             }
 
             is ImportEvent.ShowToast -> {

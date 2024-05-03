@@ -7,6 +7,9 @@ import com.bitwarden.authenticator.ui.platform.base.util.composableWithSlideTran
 
 const val IMPORT_ROUTE = "importing"
 
+/**
+ * Add the import screen to the nav graph.
+ */
 fun NavGraphBuilder.importingDestination(
     onNavigateBack: () -> Unit,
 ) {
@@ -17,6 +20,9 @@ fun NavGraphBuilder.importingDestination(
     }
 }
 
+/**
+ * Navigate to the Import destination.
+ */
 fun NavController.navigateToImporting(navOptions: NavOptions? = null) {
     navigate(IMPORT_ROUTE, navOptions)
 }
