@@ -3,6 +3,8 @@
 
 # Bitwarden Authenticator Android App
 
+TODO
+
 <a href="https://play.google.com/store/apps/details?id=com.bitwarden.authenticator" target="_blank"><img alt="Get it on Google Play" src="https://imgur.com/YQzmZi9.png" width="153" height="46"></a>
 
 Bitwarden Authenticator allows you easily store and generate two-factor authentication codes on your device. The Bitwarden Authenticator Android application is written in Kotlin.
