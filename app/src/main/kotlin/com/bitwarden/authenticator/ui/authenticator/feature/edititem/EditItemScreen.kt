@@ -493,7 +493,8 @@ private fun EditItemContentExpandedOptionsPreview() {
                 username = "account name",
                 issuer = "issuer",
                 algorithm = AuthenticatorItemAlgorithm.SHA1,
-                digits = 6
+                digits = 6,
+                favorite = true,
             ),
             minDigitsAllowed = 5,
             maxDigitsAllowed = 10,
@@ -514,7 +515,8 @@ private fun EditItemContentCollapsedOptionsPreview() {
                 username = "account name",
                 issuer = "issuer",
                 algorithm = AuthenticatorItemAlgorithm.SHA1,
-                digits = 6
+                digits = 6,
+                favorite = false,
             ),
             minDigitsAllowed = 5,
             maxDigitsAllowed = 10,

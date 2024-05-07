@@ -440,6 +440,7 @@ class ItemListingViewModel @Inject constructor(
                 digits = digits,
                 issuer = issuer,
                 userId = null,
+                favorite = false,
             )
         } catch (e: Throwable) {
             return null
