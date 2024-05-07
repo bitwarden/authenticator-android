@@ -38,6 +38,9 @@ data class AuthenticatorItemEntity(
 
     @ColumnInfo(name = "accountName")
     val accountName: String? = null,
+
+    @ColumnInfo(name = "favorite", defaultValue = "0")
+    val favorite: Boolean = false,
 ) {
     fun toOtpAuthUriString(): String {
         return when (type) {
