@@ -492,6 +492,7 @@ data class ItemListingState(
          */
         @Parcelize
         data class Content(
+            val favoriteItems: List<VerificationCodeDisplayItem>,
             val itemList: List<VerificationCodeDisplayItem>,
         ) : ViewState()
 
