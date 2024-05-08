@@ -19,3 +19,4 @@ sonar {
         property("sonar.tests", "app/src/test/,app/src/androidTest/")
     }
 }
+
