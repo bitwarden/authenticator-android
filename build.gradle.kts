@@ -7,4 +7,13 @@ plugins {
     alias(libs.plugins.kotlinx.kover) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.google.services) apply false
+    id("org.sonarqube") version "5.0.0.4638"
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "bitwarden_authenticator-android")
+        property("sonar.organization", "bitwarden")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
