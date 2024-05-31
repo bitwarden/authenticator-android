@@ -70,10 +70,10 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Check
-        run: bundle exec fastlane test
+        run: bundle exec fastlane check
 
       - name: Build
-        run: bundle exec fastlane assembleDebugApks
+        run: bundle exec fastlane buildDebug
 
   publish_playstore:
     name: Publish Play Store artifacts
