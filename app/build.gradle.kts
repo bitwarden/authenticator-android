@@ -156,8 +156,8 @@ protobuf {
 
 sonar {
     properties {
-        property("sonar.projectKey", "bitwarden_authenticator-android")
-        property("sonar.organization", "bitwarden")
+        property("sonar.projectKey", "bwdil_authenticator-android")
+        property("sonar.organization", "bwdil")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sources", "src/main/,src/debug/")
         property("sonar.tests", "src/test/")
