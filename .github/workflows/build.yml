@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@b5418f5a58f5fd2eb486dd7efb368fe7be7eae45 # v2.1.3
+        uses: gradle/wrapper-validation-action@88425854a36845f9c881450d9660b5fd46bee142 # v3.4.2
 
       - name: Cache Gradle files
         uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
