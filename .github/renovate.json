@@ -29,6 +29,10 @@
         "org.jetbrains.kotlin.*"
       ],
       "matchManagers": ["gradle"]
+    },
+    {
+      "matchPackageNames": ["com.bitwarden:sdk-android"],
+      "registryUrls": ["https://maven.pkg.github.com/bitwarden/sdk"]
     }
   ]
 }
