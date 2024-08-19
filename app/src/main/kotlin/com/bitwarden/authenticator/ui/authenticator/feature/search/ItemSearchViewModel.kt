@@ -234,7 +234,7 @@ class ItemSearchViewModel @Inject constructor(
     private fun VerificationCodeItem.toDisplayItem(): ItemSearchState.DisplayItem =
         ItemSearchState.DisplayItem(
             id = id,
-            authCode = "",
+            authCode = code,
             accountName = username ?: "",
             issuer = issuer,
             periodSeconds = periodSeconds,
