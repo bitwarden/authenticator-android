@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -67,6 +69,7 @@ fun VaultVerificationCodeItem(
     Box(modifier = modifier) {
         Row(
             modifier = Modifier
+                .semantics { testTag = "Item" }
                 .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(color = MaterialTheme.colorScheme.primary),
@@ -88,7 +91,9 @@ fun VaultVerificationCodeItem(
                 iconData = startIcon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier
+                    .semantics { testTag = "BitwardenIcon" }
+                    .size(24.dp),
             )
 
             Column(
@@ -98,6 +103,7 @@ fun VaultVerificationCodeItem(
             ) {
                 if (!name.isNullOrEmpty()) {
                     Text(
+                        modifier = Modifier.semantics { testTag = "Name" },
                         text = name,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -108,6 +114,7 @@ fun VaultVerificationCodeItem(
 
                 if (!username.isNullOrEmpty()) {
                     Text(
+                        modifier = Modifier.semantics { testTag = "Username" },
                         text = username,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -121,12 +128,16 @@ fun VaultVerificationCodeItem(
                 timeLeftSeconds = timeLeftSeconds,
                 periodSeconds = periodSeconds,
                 alertThresholdSeconds = alertThresholdSeconds,
+                modifier = Modifier
+                    .semantics { testTag = "CircularCountDown" }
             )
 
             Text(
                 text = authCode.chunked(3).joinToString(" "),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .semantics { testTag = "AuthCode" }
             )
         }
 
