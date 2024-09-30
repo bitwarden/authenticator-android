@@ -252,7 +252,7 @@ fun EditItemContent(
                 Spacer(Modifier.height(8.dp))
                 BitwardenTextField(
                     modifier = Modifier
-                        .semantics { testTag = "Name" }
+                        .semantics { testTag = "NameTextField" }
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
                     label = stringResource(id = R.string.name),
@@ -266,7 +266,7 @@ fun EditItemContent(
                 Spacer(modifier = Modifier.height(8.dp))
                 BitwardenPasswordField(
                     modifier = Modifier
-                        .semantics { testTag = "Key" }
+                        .semantics { testTag = "KeyTextField" }
                         .fillMaxSize()
                         .padding(horizontal = 16.dp),
                     label = stringResource(id = R.string.key),
@@ -281,7 +281,7 @@ fun EditItemContent(
                 Spacer(modifier = Modifier.height(8.dp))
                 BitwardenTextField(
                     modifier = Modifier
-                        .semantics { testTag = "Username" }
+                        .semantics { testTag = "UsernameTextField" }
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     label = stringResource(id = R.string.username),
