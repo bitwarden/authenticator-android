@@ -54,12 +54,14 @@ android {
 
     buildTypes {
         debug {
+            manifestPlaceholders["targetBitwardenAppId"] = "com.x8bit.bitwarden.dev"
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = false
         }
 
         release {
+            manifestPlaceholders["targetBitwardenAppId"] = "com.x8bit.bitwarden"
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -99,6 +101,9 @@ kotlin {
 }
 
 dependencies {
+
+    // TODO: this should use a versioned AAR instead of referencing a local AAR BITAU-94
+    implementation(files("libs/authenticatorbridge-0.1.0-SNAPSHOT-release.aar"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

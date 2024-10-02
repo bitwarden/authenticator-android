@@ -3,6 +3,7 @@ package com.bitwarden.authenticator
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import com.bitwarden.authenticator.data.platform.util.isSuspicious
 import com.bitwarden.authenticator.ui.platform.feature.rootnav.RootNavScreen
 import com.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
+import com.bitwarden.authenticatorbridge.factory.AuthenticatorBridgeFactory
+import com.bitwarden.authenticatorbridge.manager.model.AuthenticatorBridgeConnectionType
+import com.bitwarden.authenticatorbridge.model.SymmetricEncryptionKeyData
+import com.bitwarden.authenticatorbridge.provider.SymmetricKeyStorageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,7 +35,21 @@ class MainActivity : AppCompatActivity() {
         var shouldShowSplashScreen = true
         installSplashScreen().setKeepOnScreenCondition { shouldShowSplashScreen }
         super.onCreate(savedInstanceState)
+        AuthenticatorBridgeFactory(this).getAuthenticatorBridgeManager(
+            connectionType = if (BuildConfig.DEBUG) {
+                AuthenticatorBridgeConnectionType.DEV
+            } else {
+                AuthenticatorBridgeConnectionType.RELEASE
+            },
+            symmetricKeyStorageProvider = object : SymmetricKeyStorageProvider {
 
+                override var symmetricKey: SymmetricEncryptionKeyData? = null
+            },
+        ).accountSyncStateFlow
+            .onEach {
+                Toast.makeText(this, "ACCOUNT SYNC: $it", Toast.LENGTH_SHORT).show()
+            }
+            .launchIn(lifecycleScope)
         observeViewModelEvents()
 
         if (savedInstanceState == null) {
