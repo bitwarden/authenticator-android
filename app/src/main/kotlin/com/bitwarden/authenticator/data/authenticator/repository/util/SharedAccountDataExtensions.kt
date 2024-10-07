@@ -7,6 +7,8 @@ import com.bitwarden.authenticatorbridge.model.SharedAccountData
 
 /**
  * Convert a list of [SharedAccountData.Account] to a list of [AuthenticatorItem].
+ *
+ * Note that URIs without an issuer query param will be omitted.
  */
 fun List<SharedAccountData.Account>.toAuthenticatorItems(): List<AuthenticatorItem> =
     flatMap { sharedAccount ->
