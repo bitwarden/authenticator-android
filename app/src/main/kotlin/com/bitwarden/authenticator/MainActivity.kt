@@ -7,10 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
+import androidx.core.content.IntentSanitizer
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.bitwarden.authenticator.data.platform.util.isSuspicious
 import com.bitwarden.authenticator.ui.platform.feature.rootnav.RootNavScreen
 import com.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        sanitizeIntent()
+        intent = sanitizeIntent(intent)
         var shouldShowSplashScreen = true
         installSplashScreen().setKeepOnScreenCondition { shouldShowSplashScreen }
         super.onCreate(savedInstanceState)
@@ -56,21 +56,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        sanitizeIntent()
+        val sanitizedIntent = sanitizeIntent(intent)
+        super.onNewIntent(sanitizeIntent(intent))
         mainViewModel.trySendAction(
-            MainAction.ReceiveNewIntent(intent = intent),
+            MainAction.ReceiveNewIntent(intent = sanitizedIntent),
         )
     }
 
-    private fun sanitizeIntent() {
-        if (intent.isSuspicious) {
-            intent = Intent(
-                /* packageContext = */ this,
-                /* cls = */ MainActivity::class.java,
-            )
+    private fun sanitizeIntent(intent: Intent): Intent = IntentSanitizer.Builder()
+        .build()
+        .sanitize(intent) {
+            // Intent is unclean. Ignore it and continue with the sanitized one.
         }
-    }
 
     private fun observeViewModelEvents() {
         mainViewModel
