@@ -20,7 +20,7 @@ fun createMockVerificationCodeItem(
         timeLeftSeconds = 120,
         issueTime = 0,
         id = "mockId-$number",
-        label = "mockLabel-$number",
+        accountName = "mockLabel-$number",
         issuer = "mockIssuer-$number",
         source = AuthenticatorItem.Source.Local(
             cipherId = "mockId-$number",

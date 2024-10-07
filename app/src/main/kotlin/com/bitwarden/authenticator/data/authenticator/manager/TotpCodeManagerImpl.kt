@@ -57,7 +57,7 @@ class TotpCodeManagerImpl @Inject constructor(
                                         .toString()
                                 },
                                 issuer = issuer,
-                                label = label,
+                                accountName = label,
                                 source = source,
                             )
                         }

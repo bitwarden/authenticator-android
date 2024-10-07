@@ -20,6 +20,18 @@ data class VerificationCodeItem(
     val issueTime: Long,
     val id: String,
     val issuer: String?,
-    val label: String?,
+    val accountName: String?,
     val source: AuthenticatorItem.Source,
-)
+) {
+    /**
+     * The composite label of the authenticator item. Used for constructing an OTPAuth URI.
+     *  ```
+     *  label = issuer (“:” / “%3A”) *”%20” username
+     *  ```
+     */
+    val label = if (issuer != null) {
+        issuer + accountName?.let { ":$it" }.orEmpty()
+    } else {
+        accountName.orEmpty()
+    }
+}
