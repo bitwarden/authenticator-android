@@ -3,7 +3,8 @@ package com.bitwarden.authenticator.data.authenticator.manager.model
 import com.bitwarden.authenticator.data.authenticator.repository.model.AuthenticatorItem
 
 /**
- * Models the items returned by the TotpCodeManager which are then
+ * Models the items returned by the TotpCodeManager which are then used to display rows
+ * of verification items.
  *
  * @property code The verification code for the item.
  * @property periodSeconds The time span where the code is valid in seconds.
