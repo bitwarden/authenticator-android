@@ -33,6 +33,7 @@ fun List<SharedAccountData.Account>.toAuthenticatorItems(): List<AuthenticatorIt
                     issuer = issuer,
                     label = label,
                 )
-            }.getOrNull()
+            }
+            .getOrNull()
         }
     }
