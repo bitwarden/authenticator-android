@@ -46,7 +46,7 @@ object AuthenticatorBridgeModule {
                 symmetricKeyStorageProvider = symmetricKeyStorageProvider,
             )
         } else {
-            // If feature flag is not enabled, return noop bridge manager so we never
+            // If feature flag is not enabled, return no-op bridge manager so we never
             // connect to bridge service:
             object : AuthenticatorBridgeManager {
                 override val accountSyncStateFlow: StateFlow<AccountSyncState>
