@@ -156,7 +156,7 @@ class ItemListViewModelTest : BaseViewModelTest() {
         runTest {
             val expectedState = DEFAULT_STATE.copy(
                 viewState = ItemListingState.ViewState.NoItems(
-                    actionCard = ItemListingState.ActionCardState.None
+                    actionCard = ItemListingState.ActionCardState.None,
                 ),
             )
             every { settingsRepository.hasUserDismissedDownloadBitwardenCard = true } just runs
