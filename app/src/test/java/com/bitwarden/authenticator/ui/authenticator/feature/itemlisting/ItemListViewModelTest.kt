@@ -132,22 +132,41 @@ class ItemListViewModelTest : BaseViewModelTest() {
 
     @Test
     @Suppress("MaxLineLength")
-    fun `on DownloadBitwardenDismiss receive should dismiss action card and store dismissal in settings`() = runTest {
-        val expectedState = DEFAULT_STATE.copy(
-            viewState = ItemListingState.ViewState.Content(
-                actionCard = ItemListingState.ActionCardState.None,
-                favoriteItems = LOCAL_FAVORITE_ITEMS,
-                itemList = LOCAL_NON_FAVORITE_ITEMS,
-            ),
-        )
-        every { settingsRepository.hasUserDismissedDownloadBitwardenCard = true } just runs
-        every { settingsRepository.hasUserDismissedDownloadBitwardenCard } returns false
-        mutableVerificationCodesFlow.value = DataState.Loaded(LOCAL_VERIFICATION_ITEMS)
-        val viewModel = createViewModel()
-        viewModel.trySendAction(ItemListingAction.DownloadBitwardenDismiss)
-        verify { settingsRepository.hasUserDismissedDownloadBitwardenCard = true }
-        assertEquals(expectedState, viewModel.stateFlow.value)
-    }
+    fun `on DownloadBitwardenDismiss receive should dismiss action card and store dismissal in settings`() =
+        runTest {
+            val expectedState = DEFAULT_STATE.copy(
+                viewState = ItemListingState.ViewState.Content(
+                    actionCard = ItemListingState.ActionCardState.None,
+                    favoriteItems = LOCAL_FAVORITE_ITEMS,
+                    itemList = LOCAL_NON_FAVORITE_ITEMS,
+                ),
+            )
+            every { settingsRepository.hasUserDismissedDownloadBitwardenCard = true } just runs
+            every { settingsRepository.hasUserDismissedDownloadBitwardenCard } returns false
+            mutableVerificationCodesFlow.value = DataState.Loaded(LOCAL_VERIFICATION_ITEMS)
+            val viewModel = createViewModel()
+            viewModel.trySendAction(ItemListingAction.DownloadBitwardenDismiss)
+            verify { settingsRepository.hasUserDismissedDownloadBitwardenCard = true }
+            assertEquals(expectedState, viewModel.stateFlow.value)
+        }
+
+    @Test
+    @Suppress("MaxLineLength")
+    fun `on DownloadBitwardenDismiss receive in empty state should dismiss action card and store dismissal in settings`() =
+        runTest {
+            val expectedState = DEFAULT_STATE.copy(
+                viewState = ItemListingState.ViewState.NoItems(
+                    actionCard = ItemListingState.ActionCardState.None
+                ),
+            )
+            every { settingsRepository.hasUserDismissedDownloadBitwardenCard = true } just runs
+            every { settingsRepository.hasUserDismissedDownloadBitwardenCard } returns false
+            mutableVerificationCodesFlow.value = DataState.Loaded(emptyList())
+            val viewModel = createViewModel()
+            viewModel.trySendAction(ItemListingAction.DownloadBitwardenDismiss)
+            verify { settingsRepository.hasUserDismissedDownloadBitwardenCard = true }
+            assertEquals(expectedState, viewModel.stateFlow.value)
+        }
 
     private fun createViewModel() = ItemListingViewModel(
         authenticatorRepository = authenticatorRepository,
