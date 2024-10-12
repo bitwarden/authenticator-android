@@ -92,6 +92,12 @@ android {
     lint {
         disable.add("MissingTranslation")
     }
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        // Required for Robolectric
+        unitTests.isIncludeAndroidResources = true
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 kotlin {
