@@ -35,7 +35,7 @@ sealed class LocalFeatureFlag<out T : Any>(
      */
     data object PasswordManagerSync : LocalFeatureFlag<Boolean>(
         name = "enable-password-manager-sync-android",
-        defaultValue = false,
+        defaultValue = true,
     )
 }
 
