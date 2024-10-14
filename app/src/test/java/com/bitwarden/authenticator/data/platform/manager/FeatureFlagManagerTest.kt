@@ -60,8 +60,8 @@ class FeatureFlagManagerTest {
     }
 
     @Test
-    fun `PasswordManagerSync should default to false`() {
-        assertFalse(LocalFeatureFlag.PasswordManagerSync.defaultValue)
+    fun `PasswordManagerSync should default to true`() {
+        assertTrue(LocalFeatureFlag.PasswordManagerSync.defaultValue)
     }
 }
 
