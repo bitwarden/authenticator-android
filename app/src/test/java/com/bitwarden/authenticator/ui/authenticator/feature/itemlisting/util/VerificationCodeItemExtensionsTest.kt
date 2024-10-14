@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test
 
 class VerificationCodeItemExtensionsTest {
 
+    // TODO: add testing for longPressActions:
+
     @Test
     fun `toDisplayItem should map items correctly`() {
         val alertThresholdSeconds = 7
@@ -23,6 +25,7 @@ class VerificationCodeItemExtensionsTest {
             alertThresholdSeconds = alertThresholdSeconds,
             authCode = favoriteItem.code,
             favorite = (favoriteItem.source as AuthenticatorItem.Source.Local).isFavorite,
+            allowLongPressActions = true,
         )
 
         val expectedNonFavoriteItem = VerificationCodeDisplayItem(
@@ -34,6 +37,7 @@ class VerificationCodeItemExtensionsTest {
             alertThresholdSeconds = alertThresholdSeconds,
             authCode = nonFavoriteItem.code,
             favorite = (nonFavoriteItem.source as AuthenticatorItem.Source.Local).isFavorite,
+            allowLongPressActions = true,
         )
 
         assertEquals(expectedFavoriteItem, favoriteItem.toDisplayItem(alertThresholdSeconds))
