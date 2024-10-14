@@ -125,19 +125,17 @@ fun VaultVerificationCodeItem(
             }
 
             BitwardenCircularCountdownIndicator(
+                modifier = Modifier.semantics { testTag = "CircularCountDown" },
                 timeLeftSeconds = timeLeftSeconds,
                 periodSeconds = periodSeconds,
                 alertThresholdSeconds = alertThresholdSeconds,
-                modifier = Modifier
-                    .semantics { testTag = "CircularCountDown" }
             )
 
             Text(
+                modifier = Modifier.semantics { testTag = "AuthCode" },
                 text = authCode.chunked(3).joinToString(" "),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .semantics { testTag = "AuthCode" }
             )
         }
 

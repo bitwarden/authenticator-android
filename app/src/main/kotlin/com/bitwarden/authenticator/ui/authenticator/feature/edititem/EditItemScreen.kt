@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -386,7 +385,7 @@ private fun AdvancedOptions(
                     BitwardenMultiSelectButton(
                         modifier = Modifier
                             .fillMaxSize()
-                            .semantics { testTag = "OTPTypeItemTypePicker" },
+                            .semantics { testTag = "OTPItemTypePicker" },
                         label = stringResource(id = R.string.otp_type),
                         options = typeOptionsWithStrings.values.toImmutableList(),
                         selectedOption = viewState.itemData.type.name,
