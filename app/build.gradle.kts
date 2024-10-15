@@ -57,7 +57,7 @@ android {
             manifestPlaceholders["targetBitwardenAppId"] = "com.x8bit.bitwarden.dev"
             buildConfigField(
                 type = "com.bitwarden.authenticatorbridge.manager.model.AuthenticatorBridgeConnectionType",
-                name = "AUTHETNICATOR_BRIDGE_CONNECTION_TYPE",
+                name = "AUTHENTICATOR_BRIDGE_CONNECTION_TYPE",
                 value = "com.bitwarden.authenticatorbridge.manager.model.AuthenticatorBridgeConnectionType.DEV",
             )
             signingConfig = signingConfigs.getByName("debug")
