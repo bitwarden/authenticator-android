@@ -42,7 +42,7 @@ object AuthenticatorBridgeModule {
     ): AuthenticatorBridgeManager =
         if (featureFlagManager.getFeatureFlag(LocalFeatureFlag.PasswordManagerSync)) {
             factory.getAuthenticatorBridgeManager(
-                connectionType = BuildConfig.AUTHETNICATOR_BRIDGE_CONNECTION_TYPE,
+                connectionType = BuildConfig.AUTHENTICATOR_BRIDGE_CONNECTION_TYPE,
                 symmetricKeyStorageProvider = symmetricKeyStorageProvider,
             )
         } else {
