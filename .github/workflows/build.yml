@@ -174,7 +174,7 @@ jobs:
           bundle exec fastlane setBuildVersionInfo \
           serviceCredentialsFile:${{ env.FIREBASE_CREDS_PATH }} \
           versionCode:${{ inputs.version-code || '$DEFAULT_VERSION_CODE' }} \
-          versionName:${{ inputs.version-name }}
+          versionName:${{ inputs.version-name || '' }}
 
       - name: Generate release Play Store bundle
         if: ${{ matrix.variant == 'aab' }}
