@@ -8,10 +8,8 @@ import org.junit.jupiter.api.Test
 
 class VerificationCodeItemExtensionsTest {
 
-    // TODO: add testing for longPressActions:
-
     @Test
-    fun `toDisplayItem should map items correctly`() {
+    fun `toDisplayItem should map Local items correctly`() {
         val alertThresholdSeconds = 7
         val favoriteItem = createMockVerificationCodeItem(number = 1, favorite = true)
         val nonFavoriteItem = createMockVerificationCodeItem(number = 2)
@@ -42,5 +40,33 @@ class VerificationCodeItemExtensionsTest {
 
         assertEquals(expectedFavoriteItem, favoriteItem.toDisplayItem(alertThresholdSeconds))
         assertEquals(expectedNonFavoriteItem, nonFavoriteItem.toDisplayItem(alertThresholdSeconds))
+    }
+
+    @Test
+    fun `toDisplayItem should map Shared items correctly`() {
+        val alertThresholdSeconds = 7
+        val favoriteItem = createMockVerificationCodeItem(number = 1, favorite = true)
+            .copy(
+                source = AuthenticatorItem.Source.Shared(
+                    userId = "1",
+                    nameOfUser = "John Doe",
+                    email = "test@bitwarden.com",
+                    environmentLabel = "bitwarden.com"
+                )
+            )
+
+        val expectedFavoriteItem = VerificationCodeDisplayItem(
+            id = favoriteItem.id,
+            issuer = favoriteItem.issuer,
+            label = favoriteItem.accountName,
+            timeLeftSeconds = favoriteItem.timeLeftSeconds,
+            periodSeconds = favoriteItem.periodSeconds,
+            alertThresholdSeconds = alertThresholdSeconds,
+            authCode = favoriteItem.code,
+            favorite = false,
+            allowLongPressActions = false,
+        )
+
+        assertEquals(expectedFavoriteItem, favoriteItem.toDisplayItem(alertThresholdSeconds))
     }
 }
