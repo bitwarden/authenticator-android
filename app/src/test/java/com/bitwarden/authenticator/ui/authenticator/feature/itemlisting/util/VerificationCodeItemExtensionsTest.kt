@@ -51,8 +51,8 @@ class VerificationCodeItemExtensionsTest {
                     userId = "1",
                     nameOfUser = "John Doe",
                     email = "test@bitwarden.com",
-                    environmentLabel = "bitwarden.com"
-                )
+                    environmentLabel = "bitwarden.com",
+                ),
             )
 
         val expectedFavoriteItem = VerificationCodeDisplayItem(
