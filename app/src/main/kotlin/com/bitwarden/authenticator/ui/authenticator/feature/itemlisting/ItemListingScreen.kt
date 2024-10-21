@@ -731,7 +731,7 @@ private fun SyncWithBitwardenActionCard(
     onSyncWithBitwardenClick: () -> Unit,
 ) = BitwardenActionCard(
     modifier = modifier,
-    actionIcon = rememberVectorPainter(R.drawable.ic_bitwarden), // TODO: update this icon
+    actionIcon = rememberVectorPainter(R.drawable.ic_refresh),
     actionText = stringResource(R.string.sync_with_bitwarden_action_card_message),
     callToActionText = stringResource(R.string.go_to_settings),
     titleText = stringResource(R.string.sync_with_bitwarden_app),
