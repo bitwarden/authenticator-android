@@ -59,7 +59,7 @@ class VerificationCodeItemExtensionsTest {
 
     @Test
     @Suppress("MaxLineLength")
-    fun `toDisplayItem should only showMoveToBitwarden when SharedVerificationCodesState is Error`() {
+    fun `toDisplayItem should only showMoveToBitwarden when SharedVerificationCodesState is Success`() {
         val alertThresholdSeconds = 7
         val item = createMockVerificationCodeItem(1)
         val expectedDontShowMoveToBitwardenItem =
