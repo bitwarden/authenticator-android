@@ -87,7 +87,7 @@
     <string name="export_confirmation_title">Επιβεβαίωση εξαγωγής</string>
     <string name="export_vault_warning">Αυτή η εξαγωγή περιέχει τα δεδομένα σας σε αποκρυπτογραφημένη μορφή. Δεν πρέπει να αποθηκεύσετε ή να στείλετε το εξαχθέν αρχείο μέσω μη ασφαλών τρόπων (όπως μέσω ηλ. ταχυδρομείου). Διαγράψτε το αμέσως μόλις τελειώσετε με τη χρήση του.</string>
     <string name="file_format">Μορφή αρχείου</string>
-    <string name="export_vault_failure">Παρουσιάστηκε πρόβλημα κατά την εξαγωγή του θησαυροφυλακίου σας. Εάν το πρόβλημα επιμένει, θα χρειαστεί να κάνετε εξαγωγή από το διαδικτυακό θησαυροφυλάκιο.</string>
+    <string name="export_vault_failure">Παρουσιάστηκε πρόβλημα κατά την εξαγωγή της κρύπτης σας. Εάν το πρόβλημα επιμένει, θα χρειαστεί να κάνετε εξαγωγή από τη διαδικτυακή κρύπτη.</string>
     <string name="export_success">Επιτυχής εξαγωγή δεδομένων</string>
     <string name="unlock_with">Ξεκλείδωμα με %1$s</string>
     <string name="biometrics">Βιομετρικά στοιχεία</string>
@@ -108,10 +108,10 @@
     <string name="key_is_required">Το κλειδί είναι υποχρεωτικό.</string>
     <string name="name_is_required">Το όνομα είναι υποχρεωτικό.</string>
     <string name="submit_crash_logs">Υποβολή αρχείου καταγραφής σφαλμάτων</string>
-    <string name="import_vault_failure">Παρουσιάστηκε πρόβλημα κατά την εισαγωγή του θησαυροφυλακίου σας.</string>
+    <string name="import_vault_failure">Παρουσιάστηκε πρόβλημα κατά την εισαγωγή της κρύπτης σας.</string>
     <string name="file_source">Προέλευση αρχείου</string>
     <string name="import_vault">Εισαγωγή</string>
-    <string name="import_success">Επιτυχής εισαγωγή θησαυροφυλακίου</string>
+    <string name="import_success">Επιτυχής εισαγωγή κρύπτης</string>
     <string name="key_is_invalid">Το κλειδί δεν είναι έγκυρο.</string>
     <string name="favorite_tooltip">Αποθήκευση ως αγαπημένο</string>
     <string name="favorite">Αγαπημένο</string>
@@ -122,4 +122,10 @@
     <string name="learn_more">Μάθετε περισσότερα</string>
     <string name="import_2fas_password_protected_not_supported">Η εισαγωγή από αρχεία του 2FAS με κωδικό πρόσβασης δεν υποστηρίζεται. Δοκιμάστε ξανά με ένα αρχείο που δεν προστατεύεται με κωδικό πρόσβασης.</string>
     <string name="import_bitwarden_unsupported_format">Η εισαγωγή αρχείων CSV του Bitwarden δεν υποστηρίζεται. Δοκιμάστε ξανά με ένα εξαχθέν αρχείο JSON.</string>
+    <string name="download_bitwarden_card_title">Λήψη της εφαρμογής Bitwarden</string>
+    <string name="download_bitwarden_card_message">Store all of your logins and sync verification codes directly with the Authenticator app.</string>
+    <string name="download">Λήψη</string>
+    <string name="sync_with_bitwarden_app">Συγχρονισμός με την εφαρμογή Bitwarden</string>
+    <string name="shared_codes_error">Unable to sync codes from the Bitwarden app. Make sure both apps are up-to-date. You can still access your existing codes in the Bitwarden app.</string>
+    <string name="shared_accounts_header">%1$s | %2$s</string>
 </resources>

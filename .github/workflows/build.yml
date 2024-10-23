@@ -1,6 +1,9 @@
 name: Build
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       version-name:
@@ -11,6 +14,11 @@ on:
         description: "Optional. Build number to use. Overrides default of GitHub run number."
         required: false
         type: number
+      distribute-to-firebase:
+        description: "Optional. Distribute artifacts to Firebase."
+        required: false
+        default: false
+        type: boolean
       publish-to-play-store:
         description: "Optional. Deploy bundle artifact to Google Play Store"
         required: false
@@ -28,13 +36,13 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
 
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@d156388eb19639ec20ade50009f3d199ce1e2808 # v4.1.0
 
       - name: Cache Gradle files
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@3624ceb22c1c5a301c8db4169662070a689d9ea8 # v4.1.1
         with:
           path: |
             ~/.gradle/caches
@@ -44,7 +52,7 @@ jobs:
             ${{ runner.os }}-gradle-v2-
 
       - name: Cache build output
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@3624ceb22c1c5a301c8db4169662070a689d9ea8 # v4.1.1
         with:
           path: |
             ${{ github.workspace }}/build-cache
@@ -59,7 +67,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
 
       - name: Configure Ruby
-        uses: ruby/setup-ruby@c04af2bb7258bb6a03df1d3c1865998ac9390972 # v1.194.0
+        uses: ruby/setup-ruby@f26937343756480a8cb3ae1f623b9c8d89ed6984 # v1.196.0
         with:
           bundler-cache: true
 
@@ -87,10 +95,10 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
 
       - name: Configure Ruby
-        uses: ruby/setup-ruby@c04af2bb7258bb6a03df1d3c1865998ac9390972 # v1.194.0
+        uses: ruby/setup-ruby@f26937343756480a8cb3ae1f623b9c8d89ed6984 # v1.196.0
         with:
           bundler-cache: true
 
@@ -120,6 +128,7 @@ jobs:
           --name authenticator_aab-keystore.jks --file ${{ github.workspace }}/keystores/authenticator_aab-keystore.jks --output none
 
       - name: Download Firebase credentials
+        if : ${{ inputs.distribute-to-firebase || github.event_name == 'push' }}
         env:
           ACCOUNT_NAME: bitwardenci
           CONTAINER_NAME: mobile
@@ -133,7 +142,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@d156388eb19639ec20ade50009f3d199ce1e2808 # v4.1.0
 
       - name: Cache Gradle files
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@3624ceb22c1c5a301c8db4169662070a689d9ea8 # v4.1.1
         with:
           path: |
             ~/.gradle/caches
@@ -143,7 +152,7 @@ jobs:
             ${{ runner.os }}-gradle-v2-
 
       - name: Cache build output
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@3624ceb22c1c5a301c8db4169662070a689d9ea8 # v4.1.1
         with:
           path: |
             ${{ github.workspace }}/build-cache
@@ -187,7 +196,7 @@ jobs:
 
       - name: Upload release Play Store .aab artifact
         if: ${{ matrix.variant == 'aab' }}
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: com.bitwarden.authenticator.aab
           path: app/build/outputs/bundle/release/com.bitwarden.authenticator-release.aab
@@ -195,7 +204,7 @@ jobs:
 
       - name: Upload release .apk artifact
         if: ${{ matrix.variant == 'apk' }}
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: com.bitwarden.authenticator.apk
           path: app/build/outputs/apk/release/com.bitwarden.authenticator-release.apk
@@ -215,7 +224,7 @@ jobs:
 
       - name: Upload .apk SHA file for release
         if: ${{ matrix.variant == 'apk' }}
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: authenticator-android-apk-sha256.txt
           path: ./authenticator-android-apk-sha256.txt
@@ -223,26 +232,18 @@ jobs:
 
       - name: Upload .aab SHA file for release
         if: ${{ matrix.variant == 'aab' }}
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: authenticator-android-aab-sha256.txt
           path: ./authenticator-android-aab-sha256.txt
           if-no-files-found: error
 
       - name: Install Firebase app distribution plugin
-        if: ${{ github.ref_name == 'main' }}
+        if: ${{ inputs.distribute-to-firebase || github.event_name == 'push' }}
         run: bundle exec fastlane add_plugin firebase_app_distribution
 
-      - name: Publish release artifacts to Firebase
-        if: ${{ github.ref_name == 'main' && matrix.variant == 'apk' }}
-        env:
-          FIREBASE_CREDS_PATH: ${{ github.workspace }}/secrets/authenticator_play_firebase-creds.json
-        run: |
-          bundle exec fastlane distributeReleaseToFirebase \
-          serviceCredentialsFile:${{ env.FIREBASE_CREDS_PATH }}
-
       - name: Publish release bundle to Firebase
-        if: ${{ github.ref_name == 'main' && matrix.variant == 'aab' }}
+        if: ${{ matrix.variant == 'aab' && (inputs.distribute-to-firebase || github.event_name == 'push') }}
         env:
           FIREBASE_CREDS_PATH: ${{ github.workspace }}/secrets/authenticator_play_firebase-creds.json
         run: |

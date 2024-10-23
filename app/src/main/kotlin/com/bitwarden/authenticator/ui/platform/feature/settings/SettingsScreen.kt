@@ -1,5 +1,6 @@
 package com.bitwarden.authenticator.ui.platform.feature.settings
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -102,6 +103,24 @@ fun SettingsScreen(
             SettingsEvent.NavigateToPrivacyPolicy -> {
                 intentManager.launchUri("https://bitwarden.com/privacy".toUri())
             }
+
+            SettingsEvent.NavigateToBitwardenApp -> {
+
+                intentManager.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        "bitwarden://settings/account_security".toUri(),
+                    ).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    },
+                )
+            }
+
+            SettingsEvent.NavigateToBitwardenPlayStoreListing -> {
+                intentManager.launchUri(
+                    "https://play.google.com/store/apps/details?id=com.x8bit.bitwarden".toUri(),
+                )
+            }
         }
     }
 
@@ -150,6 +169,12 @@ fun SettingsScreen(
                         viewModel.trySendAction(SettingsAction.DataClick.BackupClick)
                     }
                 },
+                onSyncWithBitwardenClick = remember(viewModel) {
+                    {
+                        viewModel.trySendAction(SettingsAction.DataClick.SyncWithBitwardenClick)
+                    }
+                },
+                shouldShowSyncWithBitwardenApp = state.showSyncWithBitwarden,
             )
             Spacer(modifier = Modifier.height(16.dp))
             AppearanceSettings(
@@ -237,11 +262,14 @@ private fun SecuritySettings(
 //region Data settings
 
 @Composable
+@Suppress("LongMethod")
 private fun VaultSettings(
     modifier: Modifier = Modifier,
     onExportClick: () -> Unit,
     onImportClick: () -> Unit,
     onBackupClick: () -> Unit,
+    onSyncWithBitwardenClick: () -> Unit,
+    shouldShowSyncWithBitwardenApp: Boolean,
 ) {
     BitwardenListHeaderText(
         modifier = Modifier.padding(horizontal = 16.dp),
@@ -294,6 +322,25 @@ private fun VaultSettings(
         dialogConfirmButtonText = stringResource(R.string.learn_more),
         dialogDismissButtonText = stringResource(R.string.ok),
     )
+    if (shouldShowSyncWithBitwardenApp) {
+        Spacer(modifier = Modifier.height(8.dp))
+        BitwardenTextRow(
+            text = stringResource(id = R.string.sync_with_bitwarden_app),
+            onClick = onSyncWithBitwardenClick,
+            modifier = modifier,
+            withDivider = true,
+            content = {
+                Icon(
+                    modifier = Modifier
+                        .mirrorIfRtl()
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_external_link),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
+            },
+        )
+    }
 }
 
 @Composable
@@ -484,7 +531,7 @@ private fun CopyRow(
         modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = MaterialTheme.colorScheme.primary),
+                indication = ripple(color = MaterialTheme.colorScheme.primary),
                 onClick = onClick,
             )
             .semantics(mergeDescendants = true) {

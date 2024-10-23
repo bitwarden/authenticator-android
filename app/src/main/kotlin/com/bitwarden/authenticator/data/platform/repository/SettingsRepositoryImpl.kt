@@ -129,4 +129,16 @@ class SettingsRepositoryImpl(
                 started = SharingStarted.Eagerly,
                 initialValue = isCrashLoggingEnabled,
             )
+
+    override var hasUserDismissedDownloadBitwardenCard: Boolean
+        get() = settingsDiskSource.hasUserDismissedDownloadBitwardenCard ?: false
+        set(value) {
+            settingsDiskSource.hasUserDismissedDownloadBitwardenCard = value
+        }
+
+    override var hasUserDismissedSyncWithBitwardenCard: Boolean
+        get() = settingsDiskSource.hasUserDismissedSyncWithBitwardenCard ?: false
+        set(value) {
+            settingsDiskSource.hasUserDismissedSyncWithBitwardenCard = value
+        }
 }

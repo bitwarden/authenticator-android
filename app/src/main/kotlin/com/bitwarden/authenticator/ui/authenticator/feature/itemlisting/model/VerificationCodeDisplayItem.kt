@@ -12,11 +12,12 @@ import kotlinx.parcelize.Parcelize
 data class VerificationCodeDisplayItem(
     val id: String,
     val issuer: String?,
-    val username: String?,
+    val label: String?,
     val timeLeftSeconds: Int,
     val periodSeconds: Int,
     val alertThresholdSeconds: Int,
     val authCode: String,
     val startIcon: IconData = IconData.Local(R.drawable.ic_login_item),
     val favorite: Boolean,
+    val allowLongPressActions: Boolean,
 ) : Parcelable

@@ -1,6 +1,7 @@
 package com.bitwarden.authenticator.ui.authenticator.feature.itemlisting
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -10,13 +11,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,8 +42,8 @@ import com.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
  * The verification code item displayed to the user.
  *
  * @param authCode The code for the item.
- * @param name The label for the item. Represents the OTP issuer.
- * @param username The supporting label for the item. Represents the OTP account name.
+ * @param primaryLabel The label for the item. Represents the OTP issuer.
+ * @param secondaryLabel The supporting label for the item. Represents the OTP account name.
  * @param periodSeconds The times span where the code is valid.
  * @param timeLeftSeconds The seconds remaining until a new code is needed.
  * @param startIcon The leading icon for the item.
@@ -54,8 +55,8 @@ import com.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
 @Composable
 fun VaultVerificationCodeItem(
     authCode: String,
-    name: String?,
-    username: String?,
+    primaryLabel: String?,
+    secondaryLabel: String?,
     periodSeconds: Int,
     timeLeftSeconds: Int,
     alertThresholdSeconds: Int,
@@ -63,6 +64,7 @@ fun VaultVerificationCodeItem(
     onItemClick: () -> Unit,
     onEditItemClick: () -> Unit,
     onDeleteItemClick: () -> Unit,
+    allowLongPress: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var shouldShowDropdownMenu by remember { mutableStateOf(value = false) }
@@ -70,12 +72,20 @@ fun VaultVerificationCodeItem(
         Row(
             modifier = Modifier
                 .semantics { testTag = "Item" }
-                .combinedClickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(color = MaterialTheme.colorScheme.primary),
-                    onClick = onItemClick,
-                    onLongClick = {
-                        shouldShowDropdownMenu = true
+                .then(
+                    if (allowLongPress) {
+                        Modifier.combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(color = MaterialTheme.colorScheme.primary),
+                            onClick = onItemClick,
+                            onLongClick = { shouldShowDropdownMenu = true },
+                        )
+                    } else {
+                        Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(color = MaterialTheme.colorScheme.primary),
+                            onClick = onItemClick,
+                        )
                     },
                 )
                 .defaultMinSize(minHeight = 72.dp)
@@ -101,10 +111,10 @@ fun VaultVerificationCodeItem(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.weight(1f),
             ) {
-                if (!name.isNullOrEmpty()) {
+                if (!primaryLabel.isNullOrEmpty()) {
                     Text(
                         modifier = Modifier.semantics { testTag = "Name" },
-                        text = name,
+                        text = primaryLabel,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
@@ -112,10 +122,10 @@ fun VaultVerificationCodeItem(
                     )
                 }
 
-                if (!username.isNullOrEmpty()) {
+                if (!secondaryLabel.isNullOrEmpty()) {
                     Text(
                         modifier = Modifier.semantics { testTag = "Username" },
-                        text = username,
+                        text = secondaryLabel,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -185,8 +195,8 @@ private fun VerificationCodeItem_preview() {
     AuthenticatorTheme {
         VaultVerificationCodeItem(
             authCode = "1234567890".chunked(3).joinToString(" "),
-            name = "Issuer, AKA Name",
-            username = "username@bitwarden.com",
+            primaryLabel = "Issuer, AKA Name",
+            secondaryLabel = "username@bitwarden.com",
             periodSeconds = 30,
             timeLeftSeconds = 15,
             alertThresholdSeconds = 7,
@@ -194,6 +204,7 @@ private fun VerificationCodeItem_preview() {
             onItemClick = {},
             onEditItemClick = {},
             onDeleteItemClick = {},
+            allowLongPress = true,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }

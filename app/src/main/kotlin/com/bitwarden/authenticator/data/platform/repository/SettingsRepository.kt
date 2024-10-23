@@ -81,4 +81,14 @@ interface SettingsRepository {
      * Emits updates that track the [isCrashLoggingEnabled] value.
      */
     val isCrashLoggingEnabledFlow: Flow<Boolean>
+
+    /**
+     * Whether or not the user has previously dismissed the download Bitwarden action card.
+     */
+    var hasUserDismissedDownloadBitwardenCard: Boolean
+
+    /**
+     * Whether or not the user has previously dismissed the sync with Bitwarden action card.
+     */
+    var hasUserDismissedSyncWithBitwardenCard: Boolean
 }
