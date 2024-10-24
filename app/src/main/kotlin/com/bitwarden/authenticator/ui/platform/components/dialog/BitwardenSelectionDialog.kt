@@ -24,7 +24,6 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bitwarden.authenticator.R
-import com.bitwarden.authenticator.ui.platform.base.util.Text
 import com.bitwarden.authenticator.ui.platform.components.button.BitwardenTextButton
 import com.bitwarden.authenticator.ui.platform.components.util.maxDialogHeight
 
@@ -32,7 +31,7 @@ import com.bitwarden.authenticator.ui.platform.components.util.maxDialogHeight
  * Displays a dialog with a title and "Cancel" button.
  *
  * @param title Title to display.
- * @param subTitle Optional subtitle to display below the title.
+ * @param subtitle Optional subtitle to display below the title.
  * @param dismissLabel Label to show on the dismiss button at the bottom of the dialog.
  * @param onDismissRequest Invoked when the user dismisses the dialog.
  * @param onDismissActionClick Invoked when the user dismisses the via the dismiss action button.
@@ -45,7 +44,7 @@ import com.bitwarden.authenticator.ui.platform.components.util.maxDialogHeight
 @Composable
 fun BitwardenSelectionDialog(
     title: String,
-    subTitle: String? = null,
+    subtitle: String? = null,
     dismissLabel: String = stringResource(R.string.cancel),
     onDismissRequest: () -> Unit,
     onDismissActionClick: () -> Unit = onDismissRequest,
@@ -77,7 +76,7 @@ fun BitwardenSelectionDialog(
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineSmall,
             )
-            subTitle?.let {
+            subtitle?.let {
                 Text(
                     modifier = Modifier
                         .padding(
@@ -86,7 +85,7 @@ fun BitwardenSelectionDialog(
                             bottom = 24.dp,
                         )
                         .fillMaxWidth(),
-                    text = subTitle,
+                    text = subtitle,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )

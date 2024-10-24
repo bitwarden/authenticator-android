@@ -389,7 +389,7 @@ private fun DefaultSaveOptionSelectionRow(
     if (shouldShowDefaultSaveOptionDialog) {
         BitwardenSelectionDialog(
             title = stringResource(id = R.string.default_save_options),
-            subTitle = stringResource(id = R.string.default_save_options_subtitle),
+            subtitle = stringResource(id = R.string.default_save_options_subtitle),
             dismissLabel = stringResource(id = R.string.confirm),
             onDismissRequest = { shouldShowDefaultSaveOptionDialog = false },
             onDismissActionClick = {
