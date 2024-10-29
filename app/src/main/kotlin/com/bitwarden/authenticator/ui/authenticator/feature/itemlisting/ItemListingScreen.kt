@@ -143,7 +143,7 @@ fun ItemListingScreen(
             }
 
             is ItemListingEvent.ShowFirstTimeSyncSnackbar -> {
-                // Message property is override by FirstTimeSyncSnackbarHost:
+                // Message property is overridden by FirstTimeSyncSnackbarHost:
                 snackbarHostState.showSnackbar("")
             }
         }
