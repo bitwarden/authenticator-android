@@ -87,7 +87,7 @@ interface AuthenticatorRepository {
 
     /**
      * Flow that emits `Unit` each time an account is synced from the main Bitwarden app for
-     * the firs time.
+     * the first time.
      */
     val firstTimeAccountSyncFlow: Flow<Unit>
 }
