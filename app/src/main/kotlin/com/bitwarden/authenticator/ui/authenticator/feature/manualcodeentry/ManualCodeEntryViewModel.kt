@@ -181,7 +181,7 @@ private fun deriveButtonState(
     sharedCodesState: SharedVerificationCodesState,
     defaultSaveOption: DefaultSaveOption,
 ): ManualCodeEntryState.ButtonState {
-    // If syncing with Bitwarden is not enabled, who local save only:
+    // If syncing with Bitwarden is not enabled, show local save only:
     if (!sharedCodesState.isSyncWithBitwardenEnabled) {
         return ManualCodeEntryState.ButtonState.LocalOnly
     }
