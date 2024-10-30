@@ -234,6 +234,28 @@ class QrCodeScanViewModelTest : BaseViewModelTest() {
             assertEquals(DEFAULT_STATE, viewModel.stateFlow.value)
         }
 
+    @Test
+    @Suppress("MaxLineLength")
+    fun `on QrCodeScanReceive when code is invalid should emit result and navigate back`() =
+        runTest {
+            val viewModel = createViewModel()
+            every {
+                authenticatorRepository.emitTotpCodeResult(TotpCodeResult.CodeScanningError)
+            } just runs
+            val invalidUri: Uri = mockk {
+                every { getQueryParameter("secret") } returns "SECRET"
+                every { queryParameterNames } returns setOf("digits")
+                every { getQueryParameter("digits") } returns "100"
+            }
+            val invalidQrCode = "otpauth://totp/secret=SECRET"
+            every { Uri.parse(invalidQrCode) } returns invalidUri
+            viewModel.eventFlow.test {
+                viewModel.trySendAction(QrCodeScanAction.QrCodeScanReceive(invalidQrCode))
+                assertEquals(QrCodeScanEvent.NavigateBack, awaitItem())
+            }
+            verify { authenticatorRepository.emitTotpCodeResult(TotpCodeResult.CodeScanningError) }
+        }
+
     private fun createViewModel() = QrCodeScanViewModel(
         authenticatorBridgeManager = authenticatorBridgeManager,
         authenticatorRepository = authenticatorRepository,

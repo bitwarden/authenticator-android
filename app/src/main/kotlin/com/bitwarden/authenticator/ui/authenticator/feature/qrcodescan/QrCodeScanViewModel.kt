@@ -120,7 +120,7 @@ class QrCodeScanViewModel @Inject constructor(
         val values = scannedCodeUri.queryParameterNames
         // If the parameters are not valid,
         if (!areParametersValid(scannedCode, values)) {
-            authenticatorRepository.emitTotpCodeResult(result)
+            authenticatorRepository.emitTotpCodeResult(TotpCodeResult.CodeScanningError)
             sendEvent(QrCodeScanEvent.NavigateBack)
             return
         }
