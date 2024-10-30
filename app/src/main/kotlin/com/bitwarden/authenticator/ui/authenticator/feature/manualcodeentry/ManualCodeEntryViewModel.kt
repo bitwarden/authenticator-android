@@ -89,7 +89,6 @@ class ManualCodeEntryViewModel @Inject constructor(
 
     private fun handleSaveToBitwardenClick() = handleCodeSubmit(saveToBitwarden = true)
 
-    @Suppress("LongMethod")
     private fun handleCodeSubmit(saveToBitwarden: Boolean) {
         val isSteamCode = state.code.startsWith(TotpCodeManager.STEAM_CODE_PREFIX)
         val sanitizedCode = state.code
@@ -112,49 +111,60 @@ class ManualCodeEntryViewModel @Inject constructor(
 
         if (saveToBitwarden) {
             // Save to Bitwarden by kicking off save to Bitwarden flow:
-            val didLaunchSaveToBitwarden = authenticatorBridgeManager
-                .startAddTotpLoginItemFlow(
-                    totpUri = "otpauth://totp/?secret=$sanitizedCode&issuer=${state.issuer}",
-                )
-            if (!didLaunchSaveToBitwarden) {
-                mutableStateFlow.update {
-                    it.copy(
-                        dialog = ManualCodeEntryState.DialogState.Error(
-                            title = R.string.something_went_wrong.asText(),
-                            message = R.string.please_try_again.asText(),
-                        ),
-                    )
-                }
-            } else {
-                sendEvent(ManualCodeEntryEvent.NavigateBack)
-            }
+            saveValidCodeToBitwarden(sanitizedCode)
         } else {
             // Save locally by giving entity to AuthRepository and navigating back:
-            viewModelScope.launch {
-                authenticatorRepository.createItem(
-                    AuthenticatorItemEntity(
-                        id = UUID.randomUUID().toString(),
-                        key = sanitizedCode,
-                        issuer = state.issuer,
-                        accountName = "",
-                        userId = null,
-                        type = if (isSteamCode) {
-                            AuthenticatorItemType.STEAM
-                        } else {
-                            AuthenticatorItemType.TOTP
-                        },
-                        favorite = false,
+            saveValidCodeLocally(sanitizedCode, isSteamCode)
+        }
+    }
+
+    private fun saveValidCodeToBitwarden(sanitizedCode: String) {
+        val didLaunchSaveToBitwarden = authenticatorBridgeManager
+            .startAddTotpLoginItemFlow(
+                totpUri = "otpauth://totp/?secret=$sanitizedCode&issuer=${state.issuer}",
+            )
+        if (!didLaunchSaveToBitwarden) {
+            mutableStateFlow.update {
+                it.copy(
+                    dialog = ManualCodeEntryState.DialogState.Error(
+                        title = R.string.something_went_wrong.asText(),
+                        message = R.string.please_try_again.asText(),
                     ),
-                )
-                sendEvent(
-                    event = ManualCodeEntryEvent.ShowToast(
-                        message = R.string.verification_code_added.asText(),
-                    ),
-                )
-                sendEvent(
-                    event = ManualCodeEntryEvent.NavigateBack,
                 )
             }
+        } else {
+            sendEvent(ManualCodeEntryEvent.NavigateBack)
+        }
+    }
+
+    private fun saveValidCodeLocally(
+        sanitizedCode: String,
+        isSteamCode: Boolean,
+    ) {
+        viewModelScope.launch {
+            authenticatorRepository.createItem(
+                AuthenticatorItemEntity(
+                    id = UUID.randomUUID().toString(),
+                    key = sanitizedCode,
+                    issuer = state.issuer,
+                    accountName = "",
+                    userId = null,
+                    type = if (isSteamCode) {
+                        AuthenticatorItemType.STEAM
+                    } else {
+                        AuthenticatorItemType.TOTP
+                    },
+                    favorite = false,
+                ),
+            )
+            sendEvent(
+                event = ManualCodeEntryEvent.ShowToast(
+                    message = R.string.verification_code_added.asText(),
+                ),
+            )
+            sendEvent(
+                event = ManualCodeEntryEvent.NavigateBack,
+            )
         }
     }
 
