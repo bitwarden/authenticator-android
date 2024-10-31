@@ -43,6 +43,7 @@ class SettingsRepositoryImpl(
     override var authenticatorAlertThresholdSeconds = settingsDiskSource.getAlertThresholdSeconds()
 
     override var defaultSaveOption: DefaultSaveOption by settingsDiskSource::defaultSaveOption
+
     override val defaultSaveOptionFlow: Flow<DefaultSaveOption>
         by settingsDiskSource::defaultSaveOptionFlow
 
