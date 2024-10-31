@@ -22,7 +22,7 @@ class SharedVerificationCodesStateExtensionsTest {
 
     @Test
     @Suppress("MaxLineLength")
-    fun `itemsOrEmpty should a non empty list only when state is Success `() {
+    fun `itemsOrEmpty should return a non empty list only when state is Success `() {
         assertTrue(SharedVerificationCodesState.AppNotInstalled.itemsOrEmpty.isEmpty())
         assertTrue(SharedVerificationCodesState.Error.itemsOrEmpty.isEmpty())
         assertTrue(SharedVerificationCodesState.FeatureNotEnabled.itemsOrEmpty.isEmpty())
