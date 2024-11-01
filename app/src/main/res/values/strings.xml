@@ -147,4 +147,5 @@
     <string name="account_synced_from_bitwarden_app">Account synced from Bitwarden app</string>
     <string name="add_code_to_bitwarden">Add code to Bitwarden</string>
     <string name="add_code_locally">Add code locally</string>
+    <string name="local_codes">Local codes</string>
 </resources>
