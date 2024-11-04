@@ -1,5 +1,9 @@
 package com.bitwarden.authenticator.data.platform.datasource.network.di
 
+import com.bitwarden.authenticator.data.platform.datasource.network.interceptor.BaseUrlInterceptors
+import com.bitwarden.authenticator.data.platform.datasource.network.interceptor.HeadersInterceptor
+import com.bitwarden.authenticator.data.platform.datasource.network.retrofit.Retrofits
+import com.bitwarden.authenticator.data.platform.datasource.network.retrofit.RetrofitsImpl
 import com.bitwarden.authenticator.data.platform.datasource.network.serializer.ZonedDateTimeSerializer
 import dagger.Module
 import dagger.Provides
@@ -8,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -17,6 +22,23 @@ import javax.inject.Singleton
  * It initializes and configures the networking components.
  */
 object PlatformNetworkModule {
+    @Provides
+    @Singleton
+    fun providesHeadersInterceptor(): HeadersInterceptor = HeadersInterceptor()
+
+    @Provides
+    @Singleton
+    fun provideRetrofits(
+        baseUrlInterceptors: BaseUrlInterceptors,
+        headersInterceptor: HeadersInterceptor,
+        json: Json,
+    ): Retrofits =
+        RetrofitsImpl(
+            baseUrlInterceptors = baseUrlInterceptors,
+            headersInterceptor = headersInterceptor,
+            json = json,
+        )
+    
     @Provides
     @Singleton
     fun providesJson(): Json = Json {
