@@ -18,7 +18,7 @@ class EnvironmentUrlsDataJsonExtensionsTest {
         Assertions.assertEquals(
             "api",
             DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.copy(
-                base = ""
+                base = "",
             ).baseApiUrl,
         )
     }
@@ -29,7 +29,7 @@ class EnvironmentUrlsDataJsonExtensionsTest {
             "https://api.bitwarden.com",
             DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.copy(
                 base = "",
-                api = null
+                api = null,
             ).baseApiUrl,
         )
     }
@@ -47,7 +47,7 @@ class EnvironmentUrlsDataJsonExtensionsTest {
         Assertions.assertEquals(
             "events",
             DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.copy(
-                base = ""
+                base = "",
             ).baseEventsUrl,
         )
     }
@@ -58,7 +58,7 @@ class EnvironmentUrlsDataJsonExtensionsTest {
             "https://events.bitwarden.com",
             DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.copy(
                 base = "",
-                events = null
+                events = null,
             ).baseEventsUrl,
         )
     }

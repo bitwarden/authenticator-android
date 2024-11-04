@@ -38,7 +38,7 @@ object PlatformNetworkModule {
             headersInterceptor = headersInterceptor,
             json = json,
         )
-    
+
     @Provides
     @Singleton
     fun providesJson(): Json = Json {

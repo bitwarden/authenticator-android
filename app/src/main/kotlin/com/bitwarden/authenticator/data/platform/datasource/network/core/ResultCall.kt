@@ -46,7 +46,7 @@ class ResultCall<T>(
             Response.success(
                 backingCall
                     .execute()
-                    .toResult()
+                    .toResult(),
             )
         } catch (ioException: IOException) {
             Response.success(ioException.toFailure())
