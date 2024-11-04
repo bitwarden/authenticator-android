@@ -12,7 +12,6 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
