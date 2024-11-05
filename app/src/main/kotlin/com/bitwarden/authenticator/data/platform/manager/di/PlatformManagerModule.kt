@@ -9,6 +9,7 @@ import com.bitwarden.authenticator.data.platform.manager.BitwardenEncodingManage
 import com.bitwarden.authenticator.data.platform.manager.BitwardenEncodingManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.CrashLogsManager
 import com.bitwarden.authenticator.data.platform.manager.CrashLogsManagerImpl
+import com.bitwarden.authenticator.data.platform.manager.DebugMenuFeatureFlagManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.DispatcherManager
 import com.bitwarden.authenticator.data.platform.manager.DispatcherManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.FeatureFlagManager
@@ -19,7 +20,8 @@ import com.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClip
 import com.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClipboardManagerImpl
 import com.bitwarden.authenticator.data.platform.manager.imports.ImportManager
 import com.bitwarden.authenticator.data.platform.manager.imports.ImportManagerImpl
-import com.bitwarden.authenticator.data.platform.repository.FeatureFlagRepository
+import com.bitwarden.authenticator.data.platform.repository.DebugMenuRepository
+import com.bitwarden.authenticator.data.platform.repository.ServerConfigRepository
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
@@ -79,7 +81,19 @@ object PlatformManagerModule {
 
     @Provides
     @Singleton
-    fun provideFeatureFlagManager(
-        featureFlagRepository: FeatureFlagRepository,
-    ): FeatureFlagManager = FeatureFlagManagerImpl(featureFlagRepository)
+    fun providesFeatureFlagManager(
+        debugMenuRepository: DebugMenuRepository,
+        serverConfigRepository: ServerConfigRepository,
+    ): FeatureFlagManager = if (debugMenuRepository.isDebugMenuEnabled) {
+        DebugMenuFeatureFlagManagerImpl(
+            debugMenuRepository = debugMenuRepository,
+            defaultFeatureFlagManager = FeatureFlagManagerImpl(
+                serverConfigRepository = serverConfigRepository,
+            ),
+        )
+    } else {
+        FeatureFlagManagerImpl(
+            serverConfigRepository = serverConfigRepository,
+        )
+    }
 }

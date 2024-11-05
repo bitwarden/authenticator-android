@@ -44,7 +44,12 @@ class MainViewModel @Inject constructor(
             is MainAction.Internal.ThemeUpdate -> handleThemeUpdated(action)
             is MainAction.ReceiveFirstIntent -> handleFirstIntentReceived(action)
             is MainAction.ReceiveNewIntent -> handleNewIntentReceived(action)
+            MainAction.OpenDebugMenu -> handleOpenDebugMenu()
         }
+    }
+
+    private fun handleOpenDebugMenu() {
+        sendEvent(MainEvent.NavigateToDebugMenu)
     }
 
     private fun handleThemeUpdated(action: MainAction.Internal.ThemeUpdate) {
@@ -96,6 +101,11 @@ sealed class MainAction {
     data class ReceiveNewIntent(val intent: Intent) : MainAction()
 
     /**
+     * Receive event to open the debug menu.
+     */
+    data object OpenDebugMenu : MainAction()
+
+    /**
      * Actions for internal use by the ViewModel.
      */
     sealed class Internal : MainAction() {
@@ -113,6 +123,11 @@ sealed class MainAction {
  * Represents events that are emitted by the [MainViewModel].
  */
 sealed class MainEvent {
+
+    /**
+     * Navigate to the debug menu.
+     */
+    data object NavigateToDebugMenu : MainEvent()
 
     /**
      * Event indicating a change in the screen capture setting.
