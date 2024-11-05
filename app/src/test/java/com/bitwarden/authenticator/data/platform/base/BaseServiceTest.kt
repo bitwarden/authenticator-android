@@ -2,12 +2,12 @@ package com.bitwarden.authenticator.data.platform.base
 
 import com.bitwarden.authenticator.data.platform.datasource.network.core.ResultCallAdapterFactory
 import com.bitwarden.authenticator.data.platform.datasource.network.di.PlatformNetworkModule
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 /**
  * Base class for service tests. Provides common mock web server and retrofit setup.
