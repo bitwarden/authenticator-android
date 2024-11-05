@@ -5,6 +5,8 @@ import com.bitwarden.authenticator.data.platform.datasource.network.interceptor.
 import com.bitwarden.authenticator.data.platform.datasource.network.retrofit.Retrofits
 import com.bitwarden.authenticator.data.platform.datasource.network.retrofit.RetrofitsImpl
 import com.bitwarden.authenticator.data.platform.datasource.network.serializer.ZonedDateTimeSerializer
+import com.bitwarden.authenticator.data.platform.datasource.network.service.ConfigService
+import com.bitwarden.authenticator.data.platform.datasource.network.service.ConfigServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +24,12 @@ import javax.inject.Singleton
  * It initializes and configures the networking components.
  */
 object PlatformNetworkModule {
+    @Provides
+    @Singleton
+    fun providesConfigService(
+        retrofits: Retrofits,
+    ): ConfigService = ConfigServiceImpl(retrofits.unauthenticatedApiRetrofit.create())
+
     @Provides
     @Singleton
     fun providesHeadersInterceptor(): HeadersInterceptor = HeadersInterceptor()
