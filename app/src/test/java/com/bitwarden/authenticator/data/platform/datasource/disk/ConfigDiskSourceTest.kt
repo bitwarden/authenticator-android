@@ -26,7 +26,7 @@ class ConfigDiskSourceTest {
     )
 
     @Test
-    fun `serverConfig should pull from and update SharedPreferences`()  =
+    fun `serverConfig should pull from and update SharedPreferences`() =
         runTest {
         val serverConfigKey = "bwPreferencesStorage:serverConfigurations"
 
