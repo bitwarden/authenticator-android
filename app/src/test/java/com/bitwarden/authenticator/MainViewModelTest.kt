@@ -1,6 +1,7 @@
 package com.bitwarden.authenticator
 
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
+import com.bitwarden.authenticator.data.platform.repository.util.FakeServerConfigRepository
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModelTest
 import com.bitwarden.authenticator.ui.platform.feature.settings.appearance.model.AppTheme
 import io.mockk.every
@@ -20,11 +21,15 @@ class MainViewModelTest : BaseViewModelTest() {
         every { appThemeStateFlow } returns mutableAppThemeFlow
         every { isScreenCaptureAllowedStateFlow } returns mutableScreenCaptureAllowedFlow
     }
+    private val fakeServerConfigRepository = FakeServerConfigRepository()
     private lateinit var mainViewModel: MainViewModel
 
     @BeforeEach
     fun setUp() {
-        mainViewModel = MainViewModel(settingsRepository)
+        mainViewModel = MainViewModel(
+            settingsRepository,
+            fakeServerConfigRepository,
+        )
     }
 
     @Test
