@@ -1,5 +1,6 @@
 package com.bitwarden.authenticator
 
+import app.cash.turbine.test
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.data.platform.repository.util.FakeServerConfigRepository
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModelTest
@@ -8,6 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -55,6 +57,16 @@ class MainViewModelTest : BaseViewModelTest() {
         verify {
             settingsRepository.appTheme
             settingsRepository.appThemeStateFlow
+        }
+    }
+
+    @Test
+    fun `send NavigateToDebugMenu action when OpenDebugMenu action is sent`() = runTest {
+        mainViewModel.trySendAction(MainAction.OpenDebugMenu)
+
+        mainViewModel.eventFlow.test {
+            awaitItem() // ignore first event
+            assertEquals(MainEvent.NavigateToDebugMenu, awaitItem())
         }
     }
 }
