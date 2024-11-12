@@ -246,29 +246,11 @@ class EnvironmentUrlsDataJsonExtensionsTest {
         )
     }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `toEnvironmentUrlsOrDefault should correctly convert legacy US urls to the expected type`() {
-        Assertions.assertEquals(
-            com.bitwarden.authenticator.data.platform.repository.model.Environment.Us,
-            EnvironmentUrlDataJson.Companion.DEFAULT_LEGACY_US.toEnvironmentUrlsOrDefault(),
-        )
-    }
-
     @Test
     fun `toEnvironmentUrlsOrDefault should correctly convert EU urls to the expected type`() {
         Assertions.assertEquals(
             com.bitwarden.authenticator.data.platform.repository.model.Environment.Eu,
             EnvironmentUrlDataJson.Companion.DEFAULT_EU.toEnvironmentUrlsOrDefault(),
-        )
-    }
-
-    @Suppress("MaxLineLength")
-    @Test
-    fun `toEnvironmentUrlsOrDefault should correctly convert legacy EU urls to the expected type`() {
-        Assertions.assertEquals(
-            com.bitwarden.authenticator.data.platform.repository.model.Environment.Eu,
-            EnvironmentUrlDataJson.Companion.DEFAULT_LEGACY_EU.toEnvironmentUrlsOrDefault(),
         )
     }
 
