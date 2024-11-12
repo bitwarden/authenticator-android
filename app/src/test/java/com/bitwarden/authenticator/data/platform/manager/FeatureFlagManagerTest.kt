@@ -20,7 +20,7 @@ import java.time.Instant
 class FeatureFlagManagerTest {
     private val fakeServerConfigRepository = FakeServerConfigRepository()
 
-    private var manager = FeatureFlagManagerImpl(
+    private val manager = FeatureFlagManagerImpl(
         serverConfigRepository = fakeServerConfigRepository,
     )
 
