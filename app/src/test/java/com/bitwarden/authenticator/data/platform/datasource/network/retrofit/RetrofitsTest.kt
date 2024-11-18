@@ -25,12 +25,6 @@ class RetrofitsTest {
         every { apiInterceptor } returns mockk {
             mockIntercept { isApiInterceptorCalled = true }
         }
-        every { identityInterceptor } returns mockk {
-            mockIntercept { isIdentityInterceptorCalled = true }
-        }
-        every { eventsInterceptor } returns mockk {
-            mockIntercept { isEventsInterceptorCalled = true }
-        }
     }
     private val headersInterceptors = mockk<HeadersInterceptor> {
         mockIntercept { isheadersInterceptorCalled = true }
@@ -47,8 +41,6 @@ class RetrofitsTest {
     private var isAuthInterceptorCalled = false
     private var isApiInterceptorCalled = false
     private var isheadersInterceptorCalled = false
-    private var isIdentityInterceptorCalled = false
-    private var isEventsInterceptorCalled = false
     private var isRefreshAuthenticatorCalled = false
 
     @Before
@@ -89,8 +81,6 @@ class RetrofitsTest {
         assertFalse(isAuthInterceptorCalled)
         assertTrue(isApiInterceptorCalled)
         assertTrue(isheadersInterceptorCalled)
-        assertFalse(isIdentityInterceptorCalled)
-        assertFalse(isEventsInterceptorCalled)
     }
 
     @Test
@@ -108,8 +98,6 @@ class RetrofitsTest {
             assertFalse(isAuthInterceptorCalled)
             assertFalse(isApiInterceptorCalled)
             assertTrue(isheadersInterceptorCalled)
-            assertFalse(isIdentityInterceptorCalled)
-            assertFalse(isEventsInterceptorCalled)
         }
 
     private fun Retrofit.createMockRetrofit(): Retrofit =

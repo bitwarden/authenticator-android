@@ -18,14 +18,6 @@ class BaseUrlInterceptorsTest {
             "https://vault.bitwarden.com/api",
             baseUrlInterceptors.apiInterceptor.baseUrl,
         )
-        assertEquals(
-            "https://vault.bitwarden.com/identity",
-            baseUrlInterceptors.identityInterceptor.baseUrl,
-        )
-        assertEquals(
-            "https://vault.bitwarden.com/events",
-            baseUrlInterceptors.eventsInterceptor.baseUrl,
-        )
     }
 
     @Suppress("MaxLineLength")
@@ -36,14 +28,6 @@ class BaseUrlInterceptorsTest {
         assertEquals(
             "https://vault.bitwarden.eu/api",
             baseUrlInterceptors.apiInterceptor.baseUrl,
-        )
-        assertEquals(
-            "https://vault.bitwarden.eu/identity",
-            baseUrlInterceptors.identityInterceptor.baseUrl,
-        )
-        assertEquals(
-            "https://vault.bitwarden.eu/events",
-            baseUrlInterceptors.eventsInterceptor.baseUrl,
         )
     }
 
@@ -63,14 +47,6 @@ class BaseUrlInterceptorsTest {
             "https://api.com",
             baseUrlInterceptors.apiInterceptor.baseUrl,
         )
-        assertEquals(
-            "https://identity.com",
-            baseUrlInterceptors.identityInterceptor.baseUrl,
-        )
-        assertEquals(
-            "https://events.com",
-            baseUrlInterceptors.eventsInterceptor.baseUrl,
-        )
     }
 
     @Suppress("MaxLineLength")
@@ -88,14 +64,6 @@ class BaseUrlInterceptorsTest {
         assertEquals(
             "https://api.bitwarden.com",
             baseUrlInterceptors.apiInterceptor.baseUrl,
-        )
-        assertEquals(
-            "https://identity.bitwarden.com",
-            baseUrlInterceptors.identityInterceptor.baseUrl,
-        )
-        assertEquals(
-            "https://events.bitwarden.com",
-            baseUrlInterceptors.eventsInterceptor.baseUrl,
         )
     }
 }
