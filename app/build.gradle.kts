@@ -63,6 +63,7 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
             isMinifyEnabled = false
+            buildConfigField(type = "boolean", name = "HAS_DEBUG_MENU", value = "true")
         }
 
         release {
@@ -77,6 +78,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(type = "boolean", name = "HAS_DEBUG_MENU", value = "false")
         }
     }
     compileOptions {
@@ -166,7 +168,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.square.okhttp)
     implementation(libs.square.okhttp.logging)
+    implementation(platform(libs.square.retrofit.bom))
     implementation(libs.square.retrofit)
+    implementation(libs.square.retrofit.kotlinx.serialization)
     implementation(libs.zxing.zxing.core)
 
     // For now we are restricted to running Compose tests for debug builds only

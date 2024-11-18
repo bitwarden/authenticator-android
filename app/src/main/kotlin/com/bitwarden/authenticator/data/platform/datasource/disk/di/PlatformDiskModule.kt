@@ -2,8 +2,12 @@ package com.bitwarden.authenticator.data.platform.datasource.disk.di
 
 import android.content.SharedPreferences
 import com.bitwarden.authenticator.data.platform.datasource.di.UnencryptedPreferences
+import com.bitwarden.authenticator.data.platform.datasource.disk.ConfigDiskSource
+import com.bitwarden.authenticator.data.platform.datasource.disk.ConfigDiskSourceImpl
 import com.bitwarden.authenticator.data.platform.datasource.disk.FeatureFlagDiskSource
 import com.bitwarden.authenticator.data.platform.datasource.disk.FeatureFlagDiskSourceImpl
+import com.bitwarden.authenticator.data.platform.datasource.disk.FeatureFlagOverrideDiskSource
+import com.bitwarden.authenticator.data.platform.datasource.disk.FeatureFlagOverrideDiskSourceImpl
 import com.bitwarden.authenticator.data.platform.datasource.disk.SettingsDiskSource
 import com.bitwarden.authenticator.data.platform.datasource.disk.SettingsDiskSourceImpl
 import dagger.Module
@@ -22,6 +26,17 @@ object PlatformDiskModule {
 
     @Provides
     @Singleton
+    fun provideConfigDiskSource(
+        @UnencryptedPreferences sharedPreferences: SharedPreferences,
+        json: Json,
+    ): ConfigDiskSource =
+        ConfigDiskSourceImpl(
+            sharedPreferences = sharedPreferences,
+            json = json,
+        )
+
+    @Provides
+    @Singleton
     fun provideSettingsDiskSource(
         @UnencryptedPreferences sharedPreferences: SharedPreferences,
     ): SettingsDiskSource =
@@ -37,4 +52,12 @@ object PlatformDiskModule {
             sharedPreferences = sharedPreferences,
             json = json,
         )
+
+    @Provides
+    @Singleton
+    fun provideFeatureFlagOverrideDiskSource(
+        @UnencryptedPreferences sharedPreferences: SharedPreferences,
+    ): FeatureFlagOverrideDiskSource = FeatureFlagOverrideDiskSourceImpl(
+        sharedPreferences = sharedPreferences,
+    )
 }
