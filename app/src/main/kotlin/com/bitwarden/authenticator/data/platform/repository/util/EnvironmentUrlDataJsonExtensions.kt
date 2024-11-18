@@ -5,8 +5,6 @@ import com.bitwarden.authenticator.data.platform.repository.model.Environment
 import java.net.URI
 
 private const val DEFAULT_API_URL: String = "https://api.bitwarden.com"
-private const val DEFAULT_EVENTS_URL: String = "https://events.bitwarden.com"
-private const val DEFAULT_IDENTITY_URL: String = "https://identity.bitwarden.com"
 private const val DEFAULT_WEB_VAULT_URL: String = "https://vault.bitwarden.com"
 private const val DEFAULT_WEB_SEND_URL: String = "https://send.bitwarden.com/#"
 private const val DEFAULT_ICON_URL: String = "https://icons.bitwarden.net"
@@ -18,22 +16,6 @@ val EnvironmentUrlDataJson.baseApiUrl: String
     get() = this.base.sanitizeUrl?.let { "$it/api" }
         ?: this.api.sanitizeUrl
         ?: DEFAULT_API_URL
-
-/**
- * Returns the base events URL or the default value if one is not present.
- */
-val EnvironmentUrlDataJson.baseEventsUrl: String
-    get() = this.base.sanitizeUrl?.let { "$it/events" }
-        ?: this.events.sanitizeUrl
-        ?: DEFAULT_EVENTS_URL
-
-/**
- * Returns the base identity URL or the default value if one is not present.
- */
-val EnvironmentUrlDataJson.baseIdentityUrl: String
-    get() = this.identity.sanitizeUrl
-        ?: this.base.sanitizeUrl?.let { "$it/identity" }
-        ?: DEFAULT_IDENTITY_URL
 
 /**
  * Returns the base web vault URL. This will check for a custom [EnvironmentUrlDataJson.webVault]
