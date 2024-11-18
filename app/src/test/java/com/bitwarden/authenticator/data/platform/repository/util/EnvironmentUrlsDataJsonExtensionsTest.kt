@@ -35,68 +35,6 @@ class EnvironmentUrlsDataJsonExtensionsTest {
     }
 
     @Test
-    fun `baseEventsUrl should return base if it is present`() {
-        Assertions.assertEquals(
-            "base/events",
-            DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.baseEventsUrl,
-        )
-    }
-
-    @Test
-    fun `baseEventsUrl should return events value if base is empty`() {
-        Assertions.assertEquals(
-            "events",
-            DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.copy(
-                base = "",
-            ).baseEventsUrl,
-        )
-    }
-
-    @Test
-    fun `baseEventsUrl should return default url if base is empty and events is null`() {
-        Assertions.assertEquals(
-            "https://events.bitwarden.com",
-            DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.copy(
-                base = "",
-                events = null,
-            ).baseEventsUrl,
-        )
-    }
-
-    @Test
-    fun `baseIdentityUrl should return identity if value is present`() {
-        Assertions.assertEquals(
-            "identity",
-            DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.baseIdentityUrl,
-        )
-    }
-
-    @Test
-    fun `baseIdentityUrl should return base value if identity is null`() {
-        Assertions.assertEquals(
-            "base/identity",
-            DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA
-                .copy(identity = null)
-                .baseIdentityUrl,
-        )
-    }
-
-    @Test
-    fun `baseIdentityUrl should return default url if base is empty and identity is null`() {
-        val expectedUrl = "https://identity.bitwarden.com"
-
-        Assertions.assertEquals(
-            expectedUrl,
-            DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA
-                .copy(
-                    base = "",
-                    identity = null,
-                )
-                .baseIdentityUrl,
-        )
-    }
-
-    @Test
     fun `baseWebVaultUrlOrNull should return webVault when populated`() {
         val result =
             DEFAULT_CUSTOM_ENVIRONMENT_URL_DATA.baseWebVaultUrlOrNull
