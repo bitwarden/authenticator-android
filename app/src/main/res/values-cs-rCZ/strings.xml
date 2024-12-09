@@ -133,7 +133,7 @@
     <string name="sync_with_bitwarden_action_card_message">V nastavení povolte synchronizaci aplikace Authenticator a zobrazte zde všechny své ověřovací kódy.</string>
     <string name="something_went_wrong">Něco se pokazilo</string>
     <string name="please_try_again">Zkuste to znovu</string>
-    <string name="copy_to_bitwarden">Přesunout do Bitwardenu</string>
+    <string name="move_to_bitwarden">Přesunout do Bitwardenu</string>
     <string name="default_save_option">Výchozí volby ukládání</string>
     <string name="save_to_bitwarden">Uložit do Bitwardenu</string>
     <string name="save_here">Uložit zde</string>
