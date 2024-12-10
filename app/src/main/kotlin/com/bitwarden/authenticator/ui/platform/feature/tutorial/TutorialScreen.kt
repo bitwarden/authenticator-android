@@ -55,7 +55,6 @@ private val LANDSCAPE_HORIZONTAL_MARGIN: Dp = 128.dp
 /**
  * Top level composable for the tutorial screen.
  */
-@Suppress("LongMethod")
 @Composable
 fun TutorialScreen(
     viewModel: TutorialViewModel = hiltViewModel(),
