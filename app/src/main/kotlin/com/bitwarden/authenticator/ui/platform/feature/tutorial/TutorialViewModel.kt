@@ -148,7 +148,7 @@ sealed class TutorialAction {
     data class DotClick(val index: Int) : TutorialAction()
 
     /**
-     * The user clicked the continue button on the introduction slide.
+     * The user clicked the continue button at the given [index].
      */
     data class ContinueClick(val index: Int) : TutorialAction()
 
