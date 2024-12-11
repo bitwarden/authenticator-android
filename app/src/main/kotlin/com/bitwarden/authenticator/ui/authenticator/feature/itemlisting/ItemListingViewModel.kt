@@ -119,7 +119,7 @@ class ItemListingViewModel @Inject constructor(
             }
 
             is ItemListingAction.ItemClick -> {
-                handleItemClick(action.authCode)
+                handleCopyItemClick(action.authCode)
             }
 
             is ItemListingAction.DialogDismiss -> {
@@ -160,7 +160,7 @@ class ItemListingViewModel @Inject constructor(
         sendEvent(ItemListingEvent.NavigateToAppSettings)
     }
 
-    private fun handleItemClick(authCode: String) {
+    private fun handleCopyItemClick(authCode: String) {
         clipboardManager.setText(authCode)
     }
 
@@ -517,7 +517,7 @@ class ItemListingViewModel @Inject constructor(
 
     private fun handleDropdownMenuClick(action: ItemListingAction.DropdownMenuClick) {
         when (action.menuAction) {
-            VaultDropdownMenuAction.COPY -> handleItemClick(action.item.authCode)
+            VaultDropdownMenuAction.COPY -> handleCopyItemClick(action.item.authCode)
             VaultDropdownMenuAction.EDIT -> handleEditItemClick(action.item.id)
             VaultDropdownMenuAction.MOVE -> handleMoveToBitwardenClick(action.item.id)
             VaultDropdownMenuAction.DELETE -> handleDeleteItemClick(action.item.id)
