@@ -21,6 +21,7 @@ import com.bitwarden.authenticator.data.platform.manager.imports.model.GoogleAut
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.data.platform.repository.model.DataState
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.SharedCodesDisplayState
+import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VaultDropdownMenuAction
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VerificationCodeDisplayItem
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.util.toDisplayItem
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.util.toSharedCodesDisplayState
@@ -62,7 +63,6 @@ class ItemListingViewModel @Inject constructor(
 ) {
 
     init {
-
         settingsRepository
             .authenticatorAlertThresholdSecondsFlow
             .map { ItemListingAction.Internal.AlertThresholdSecondsReceive(it) }
@@ -140,6 +140,12 @@ class ItemListingViewModel @Inject constructor(
 
             is ItemListingAction.Internal -> {
                 handleInternalAction(action)
+            }
+
+            is ItemListingAction.DropdownMenuClick -> {
+                viewModelScope.launch {
+                    handleDropdownMenuClick(action)
+                }
             }
 
             ItemListingAction.DownloadBitwardenClick -> {
@@ -528,6 +534,17 @@ class ItemListingViewModel @Inject constructor(
         sendEvent(ItemListingEvent.NavigateToBitwardenListing)
     }
 
+    private suspend fun handleDropdownMenuClick(action: ItemListingAction.DropdownMenuClick) {
+        sendAction(
+            when (action.menuAction) {
+                VaultDropdownMenuAction.COPY -> ItemListingAction.ItemClick(action.id)
+                VaultDropdownMenuAction.EDIT -> ItemListingAction.EditItemClick(action.id)
+                VaultDropdownMenuAction.MOVE -> ItemListingAction.MoveToBitwardenClick(action.id)
+                VaultDropdownMenuAction.DELETE -> ItemListingAction.DeleteItemClick(action.id)
+            },
+        )
+    }
+
     private fun handleDownloadBitwardenDismiss() {
         settingsRepository.hasUserDismissedDownloadBitwardenCard = true
         mutableStateFlow.update {
@@ -830,6 +847,16 @@ sealed class ItemListingEvent {
  * Each subclass of this sealed class denotes a distinct action that can be taken.
  */
 sealed class ItemListingAction {
+    /**
+     * Represents an action triggered when the user clicks an item in the dropdown menu.
+     *
+     * @param menuAction The action selected from the dropdown menu.
+     * @param id The identifier of the item on which the action is being performed.
+     */
+    data class DropdownMenuClick(
+        val menuAction: VaultDropdownMenuAction,
+        val id: String,
+    ) : ItemListingAction()
 
     /**
      * The user clicked the back button.

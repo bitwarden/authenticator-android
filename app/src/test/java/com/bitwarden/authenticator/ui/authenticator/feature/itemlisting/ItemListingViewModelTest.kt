@@ -12,6 +12,7 @@ import com.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClip
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.data.platform.repository.model.DataState
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.SharedCodesDisplayState
+import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VaultDropdownMenuAction
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.util.toDisplayItem
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.util.toSharedCodesDisplayState
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModelTest
@@ -31,7 +32,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class ItemListViewModelTest : BaseViewModelTest() {
+class ItemListingViewModelTest : BaseViewModelTest() {
 
     private val mutableAuthenticatorAlertThresholdFlow =
         MutableStateFlow(AUTHENTICATOR_ALERT_SECONDS)
@@ -421,6 +422,70 @@ class ItemListViewModelTest : BaseViewModelTest() {
             firstTimeAccountSyncChannel.send(Unit)
             assertEquals(ItemListingEvent.ShowFirstTimeSyncSnackbar, awaitItem())
         }
+    }
+
+    @Test
+    fun `should copy text to clipboard when DropdownMenuClick COPY is triggered`() = runTest {
+        val viewModel = createViewModel()
+        val testId = "123456"
+
+        every { clipboardManager.setText(text = testId) } just runs
+
+        viewModel.eventFlow.test {
+            viewModel.trySendAction(
+                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.COPY, testId),
+            )
+
+            verify(exactly = 1) {
+                clipboardManager.setText(text = testId)
+            }
+
+            assertEquals(
+                ItemListingEvent.ShowToast(
+                    message = R.string.value_has_been_copied.asText(testId),
+                ),
+                awaitItem(),
+            )
+        }
+    }
+
+    @Test
+    fun `should trigger edit action when DropdownMenuClick EDIT is triggered`() = runTest {
+        val viewModel = createViewModel()
+        val testId = "123456"
+
+        viewModel.eventFlow.test {
+            viewModel.trySendAction(
+                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.EDIT, testId),
+            )
+
+            assertEquals(
+                ItemListingEvent.NavigateToEditItem(testId),
+                awaitItem(),
+            )
+        }
+    }
+
+    @Test
+    fun `should trigger delete prompt when DropdownMenuClick DELETE is triggered`() = runTest {
+        val viewModel = createViewModel()
+        val testId = "123456"
+
+        val expectedState = DEFAULT_STATE.copy(
+            dialog = ItemListingState.DialogState.DeleteConfirmationPrompt(
+                message = R.string.do_you_really_want_to_permanently_delete_cipher.asText(),
+                testId,
+            ),
+        )
+
+        viewModel.trySendAction(
+            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.DELETE, testId),
+        )
+
+        assertEquals(
+            expectedState,
+            viewModel.stateFlow.value,
+        )
     }
 
     private fun createViewModel() = ItemListingViewModel(
