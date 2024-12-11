@@ -163,6 +163,7 @@ fun VaultVerificationCodeItem(
                     Text(text = stringResource(id = R.string.copy))
                 },
                 onClick = {
+                    shouldShowDropdownMenu = false
                     onDropdownMenuClick(VaultDropdownMenuAction.COPY)
                 },
                 leadingIcon = {
