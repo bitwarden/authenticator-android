@@ -435,25 +435,20 @@ class ItemListingViewModelTest : BaseViewModelTest() {
     @Test
     fun `should copy text to clipboard when DropdownMenuClick COPY is triggered`() = runTest {
         val viewModel = createViewModel()
-        val testId = "123456"
 
-        every { clipboardManager.setText(text = testId) } just runs
+        every { clipboardManager.setText(text = LOCAL_CODE.authCode) } just runs
 
         viewModel.eventFlow.test {
             viewModel.trySendAction(
-                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.COPY, LOCAL_CODE),
+                ItemListingAction.DropdownMenuClick(
+                    menuAction = VaultDropdownMenuAction.COPY,
+                    item = LOCAL_CODE,
+                ),
             )
 
             verify(exactly = 1) {
                 clipboardManager.setText(text = LOCAL_CODE.authCode)
             }
-
-            assertEquals(
-                ItemListingEvent.ShowToast(
-                    message = R.string.value_has_been_copied.asText(testId),
-                ),
-                awaitItem(),
-            )
         }
     }
 
@@ -485,7 +480,10 @@ class ItemListingViewModelTest : BaseViewModelTest() {
         )
 
         viewModel.trySendAction(
-            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.DELETE, LOCAL_CODE),
+            ItemListingAction.DropdownMenuClick(
+                menuAction = VaultDropdownMenuAction.DELETE,
+                item = LOCAL_CODE,
+            ),
         )
 
         assertEquals(

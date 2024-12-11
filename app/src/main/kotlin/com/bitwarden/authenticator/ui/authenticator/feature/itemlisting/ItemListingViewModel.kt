@@ -162,11 +162,6 @@ class ItemListingViewModel @Inject constructor(
 
     private fun handleItemClick(authCode: String) {
         clipboardManager.setText(authCode)
-        sendEvent(
-            ItemListingEvent.ShowToast(
-                message = R.string.value_has_been_copied.asText(authCode),
-            ),
-        )
     }
 
     private fun handleEditItemClick(itemId: String) {
