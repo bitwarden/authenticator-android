@@ -13,6 +13,7 @@ import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.data.platform.repository.model.DataState
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.SharedCodesDisplayState
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VaultDropdownMenuAction
+import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VerificationCodeDisplayItem
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.util.toDisplayItem
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.util.toSharedCodesDisplayState
 import com.bitwarden.authenticator.ui.platform.base.BaseViewModelTest
@@ -382,7 +383,9 @@ class ItemListingViewModelTest : BaseViewModelTest() {
 
         val viewModel = createViewModel()
 
-        viewModel.trySendAction(ItemListingAction.MoveToBitwardenClick(entityId = "1"))
+        viewModel.trySendAction(
+            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, item = LOCAL_CODE)
+        )
         verify { authenticatorBridgeManager.startAddTotpLoginItemFlow(expectedUriString) }
     }
 
@@ -407,7 +410,9 @@ class ItemListingViewModelTest : BaseViewModelTest() {
         } returns false
 
         val viewModel = createViewModel()
-        viewModel.trySendAction(ItemListingAction.MoveToBitwardenClick(entityId = "1"))
+        viewModel.trySendAction(
+            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, LOCAL_CODE)
+        )
         assertEquals(
             expectedState,
             viewModel.stateFlow.value,
@@ -433,11 +438,11 @@ class ItemListingViewModelTest : BaseViewModelTest() {
 
         viewModel.eventFlow.test {
             viewModel.trySendAction(
-                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.COPY, testId),
+                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.COPY, LOCAL_CODE),
             )
 
             verify(exactly = 1) {
-                clipboardManager.setText(text = testId)
+                clipboardManager.setText(text = LOCAL_CODE.authCode)
             }
 
             assertEquals(
@@ -452,15 +457,14 @@ class ItemListingViewModelTest : BaseViewModelTest() {
     @Test
     fun `should trigger edit action when DropdownMenuClick EDIT is triggered`() = runTest {
         val viewModel = createViewModel()
-        val testId = "123456"
 
         viewModel.eventFlow.test {
             viewModel.trySendAction(
-                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.EDIT, testId),
+                ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.EDIT, LOCAL_CODE),
             )
 
             assertEquals(
-                ItemListingEvent.NavigateToEditItem(testId),
+                ItemListingEvent.NavigateToEditItem(LOCAL_CODE.id),
                 awaitItem(),
             )
         }
@@ -469,17 +473,16 @@ class ItemListingViewModelTest : BaseViewModelTest() {
     @Test
     fun `should trigger delete prompt when DropdownMenuClick DELETE is triggered`() = runTest {
         val viewModel = createViewModel()
-        val testId = "123456"
 
         val expectedState = DEFAULT_STATE.copy(
             dialog = ItemListingState.DialogState.DeleteConfirmationPrompt(
                 message = R.string.do_you_really_want_to_permanently_delete_cipher.asText(),
-                testId,
+                LOCAL_CODE.id,
             ),
         )
 
         viewModel.trySendAction(
-            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.DELETE, testId),
+            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.DELETE, LOCAL_CODE),
         )
 
         assertEquals(
@@ -504,6 +507,19 @@ private val DEFAULT_STATE = ItemListingState(
     alertThresholdSeconds = AUTHENTICATOR_ALERT_SECONDS,
     viewState = ItemListingState.ViewState.Loading,
     dialog = null,
+)
+
+private val LOCAL_CODE = VerificationCodeDisplayItem(
+    id = "1",
+    title = "issuer",
+    subtitle = null,
+    timeLeftSeconds = 10,
+    periodSeconds = 30,
+    alertThresholdSeconds = 7,
+    authCode = "123456",
+    favorite = false,
+    allowLongPressActions = true,
+    showMoveToBitwarden = true,
 )
 
 private val LOCAL_VERIFICATION_ITEMS = listOf(

@@ -110,10 +110,6 @@ class ItemListingViewModel @Inject constructor(
                 sendEvent(ItemListingEvent.NavigateBack)
             }
 
-            is ItemListingAction.DeleteItemClick -> {
-                handleDeleteItemClick(action)
-            }
-
             is ItemListingAction.ConfirmDeleteClick -> {
                 handleConfirmDeleteClick(action)
             }
@@ -123,11 +119,7 @@ class ItemListingViewModel @Inject constructor(
             }
 
             is ItemListingAction.ItemClick -> {
-                handleItemClick(action)
-            }
-
-            is ItemListingAction.EditItemClick -> {
-                handleEditItemClick(action)
+                handleItemClick(action.authCode)
             }
 
             is ItemListingAction.DialogDismiss -> {
@@ -143,9 +135,7 @@ class ItemListingViewModel @Inject constructor(
             }
 
             is ItemListingAction.DropdownMenuClick -> {
-                viewModelScope.launch {
-                    handleDropdownMenuClick(action)
-                }
+                handleDropdownMenuClick(action)
             }
 
             ItemListingAction.DownloadBitwardenClick -> {
@@ -163,10 +153,6 @@ class ItemListingViewModel @Inject constructor(
             ItemListingAction.SyncWithBitwardenDismiss -> {
                 handleSyncWithBitwardenDismiss()
             }
-
-            is ItemListingAction.MoveToBitwardenClick -> {
-                handleMoveToBitwardenClick(action)
-            }
         }
     }
 
@@ -174,27 +160,27 @@ class ItemListingViewModel @Inject constructor(
         sendEvent(ItemListingEvent.NavigateToAppSettings)
     }
 
-    private fun handleItemClick(action: ItemListingAction.ItemClick) {
-        clipboardManager.setText(action.authCode)
+    private fun handleItemClick(authCode: String) {
+        clipboardManager.setText(authCode)
         sendEvent(
             ItemListingEvent.ShowToast(
-                message = R.string.value_has_been_copied.asText(action.authCode),
+                message = R.string.value_has_been_copied.asText(authCode),
             ),
         )
     }
 
-    private fun handleEditItemClick(action: ItemListingAction.EditItemClick) {
-        sendEvent(ItemListingEvent.NavigateToEditItem(action.itemId))
+    private fun handleEditItemClick(itemId: String) {
+        sendEvent(ItemListingEvent.NavigateToEditItem(itemId))
     }
 
-    private fun handleMoveToBitwardenClick(action: ItemListingAction.MoveToBitwardenClick) {
+    private fun handleMoveToBitwardenClick(itemId: String) {
         viewModelScope.launch {
             val item = authenticatorRepository
-                .getItemStateFlow(action.entityId)
+                .getItemStateFlow(itemId)
                 .first { it.data != null }
 
             val didLaunchAddTotpFlow = authenticatorBridgeManager.startAddTotpLoginItemFlow(
-                totpUri = item.data!!.toOtpAuthUriString(),
+                totpUri = item.data?.toOtpAuthUriString() ?: "",
             )
             if (!didLaunchAddTotpFlow) {
                 mutableStateFlow.update {
@@ -209,12 +195,12 @@ class ItemListingViewModel @Inject constructor(
         }
     }
 
-    private fun handleDeleteItemClick(action: ItemListingAction.DeleteItemClick) {
+    private fun handleDeleteItemClick(itemId: String) {
         mutableStateFlow.update {
             it.copy(
                 dialog = ItemListingState.DialogState.DeleteConfirmationPrompt(
                     message = R.string.do_you_really_want_to_permanently_delete_cipher.asText(),
-                    itemId = action.itemId,
+                    itemId = itemId,
                 ),
             )
         }
@@ -534,15 +520,13 @@ class ItemListingViewModel @Inject constructor(
         sendEvent(ItemListingEvent.NavigateToBitwardenListing)
     }
 
-    private suspend fun handleDropdownMenuClick(action: ItemListingAction.DropdownMenuClick) {
-        sendAction(
-            when (action.menuAction) {
-                VaultDropdownMenuAction.COPY -> ItemListingAction.ItemClick(action.id)
-                VaultDropdownMenuAction.EDIT -> ItemListingAction.EditItemClick(action.id)
-                VaultDropdownMenuAction.MOVE -> ItemListingAction.MoveToBitwardenClick(action.id)
-                VaultDropdownMenuAction.DELETE -> ItemListingAction.DeleteItemClick(action.id)
-            },
-        )
+    private fun handleDropdownMenuClick(action: ItemListingAction.DropdownMenuClick) {
+        when (action.menuAction) {
+            VaultDropdownMenuAction.COPY -> handleItemClick(action.item.authCode)
+            VaultDropdownMenuAction.EDIT -> handleEditItemClick(action.item.id)
+            VaultDropdownMenuAction.MOVE -> handleMoveToBitwardenClick(action.item.id)
+            VaultDropdownMenuAction.DELETE -> handleDeleteItemClick(action.item.id)
+        }
     }
 
     private fun handleDownloadBitwardenDismiss() {
@@ -680,7 +664,6 @@ data class ItemListingState(
     val viewState: ViewState,
     val dialog: DialogState?,
 ) : Parcelable {
-
     /**
      * Represents the different view states of the [ItemListingScreen].
      */
@@ -731,7 +714,6 @@ data class ItemListingState(
      * Display an action card on the item [ItemListingScreen].
      */
     sealed class ActionCardState : Parcelable {
-
         /**
          * Display no action card.
          */
@@ -755,7 +737,6 @@ data class ItemListingState(
      * Display a dialog on the [ItemListingScreen].
      */
     sealed class DialogState : Parcelable {
-
         /**
          * Displays the loading dialog to the user.
          */
@@ -786,7 +767,6 @@ data class ItemListingState(
  * Represents a set of events related to viewing the item listing.
  */
 sealed class ItemListingEvent {
-
     /**
      * Navigates to the Create Account screen.
      */
@@ -848,17 +828,6 @@ sealed class ItemListingEvent {
  */
 sealed class ItemListingAction {
     /**
-     * Represents an action triggered when the user clicks an item in the dropdown menu.
-     *
-     * @param menuAction The action selected from the dropdown menu.
-     * @param id The identifier of the item on which the action is being performed.
-     */
-    data class DropdownMenuClick(
-        val menuAction: VaultDropdownMenuAction,
-        val id: String,
-    ) : ItemListingAction()
-
-    /**
      * The user clicked the back button.
      */
     data object BackClick : ItemListingAction()
@@ -882,11 +851,6 @@ sealed class ItemListingAction {
      * The user clicked a list item to copy its auth code.
      */
     data class ItemClick(val authCode: String) : ItemListingAction()
-
-    /**
-     * The user clicked edit item.
-     */
-    data class EditItemClick(val itemId: String) : ItemListingAction()
 
     /**
      * The user dismissed the dialog.
@@ -919,15 +883,25 @@ sealed class ItemListingAction {
     data object SyncWithBitwardenDismiss : ItemListingAction()
 
     /**
-     * The user clicked the "Move to Bitwarden" action on a local verification item.
+     * The user clicked confirm when prompted to delete an item.
      */
-    data class MoveToBitwardenClick(val entityId: String) : ItemListingAction()
+    data class ConfirmDeleteClick(val itemId: String) : ItemListingAction()
+
+    /**
+     * Represents an action triggered when the user clicks an item in the dropdown menu.
+     *
+     * @param menuAction The action selected from the dropdown menu.
+     * @param id The identifier of the item on which the action is being performed.
+     */
+    data class DropdownMenuClick(
+        val menuAction: VaultDropdownMenuAction,
+        val item: VerificationCodeDisplayItem,
+    ) : ItemListingAction()
 
     /**
      * Models actions that [ItemListingScreen] itself may send.
      */
     sealed class Internal : ItemListingAction() {
-
         /**
          * Indicates verification items have been received.
          */
@@ -968,14 +942,4 @@ sealed class ItemListingAction {
          */
         data object FirstTimeUserSyncReceive : Internal()
     }
-
-    /**
-     * The user clicked Delete.
-     */
-    data class DeleteItemClick(val itemId: String) : ItemListingAction()
-
-    /**
-     * The user clicked confirm when prompted to delete an item.
-     */
-    data class ConfirmDeleteClick(val itemId: String) : ItemListingAction()
 }
