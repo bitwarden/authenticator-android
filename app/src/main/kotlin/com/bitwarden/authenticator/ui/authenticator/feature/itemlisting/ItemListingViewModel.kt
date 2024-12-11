@@ -175,7 +175,7 @@ class ItemListingViewModel @Inject constructor(
                 .first { it.data != null }
 
             val didLaunchAddTotpFlow = authenticatorBridgeManager.startAddTotpLoginItemFlow(
-                totpUri = item.data?.toOtpAuthUriString() ?: "",
+                totpUri = item.data?.toOtpAuthUriString().orEmpty(),
             )
             if (!didLaunchAddTotpFlow) {
                 mutableStateFlow.update {
