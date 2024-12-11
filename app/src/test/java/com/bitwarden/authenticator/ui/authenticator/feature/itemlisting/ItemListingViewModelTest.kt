@@ -384,7 +384,7 @@ class ItemListingViewModelTest : BaseViewModelTest() {
         val viewModel = createViewModel()
 
         viewModel.trySendAction(
-            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, item = LOCAL_CODE)
+            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, item = LOCAL_CODE),
         )
         verify { authenticatorBridgeManager.startAddTotpLoginItemFlow(expectedUriString) }
     }
@@ -411,7 +411,7 @@ class ItemListingViewModelTest : BaseViewModelTest() {
 
         val viewModel = createViewModel()
         viewModel.trySendAction(
-            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, LOCAL_CODE)
+            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, LOCAL_CODE),
         )
         assertEquals(
             expectedState,

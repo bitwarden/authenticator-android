@@ -223,7 +223,7 @@ class ItemListingScreenTest : BaseComposeTest() {
         verify {
             viewModel.trySendAction(
                 ItemListingAction.DropdownMenuClick(
-                    VaultDropdownMenuAction.MOVE, LOCAL_CODE
+                    VaultDropdownMenuAction.MOVE, LOCAL_CODE,
                 ),
             )
         }
