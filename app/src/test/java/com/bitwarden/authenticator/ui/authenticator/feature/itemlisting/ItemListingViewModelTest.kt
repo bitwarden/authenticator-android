@@ -384,7 +384,10 @@ class ItemListingViewModelTest : BaseViewModelTest() {
         val viewModel = createViewModel()
 
         viewModel.trySendAction(
-            ItemListingAction.DropdownMenuClick(VaultDropdownMenuAction.MOVE, item = LOCAL_CODE),
+            ItemListingAction.DropdownMenuClick(
+                menuAction = VaultDropdownMenuAction.MOVE,
+                item = LOCAL_CODE,
+            ),
         )
         verify { authenticatorBridgeManager.startAddTotpLoginItemFlow(expectedUriString) }
     }
@@ -477,7 +480,7 @@ class ItemListingViewModelTest : BaseViewModelTest() {
         val expectedState = DEFAULT_STATE.copy(
             dialog = ItemListingState.DialogState.DeleteConfirmationPrompt(
                 message = R.string.do_you_really_want_to_permanently_delete_cipher.asText(),
-                LOCAL_CODE.id,
+                itemId = LOCAL_CODE.id,
             ),
         )
 

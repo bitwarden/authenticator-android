@@ -216,7 +216,10 @@ fun ItemListingScreen(
                 onDropdownMenuClick = remember(viewModel) {
                     { action, item ->
                         viewModel.trySendAction(
-                            ItemListingAction.DropdownMenuClick(action, item),
+                            ItemListingAction.DropdownMenuClick(
+                                menuAction = action,
+                                item = item,
+                            ),
                         )
                     }
                 },
