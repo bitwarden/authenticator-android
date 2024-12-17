@@ -1,4 +1,4 @@
-name: Build
+name: Build Authenticator
 
 on:
   push:
@@ -31,7 +31,7 @@ env:
 
 jobs:
   build:
-    name: Build
+    name: Build Authenticator
     runs-on: ubuntu-24.04
 
     steps:
@@ -84,7 +84,7 @@ jobs:
         run: bundle exec fastlane buildDebugAuthenticator
 
   publish_playstore:
-    name: Publish Play Store artifacts
+    name: Publish Authenticator Play Store artifacts
     needs:
       - build
     runs-on: ubuntu-24.04
