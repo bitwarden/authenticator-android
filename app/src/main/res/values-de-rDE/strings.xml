@@ -65,11 +65,11 @@
     <string name="language">Sprache</string>
     <string name="language_change_x_description">Die Sprache wurde auf %1$s geändert. Bitte starte die App neu, um die Änderung zu sehen</string>
     <string name="secure_your_accounts_with_bitwarden_authenticator">Schütze deine Konten mit dem Bitwarden Authenticator</string>
-    <string name="get_verification_codes_for_all_your_accounts">Erhalte Verifizierungscodes für alle deine Konten, die die 2-Faktor-Authentifizierung unterstützen.</string>
+    <string name="get_verification_codes_for_all_your_accounts">Erhalte Verifizierungscodes für alle deine Konten, die die zweistufige Verifizierung unterstützen.</string>
     <string name="use_your_device_camera_to_scan_codes">Verwende die Kamera deines Geräts, um Codes zu scannen</string>
     <string name="scan_the_qr_code_in_your_2_step_verification_settings_for_any_account">Scanne den QR-Code für jedes Konto in deinen Einstellungen für die 2-Faktor-Authentifizierung.</string>
     <string name="sign_in_using_unique_codes">Mit eindeutigen Codes anmelden</string>
-    <string name="when_using_2_step_verification_youll_enter_your_username_and_password_and_a_code_generated_in_this_app">Bei der 2-Faktor-Authentifizierung gibst du deinen Benutzernamen und dein Passwort sowie einen in dieser App generierten Code ein.</string>
+    <string name="when_using_2_step_verification_youll_enter_your_username_and_password_and_a_code_generated_in_this_app">Bei der zweistufigen Verifizierung gibst du deinen Benutzernamen und dein Passwort sowie einen in dieser App generierten Code ein.</string>
     <string name="continue_button">Fortsetzen</string>
     <string name="skip">Überspringen</string>
     <string name="get_started">Loslegen</string>
