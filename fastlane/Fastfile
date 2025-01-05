@@ -43,6 +43,8 @@ platform :android do
         puts "Using tag #{latestTag} to calculate version name..."
         latestTag.slice!(0)
         puts "Current version name resolved to #{latestTag}."
+        groups = `id`
+        puts "#{id}"
 
         versionParts = latestTag.split(".")
         currentMajor = versionParts[0]
