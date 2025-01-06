@@ -126,7 +126,6 @@ private fun TutorialScreenContent(
 
         HorizontalPager(
             state = pagerState,
-            beyondViewportPageCount = pagerState.pageCount,
             modifier = Modifier.fillMaxWidth(),
         ) { index ->
             if (LocalConfiguration.current.isPortrait) {
