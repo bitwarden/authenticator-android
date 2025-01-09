@@ -2,7 +2,6 @@ package com.bitwarden.authenticator.data.platform.manager.imports
 
 import com.bitwarden.authenticator.data.authenticator.datasource.disk.AuthenticatorDiskSource
 import com.bitwarden.authenticator.data.authenticator.datasource.disk.entity.AuthenticatorItemEntity
-import com.bitwarden.authenticator.data.authenticator.datasource.disk.util.FakeAuthenticatorDiskSource
 import com.bitwarden.authenticator.data.platform.manager.imports.model.ExportParseResult
 import com.bitwarden.authenticator.data.platform.manager.imports.model.ImportDataResult
 import com.bitwarden.authenticator.data.platform.manager.imports.model.ImportFileFormat
@@ -26,7 +25,7 @@ class ImportManagerTest {
     private val mockAuthenticatorDiskSource = mockk<AuthenticatorDiskSource>()
 
     private val manager = ImportManagerImpl(
-        authenticatorDiskSource = mockAuthenticatorDiskSource
+        authenticatorDiskSource = mockAuthenticatorDiskSource,
     )
 
     @BeforeEach
