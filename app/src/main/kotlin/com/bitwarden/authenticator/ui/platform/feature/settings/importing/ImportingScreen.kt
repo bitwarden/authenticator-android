@@ -90,7 +90,7 @@ fun ImportingScreen(
                 message = dialog.message.invoke(),
                 confirmButtonText = stringResource(id = R.string.continue_button),
                 onConfirmClick = {
-                    intentManager.launchUri("https://bitwarden.com/privacy".toUri())
+                    intentManager.launchUri("https://bitwarden.com/help".toUri())
                 },
                 dismissButtonText = stringResource(id = R.string.cancel),
                 onDismissClick = {
