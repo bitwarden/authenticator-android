@@ -24,9 +24,7 @@ class ImportingViewModel @Inject constructor(
     private val authenticatorRepository: AuthenticatorRepository,
 ) :
     BaseViewModel<ImportState, ImportEvent, ImportAction>(
-        initialState = ImportState(
-            importFileFormat = ImportFileFormat.BITWARDEN_JSON,
-        ),
+        initialState = ImportState(importFileFormat = ImportFileFormat.BITWARDEN_JSON),
     ) {
 
     override fun handleAction(action: ImportAction) {
