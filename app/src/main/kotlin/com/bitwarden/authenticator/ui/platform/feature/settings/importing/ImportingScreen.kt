@@ -88,7 +88,7 @@ fun ImportingScreen(
             BitwardenTwoButtonDialog(
                 title = dialog.title?.invoke(),
                 message = dialog.message.invoke(),
-                confirmButtonText = stringResource(id = R.string.continue_button),
+                confirmButtonText = stringResource(id = R.string.get_help),
                 onConfirmClick = {
                     intentManager.launchUri("https://bitwarden.com/help".toUri())
                 },
