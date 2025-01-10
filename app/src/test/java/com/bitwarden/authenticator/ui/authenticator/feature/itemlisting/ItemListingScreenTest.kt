@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTouchInput
 import com.bitwarden.authenticator.data.platform.repository.util.bufferedMutableSharedFlow
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.SharedCodesDisplayState
+import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VaultDropdownMenuAction
 import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.model.VerificationCodeDisplayItem
 import com.bitwarden.authenticator.ui.platform.base.BaseComposeTest
 import com.bitwarden.authenticator.ui.platform.base.util.asText
@@ -219,7 +220,14 @@ class ItemListingScreenTest : BaseComposeTest() {
             .onNodeWithText("Move to Bitwarden")
             .performClick()
 
-        verify { viewModel.trySendAction(ItemListingAction.MoveToBitwardenClick("1")) }
+        verify {
+            viewModel.trySendAction(
+                ItemListingAction.DropdownMenuClick(
+                    menuAction = VaultDropdownMenuAction.MOVE,
+                    item = LOCAL_CODE,
+                ),
+            )
+        }
     }
 
     @Test
