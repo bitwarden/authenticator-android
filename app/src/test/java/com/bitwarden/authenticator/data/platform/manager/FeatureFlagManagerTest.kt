@@ -76,7 +76,7 @@ class FeatureFlagManagerTest {
             key = FlagKey.PasswordManagerSync,
             forceRefresh = false,
         )
-        assertFalse(flagValue)
+        assertTrue(flagValue)
     }
 
     @Test
@@ -173,7 +173,7 @@ class FeatureFlagManagerTest {
             forceRefresh = false,
         )
 
-        assertFalse(
+        assertTrue(
             flagValue,
         )
     }
