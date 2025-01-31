@@ -25,7 +25,7 @@ class FlagKeyTest {
             listOf(
                 FlagKey.BitwardenAuthenticationEnabled,
                 FlagKey.PasswordManagerSync,
-            ).any {
+            ).all {
                 it.defaultValue
             },
         )
