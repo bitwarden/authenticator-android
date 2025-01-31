@@ -21,12 +21,12 @@ class FlagKeyTest {
 
     @Test
     fun `All feature flags have the correct default value set`() {
-        assertFalse(
+        assertTrue(
             listOf(
                 FlagKey.BitwardenAuthenticationEnabled,
                 FlagKey.PasswordManagerSync,
             ).all {
-                it.defaultValue
+                !it.defaultValue
             },
         )
     }
