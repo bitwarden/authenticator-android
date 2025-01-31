@@ -27,7 +27,7 @@ class FlagKeyTest {
                 FlagKey.PasswordManagerSync,
             ).any {
                 it.defaultValue
-            }
+            },
         )
     }
 
