@@ -20,7 +20,6 @@ platform :android do
   desc "Runs tests"
   lane :check-bwa do
     gradle(
-        project_dir: "authenticator",
         tasks: ["testDebug", "lintDebug", "detekt","koverXmlReportDebug"]
     )
   end
