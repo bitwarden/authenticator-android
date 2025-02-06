@@ -18,7 +18,7 @@ default_platform(:android)
 platform :android do
 
   desc "Runs tests"
-  lane :checkAuthenticator do
+  lane :check do
     gradle(
         tasks: ["testDebug", "lintDebug", "detekt","koverXmlReportDebug"]
     )
