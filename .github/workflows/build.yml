@@ -77,11 +77,11 @@ jobs:
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
 
-      - name: Check Authenticator
-        run: bundle exec fastlane check-bwa
+      - name: Check
+        run: bundle exec fastlane check
 
-      - name: Build Authenticator
-        run: bundle exec fastlane buildDebug-bwa
+      - name: Build
+        run: bundle exec fastlane buildDebug
 
   publish_playstore:
     name: Publish Play Store artifacts
@@ -186,7 +186,7 @@ jobs:
         run: |
           DEFAULT_VERSION_CODE=$GITHUB_RUN_NUMBER
           VERSION_CODE="${{ inputs.version-code || '$DEFAULT_VERSION_CODE' }}"
-          bundle exec fastlane setBuildVersionInfo-bwa \
+          bundle exec fastlane setBuildVersionInfo \
           versionCode:$VERSION_CODE \
           versionName:${{ inputs.version-name || '' }}
 
@@ -200,7 +200,7 @@ jobs:
       - name: Generate release Play Store bundle
         if: ${{ matrix.variant == 'aab' }}
         run: |
-          bundle exec fastlane bundleRelease-bwa \
+          bundle exec fastlane bundleRelease \
           storeFile:${{ github.workspace }}/keystores/authenticator_aab-keystore.jks \
           storePassword:'${{ secrets.AAB_KEYSTORE_STORE_PASSWORD }}' \
           keyAlias:authenticatorupload \
@@ -209,7 +209,7 @@ jobs:
       - name: Generate release Play Store APK
         if: ${{ matrix.variant == 'apk' }}
         run: |
-          bundle exec fastlane buildRelease-bwa \
+          bundle exec fastlane buildRelease \
           storeFile:${{ github.workspace }}/keystores/authenticator_apk-keystore.jks \
           storePassword:'${{ secrets.APK_KEYSTORE_STORE_PASSWORD }}' \
           keyAlias:bitwardenauthenticator \
@@ -268,7 +268,7 @@ jobs:
         env:
           FIREBASE_CREDS_PATH: ${{ github.workspace }}/secrets/authenticator_play_firebase-creds.json
         run: |
-          bundle exec fastlane distributeReleaseBundleToFirebase-bwa \
+          bundle exec fastlane distributeReleaseBundleToFirebase \
           serviceCredentialsFile:${{ env.FIREBASE_CREDS_PATH }}
 
       # Only publish bundles to Play Store when `publish-to-play-store` is true while building
@@ -278,5 +278,5 @@ jobs:
         env:
           PLAY_STORE_CREDS_FILE: ${{ github.workspace }}/secrets/authenticator_play_store-creds.json
         run: |
-          bundle exec fastlane publishReleaseToGooglePlayStore-bwa \
+          bundle exec fastlane publishReleaseToGooglePlayStore \
           serviceCredentialsFile:${{ env.PLAY_STORE_CREDS_FILE }} \
