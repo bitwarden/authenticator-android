@@ -18,13 +18,13 @@ default_platform(:android)
 platform :android do
 
   desc "Runs tests"
-  lane :checkAuthenticator do
+  lane :check do
     gradle(tasks: ["authenticator:testDebug", "authenticator:lintDebug", "authenticator:detekt","authenticator:koverXmlReportDebug"])
   end
 
   desc "Apply build version information to Authenticator"
   fastlane_require "time"
-  lane :setAuthenticatorBuildVersionInfo do |options|
+  lane :setBuildVersionInfoAuthenticator do |options|
 
     # Read-in app build config file.
     buildConfigPath = "../authenticator/build.gradle.kts"
@@ -73,18 +73,18 @@ platform :android do
   end
 
   desc "Assemble Authenticator debug variants"
-  lane :buildAuthenticatorDebug do
+  lane :buildDebugAuthenticator do
     gradle(
-      task: "authenticator:assemble",
+      task: "assemble",
       build_type: "Debug",
       print_command: false,
     )
   end
 
   desc "Assemble and sign Authenticator release APK"
-  lane :buildAuthenticatorRelease do |options|
+  lane :buildReleaseAuthenticator do |options|
     gradle(
-      task: "authenticator:assemble",
+      task: "assemble",
       build_type: "Release",
       properties: {
         "android.injected.signing.store.file" => options[:storeFile],
@@ -97,9 +97,9 @@ platform :android do
   end
 
   desc "Bundle and sign Authenticator release AAB"
-  lane :bundleAuthenticatorRelease do |options|
+  lane :bundleReleaseAuthenticator do |options|
     gradle(
-        task: "authenticator:bundle",
+        task: "bundle",
         build_type: "Release",
         properties: {
           "android.injected.signing.store.file" => options[:storeFile],
@@ -112,11 +112,13 @@ platform :android do
   end
 
   desc "Publish Authenticator release AAB to Firebase"
-  lane :distributeAuthenticatorReleaseBundleToFirebase do |options|
+  lane :distributeReleaseBundleToFirebaseAuthenticator do |options|
     release_notes = changelog_from_git_commits(
       commits_count: 1,
       pretty: "- %s"
     )
+
+    puts "Release notes #{release_notes}"
 
     firebase_app_distribution(
       app: "1:867301491091:android:50b626dba42a361651e866",
@@ -124,11 +126,12 @@ platform :android do
       android_artifact_path: "authenticator/build/outputs/bundle/release/com.bitwarden.authenticator.aab",
       service_credentials_file: options[:serviceCredentialsFile],
       groups: "internal-prod-group, livefront",
+      release_notes: release_notes,
     )
   end
 
   desc "Publish Authenticator release to Google Play Store"
-  lane :publishAuthenticatorReleaseToGooglePlayStore do |options|
+  lane :publishReleaseToGooglePlayStoreAuthenticator do |options|
     upload_to_play_store(
       package_name: "com.bitwarden.authenticator",
       json_key: options[:serviceCredentialsFile],
