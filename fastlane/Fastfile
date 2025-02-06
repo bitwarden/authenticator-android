@@ -18,7 +18,7 @@ default_platform(:android)
 platform :android do
 
   desc "Runs tests"
-  lane :check-bwa do
+  lane :checkAuthenticator do
     gradle(
         tasks: ["testDebug", "lintDebug", "detekt","koverXmlReportDebug"]
     )
@@ -26,7 +26,7 @@ platform :android do
 
   desc "Apply build version information to Authenticator"
   fastlane_require "time"
-  lane :setBuildVersionInfo-bwa do |options|
+  lane :setBuildVersionInfoAuthenticator do |options|
 
     # Read-in app build config file.
     buildConfigPath = "../authenticator/build.gradle.kts"
@@ -75,7 +75,7 @@ platform :android do
   end
 
   desc "Assemble Authenticator debug variants"
-  lane :buildDebug-bwa do
+  lane :buildDebugAuthenticator do
     gradle(
       task: "assemble",
       build_type: "Debug",
@@ -84,7 +84,7 @@ platform :android do
   end
 
   desc "Assemble and sign Authenticator release APK"
-  lane :buildRelease-bwa do |options|
+  lane :buildReleaseAuthenticator do |options|
     gradle(
       task: "assemble",
       build_type: "Release",
@@ -99,7 +99,7 @@ platform :android do
   end
 
   desc "Bundle and sign Authenticator release AAB"
-  lane :bundleRelease-bwa do |options|
+  lane :bundleReleaseAuthenticator do |options|
     gradle(
         task: "bundle",
         build_type: "Release",
@@ -114,7 +114,7 @@ platform :android do
   end
 
   desc "Publish Authenticator release AAB to Firebase"
-  lane :distributeReleaseBundleToFirebase-bwa do |options|
+  lane :distributeReleaseBundleToFirebaseAuthenticator do |options|
     release_notes = changelog_from_git_commits(
       commits_count: 1,
       pretty: "- %s"
@@ -133,7 +133,7 @@ platform :android do
   end
 
   desc "Publish Authenticator release to Google Play Store"
-  lane :publishReleaseToGooglePlayStore-bwa do |options|
+  lane :publishReleaseToGooglePlayStoreAuthenticator do |options|
     upload_to_play_store(
       json_key: options[:serviceCredentialsFile],
       track: "internal",
