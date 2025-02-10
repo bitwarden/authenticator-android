@@ -46,8 +46,8 @@ sealed class FlagKey<out T : Any> {
      */
     data object PasswordManagerSync : FlagKey<Boolean>() {
         override val keyName: String = "enable-pm-bwa-sync"
-        override val defaultValue: Boolean = false
-        override val isRemotelyConfigured: Boolean = true
+        override val defaultValue: Boolean = true
+        override val isRemotelyConfigured: Boolean = false
     }
 
     /**

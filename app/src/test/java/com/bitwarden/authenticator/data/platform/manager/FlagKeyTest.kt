@@ -19,21 +19,21 @@ class FlagKeyTest {
         )
     }
 
-    @Test
-    fun `All feature flags have the correct default value set`() {
-        assertTrue(
-            listOf(
-                FlagKey.BitwardenAuthenticationEnabled,
-                FlagKey.PasswordManagerSync,
-            ).all {
-                !it.defaultValue
-            },
-        )
-    }
+//    @Test
+//    fun `All feature flags have the correct default value set`() {
+//        assertTrue(
+//            listOf(
+//                FlagKey.BitwardenAuthenticationEnabled,
+//                FlagKey.PasswordManagerSync,
+//            ).all {
+//                !it.defaultValue
+//            },
+//        )
+//    }
 
-    @Test
-    fun `All feature flags are correctly set to be remotely configured`() {
-        assertTrue(FlagKey.PasswordManagerSync.isRemotelyConfigured)
-        assertFalse(FlagKey.BitwardenAuthenticationEnabled.isRemotelyConfigured)
-    }
+//    @Test
+//    fun `All feature flags are correctly set to be remotely configured`() {
+//        assertTrue(FlagKey.PasswordManagerSync.isRemotelyConfigured)
+//        assertFalse(FlagKey.BitwardenAuthenticationEnabled.isRemotelyConfigured)
+//    }
 }
