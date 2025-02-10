@@ -142,7 +142,6 @@ class DebugMenuRepositoryTest {
 
             debugMenuRepository.resetFeatureFlagOverrides()
 
-            //Assertions.assertTrue(FlagKey.PasswordManagerSync.isRemotelyConfigured)
             Assertions.assertFalse(FlagKey.BitwardenAuthenticationEnabled.isRemotelyConfigured)
             verify(exactly = 1) {
                 mockFeatureFlagOverrideDiskSource.saveFeatureFlag(
