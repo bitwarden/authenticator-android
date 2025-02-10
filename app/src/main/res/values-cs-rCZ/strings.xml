@@ -76,7 +76,7 @@
     <string name="unique_codes">Unikátní kódy</string>
     <string name="help">Nápověda</string>
     <string name="launch_tutorial">Spustit tutoriál</string>
-    <string name="value_has_been_copied">%1$s zkopírován</string>
+    <string name="value_has_been_copied">%1$s zkopírována</string>
     <string name="delete_item">Smazat položku</string>
     <string name="item_deleted">Položka byla smazána</string>
     <string name="delete">Smazat</string>
@@ -147,4 +147,9 @@
     <string name="add_code_to_bitwarden">Přidat kód do Bitwardenu</string>
     <string name="add_code_locally">Přidat kód místně</string>
     <string name="local_codes">Místní kódy</string>
+    <string name="required_information_missing">Chybí požadované informace</string>
+    <string name="required_information_missing_message">"Chybí požadované informace (např. \"služby\" nebo \"tajné\"). Zkontrolujte soubor a zkuste to znovu. Navštivte bitwarden.com/help pro pomoc."</string>
+    <string name="file_could_not_be_processed">"Soubor nelze zpracovat"</string>
+    <string name="file_could_not_be_processed_message">"Soubor nelze zpracovat. Ujistěte se, že je to platný JSON a zkuste to znovu. Potřebujete pomoc? Navštivte bitwarden.com/help"</string>
+    <string name="get_help">Získat pomoc</string>
 </resources>
