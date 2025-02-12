@@ -81,7 +81,7 @@ jobs:
         run: bundle exec fastlane check
 
       - name: Build Authenticator
-        run: bundle exec fastlane buildAuthenticatorDebug
+        run: bundle exec fastlane buildDebugAuthenticator
 
   publish_playstore:
     name: Publish Play Store artifacts
@@ -187,7 +187,7 @@ jobs:
         run: |
           DEFAULT_VERSION_CODE=$GITHUB_RUN_NUMBER
           VERSION_CODE="${{ inputs.version-code || '$DEFAULT_VERSION_CODE' }}"
-          bundle exec fastlane setAuthenticatorBuildVersionInfo \
+          bundle exec fastlane setBuildVersionInfoAuthenticator \
           versionCode:$VERSION_CODE \
           versionName:${{ inputs.version-name || '' }}
 
@@ -201,7 +201,7 @@ jobs:
       - name: Generate release Play Store bundle
         if: ${{ matrix.variant == 'aab' }}
         run: |
-          bundle exec fastlane bundleAuthenticatorRelease \
+          bundle exec fastlane bundleReleaseAuthenticator \
           storeFile:${{ github.workspace }}/keystores/authenticator_aab-keystore.jks \
           storePassword:'${{ secrets.AAB_KEYSTORE_STORE_PASSWORD }}' \
           keyAlias:authenticatorupload \
@@ -210,7 +210,7 @@ jobs:
       - name: Generate release Play Store APK
         if: ${{ matrix.variant == 'apk' }}
         run: |
-          bundle exec fastlane buildAuthenticatorRelease \
+          bundle exec fastlane buildReleaseAuthenticator \
           storeFile:${{ github.workspace }}/keystores/authenticator_apk-keystore.jks \
           storePassword:'${{ secrets.APK_KEYSTORE_STORE_PASSWORD }}' \
           keyAlias:bitwardenauthenticator \
@@ -269,7 +269,7 @@ jobs:
         env:
           FIREBASE_CREDS_PATH: ${{ github.workspace }}/secrets/authenticator_play_firebase-creds.json
         run: |
-          bundle exec fastlane distributeAuthenticatorReleaseBundleToFirebase \
+          bundle exec fastlane distributeReleaseBundleToFirebaseAuthenticator \
           serviceCredentialsFile:${{ env.FIREBASE_CREDS_PATH }}
 
       # Only publish bundles to Play Store when `publish-to-play-store` is true while building
@@ -279,5 +279,5 @@ jobs:
         env:
           PLAY_STORE_CREDS_FILE: ${{ github.workspace }}/secrets/authenticator_play_store-creds.json
         run: |
-          bundle exec fastlane publishAuthenticatorReleaseToGooglePlayStore \
+          bundle exec fastlane publishReleaseToGooglePlayStoreAuthenticator \
           serviceCredentialsFile:${{ env.PLAY_STORE_CREDS_FILE }} \
