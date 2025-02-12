@@ -1,4 +1,4 @@
-name: Crowdin Push - Authenticator
+name: Crowdin Push
 
 on:
   workflow_dispatch:

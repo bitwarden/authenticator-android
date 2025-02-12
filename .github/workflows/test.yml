@@ -1,4 +1,4 @@
-name: Test Authenticator
+name: Test
 
 on:
   push:
