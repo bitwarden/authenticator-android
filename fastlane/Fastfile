@@ -19,14 +19,12 @@ platform :android do
 
   desc "Runs tests"
   lane :check do
-    gradle(
-        tasks: ["testDebug", "lintDebug", "detekt","koverXmlReportDebug"]
-    )
+    gradle(tasks: ["testDebug", "lintDebug", "detekt","koverXmlReportDebug"])
   end
 
-  desc "Apply build version information to Authenticator"
+  desc "Apply build version information"
   fastlane_require "time"
-  lane :setBuildVersionInfoAuthenticator do |options|
+  lane :setBuildVersionInfo do |options|
 
     # Read-in app build config file.
     buildConfigPath = "../authenticator/build.gradle.kts"
@@ -74,8 +72,8 @@ platform :android do
     File.open(buildConfigPath, "w") { |buildConfigFile| buildConfigFile << buildConfigText }
   end
 
-  desc "Assemble Authenticator debug variants"
-  lane :buildDebugAuthenticator do
+  desc "Assemble debug variants"
+  lane :buildDebug do
     gradle(
       task: "assemble",
       build_type: "Debug",
@@ -83,8 +81,8 @@ platform :android do
     )
   end
 
-  desc "Assemble and sign Authenticator release APK"
-  lane :buildReleaseAuthenticator do |options|
+  desc "Assemble and sign release APK"
+  lane :buildRelease do |options|
     gradle(
       task: "assemble",
       build_type: "Release",
@@ -98,8 +96,8 @@ platform :android do
     )
   end
 
-  desc "Bundle and sign Authenticator release AAB"
-  lane :bundleReleaseAuthenticator do |options|
+  desc "Bundle and sign release AAB"
+  lane :bundleRelease do |options|
     gradle(
         task: "bundle",
         build_type: "Release",
@@ -113,8 +111,8 @@ platform :android do
     )
   end
 
-  desc "Publish Authenticator release AAB to Firebase"
-  lane :distributeReleaseBundleToFirebaseAuthenticator do |options|
+  desc "Publish release AAB to Firebase"
+  lane :distributeReleaseBundleToFirebase do |options|
     release_notes = changelog_from_git_commits(
       commits_count: 1,
       pretty: "- %s"
@@ -132,8 +130,8 @@ platform :android do
     )
   end
 
-  desc "Publish Authenticator release to Google Play Store"
-  lane :publishReleaseToGooglePlayStoreAuthenticator do |options|
+  desc "Publish release to Google Play Store"
+  lane :publishReleaseToGooglePlayStore do |options|
     upload_to_play_store(
       json_key: options[:serviceCredentialsFile],
       track: "internal",
