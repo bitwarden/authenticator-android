@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,55 +42,57 @@ fun BitwardenActionCard(
     modifier: Modifier = Modifier,
     trailingContent: (@Composable BoxScope.() -> Unit)? = null,
 ) {
-    AuthenticatorTheme {
-        Card(
-            onClick = onCardClicked,
-            shape = RoundedCornerShape(size = 16.dp),
-            modifier = modifier,
-            elevation = CardDefaults.elevatedCardElevation(),
+    Card(
+        onClick = onCardClicked,
+        shape = RoundedCornerShape(size = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        ),
+        modifier = modifier,
+        elevation = CardDefaults.elevatedCardElevation(),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
         ) {
-            Row(
+            Icon(
+                painter = actionIcon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .padding(
+                        start = 16.dp,
+                        top = 16.dp,
+                    )
+                    .size(24.dp),
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .padding(top = 16.dp, bottom = 16.dp),
             ) {
-                Icon(
-                    painter = actionIcon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(
-                            start = 16.dp,
-                            top = 16.dp,
-                        )
-                        .size(24.dp),
+                Text(
+                    text = titleText,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Column(
-                    modifier = Modifier
-                        .weight(weight = 1f)
-                        .padding(top = 16.dp, bottom = 16.dp),
-                ) {
-                    Text(
-                        text = titleText,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = actionText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = callToActionText,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Box {
-                    trailingContent?.invoke(this)
-                }
+                Text(
+                    text = actionText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = callToActionText,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Box {
+                trailingContent?.invoke(this)
             }
         }
     }
