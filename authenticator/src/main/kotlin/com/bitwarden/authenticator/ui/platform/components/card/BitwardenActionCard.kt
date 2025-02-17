@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bitwarden.authenticator.R
 import com.bitwarden.authenticator.ui.platform.components.util.rememberVectorPainter
-import com.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
 
 /**
  * A reusable card for displaying actions to the user.
@@ -56,48 +54,40 @@ fun BitwardenActionCard(
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            Row(
+            Icon(
+                painter = actionIcon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .padding(start = 16.dp, top = 16.dp)
+                    .size(24.dp),
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .padding(vertical = 16.dp),
             ) {
-                Icon(
-                    painter = actionIcon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(
-                            start = 16.dp,
-                            top = 16.dp,
-                        )
-                        .size(24.dp),
+                Text(
+                    text = titleText,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Column(
-                    modifier = Modifier
-                        .weight(weight = 1f)
-                        .padding(top = 16.dp, bottom = 16.dp),
-                ) {
-                    Text(
-                        text = titleText,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = actionText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = callToActionText,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Box {
-                    trailingContent?.invoke(this)
-                }
+                Text(
+                    text = actionText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = callToActionText,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Box {
+                trailingContent?.invoke(this)
             }
         }
     }
