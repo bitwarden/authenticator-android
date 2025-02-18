@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "com.bitwarden.authenticator"
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk = libs.versions.minSdkBwa.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
