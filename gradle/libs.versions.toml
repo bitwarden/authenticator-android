@@ -110,7 +110,7 @@ junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 robolectric-robolectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
