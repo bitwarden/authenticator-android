@@ -49,7 +49,7 @@ android {
         getByName("debug") {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
-            storeFile = file("../keystores/debug.keystore")
+            storeFile = file("../keystores/debug-bwa.keystore")
             storePassword = "android"
         }
     }
@@ -214,8 +214,6 @@ dependencies {
     testImplementation(libs.robolectric.robolectric)
     testImplementation(libs.square.okhttp.mockwebserver)
     testImplementation(libs.square.turbine)
-
-    androidTestImplementation(libs.bundles.tests.instrumented)
 
     detektPlugins(libs.detekt.detekt.formatting)
     detektPlugins(libs.detekt.detekt.rules)
