@@ -30,4 +30,4 @@ fastlane/README.md
 
 # Secrets
 /keystores/*.jks
-google-services.json
+/authenticator/src/google-services.json
